@@ -1,0 +1,22 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 85%;
+  margin: 0;
+  padding: 0; 
+}
+
+header {
+  background: #6b92a7;  
+}
+
+h1 {
+  font-size: 1.8em;
+  color: #fff;
+  margin: 0;
+  padding: 0.8em;
+  text-align: center;
+}
+
+#container {
+  background: #fff;
+}
