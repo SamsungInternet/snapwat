@@ -1,0 +1,25 @@
+{
+  "name": "pwaint",
+  "version": "0.1.0",
+  "description": "A doodling app for the web. A progressive web app demo.",
+  "scripts": {
+    "start": "python -m SimpleHTTPServer",
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poshaughnessy/pwaint.git"
+  },
+  "author": "Peter O'Shaughnessy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/poshaughnessy/pwaint/issues"
+  },
+  "homepage": "https://github.com/poshaughnessy/pwaint#readme",
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "rollup": "^0.34.7",
+    "rollup-plugin-babel": "^2.6.1"
+  }
+}
