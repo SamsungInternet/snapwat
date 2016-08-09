@@ -1,7 +1,5 @@
-class Foo {
-    doSomething() {
-        console.log('Done!');
-    }
-}
-
-export default Foo;
+export default {
+  doSomething() {
+    console.log('Done!');
+  }
+};

@@ -15,10 +15,10 @@ To transpile and combine the JavaScript:
 
 ```npm run build```
 
-This simply runs `rollup -c`.
+This simply runs `rollup -c > build/bundle.js`.
 
 To run the app:
 
 ```npm start```
 
-This simply runs `python -m SimpleHTTPServer`.
+This simply runs `npm run build && python -m SimpleHTTPServer`.

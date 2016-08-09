@@ -1,14 +1,17 @@
-(function () {
-    'use strict';
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (factory());
+}(this, function () { 'use strict';
 
-    class Foo {
-        doSomething() {
-            console.log('Done!');
-        }
+  var Foo = {
+    doSomething: function doSomething() {
+      console.log('Done!');
     }
+  };
 
-    console.log('hello');
+  console.log('hello');
 
-    Foo.doSomething();
+  Foo.doSomething();
 
-}());
+}));
