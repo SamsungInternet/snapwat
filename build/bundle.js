@@ -31,6 +31,7 @@
   var HEADER_HEIGHT = 72;
   var canvas = null;
   var ctx = null;
+  var drawing = false;
 
   var Draw = function () {
     function Draw() {
@@ -42,10 +43,16 @@
       value: function init() {
 
         canvas = document.getElementById('canvas');
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight - HEADER_HEIGHT;
+
         canvas.addEventListener('touchstart', this.onTouchStart, false);
         canvas.addEventListener('touchmove', this.onTouchMove, false);
+        canvas.addEventListener('touchend', this.onTouchEnd, false);
+        canvas.addEventListener('mousedown', this.onMouseDown, false);
+        canvas.addEventListener('mousemove', this.onMouseMove, false);
+        canvas.addEventListener('mouseup', this.onMouseUp, false);
 
         ctx = canvas.getContext('2d');
         ctx.strokeStyle = '#000';
@@ -59,16 +66,45 @@
         var x = touch.pageX;
         var y = touch.pageY - HEADER_HEIGHT;
         ctx.moveTo(x, y);
+        drawing = true;
+      }
+    }, {
+      key: 'onMouseDown',
+      value: function onMouseDown(e) {
+        ctx.beginPath();
+        ctx.moveTo(e.clientX, e.clientY - HEADER_HEIGHT);
+        drawing = true;
       }
     }, {
       key: 'onTouchMove',
       value: function onTouchMove(e) {
-        e.preventDefault();
-        var touch = e.changedTouches[0];
-        var x = touch.pageX;
-        var y = touch.pageY - HEADER_HEIGHT;
-        ctx.lineTo(x, y);
-        ctx.stroke();
+        if (drawing) {
+          e.preventDefault();
+          var touch = e.changedTouches[0];
+          var x = touch.pageX;
+          var y = touch.pageY - HEADER_HEIGHT;
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        }
+      }
+    }, {
+      key: 'onMouseMove',
+      value: function onMouseMove(e) {
+        if (drawing) {
+          e.preventDefault();
+          ctx.lineTo(e.clientX, e.clientY - HEADER_HEIGHT);
+          ctx.stroke();
+        }
+      }
+    }, {
+      key: 'onTouchEnd',
+      value: function onTouchEnd() {
+        drawing = false;
+      }
+    }, {
+      key: 'onMouseUp',
+      value: function onMouseUp() {
+        drawing = false;
       }
     }]);
     return Draw;

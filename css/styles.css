@@ -1,9 +1,15 @@
+html {
+  height: 100%;
+}
+
 body {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
   font-size: 85%;
   margin: 0;
   padding: 0;
   background-color: #ccc;
+  height: 100%;
+  overflow: hidden;
 }
 
 header {
