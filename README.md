@@ -15,10 +15,16 @@ To transpile and combine the JavaScript:
 
 ```npm run build```
 
-This simply runs `rollup -c > build/bundle.js`.
+(This just runs `rollup -c > build/bundle.js`).
 
 To run the app:
 
 ```npm start```
 
-This simply runs `npm run build && python -m SimpleHTTPServer`.
+(This just runs `python -m SimpleHTTPServer`).
+
+Or to watch for changes:
+
+```npm run watch```
+
+(This just uses `watch` to rebuild the JS when a change is detected in the src directory).

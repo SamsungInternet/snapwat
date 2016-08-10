@@ -1,4 +1,4 @@
-const HEADER_HEIGHT = 67;
+const HEADER_HEIGHT = 72;
 let canvas = null;
 let ctx = null;
 

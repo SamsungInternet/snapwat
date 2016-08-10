@@ -28,7 +28,7 @@
     };
   }();
 
-  var HEADER_HEIGHT = 67;
+  var HEADER_HEIGHT = 72;
   var canvas = null;
   var ctx = null;
 
