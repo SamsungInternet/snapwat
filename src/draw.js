@@ -4,7 +4,7 @@ let ctx = null;
 let drawing = false;
 
 function initCanvas() {
-  canvas = document.getElementById('canvas');
+  canvas = document.querySelector('canvas');
     
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight - HEADER_HEIGHT;
@@ -19,9 +19,9 @@ function initCanvas() {
 }
 
 function initDrawingContext() {
-    ctx = canvas.getContext('2d');
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 3;
+  ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 3;
 }
 
 function init() {
