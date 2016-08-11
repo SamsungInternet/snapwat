@@ -31,9 +31,10 @@ strong {
 }
 
 video {
-  display: none;
+  position: absolute;
 }
 
 canvas {
   position: absolute;
+  visibility: hidden;
 }

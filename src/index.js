@@ -1,5 +1,5 @@
 import Draw from './draw';
 import Camera from './camera';
 
-Draw();
+//Draw();
 Camera();

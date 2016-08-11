@@ -11,6 +11,9 @@ all modern tooling and lose out on the latest syntax and JS bundling. So, I'm us
 [Babel](https://babeljs.io/) to transpile the ES2015 syntax and [rollup](http://rollupjs.org) 
 for module loading.
 
+The [WebRTC adapter](https://github.com/webrtc/adapter) is used to polyfill the latest 
+MediaDevices promise-based solution.
+
 To transpile and combine the JavaScript:
 
 ```npm run build```
@@ -23,7 +26,7 @@ To run the app:
 
 (This just runs `python -m SimpleHTTPServer`).
 
-Or to watch for changes:
+To watch for changes (in a separate terminal):
 
 ```npm run watch```
 
