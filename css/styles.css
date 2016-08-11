@@ -33,3 +33,7 @@ strong {
 video {
   display: none;
 }
+
+canvas {
+  position: absolute;
+}

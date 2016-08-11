@@ -5,12 +5,15 @@
 }(this, function () { 'use strict';
 
   var HEADER_HEIGHT = 72;
+
+  console.log('header height', HEADER_HEIGHT);
+
   var canvas = null;
   var ctx = null;
   var drawing = false;
 
   function initCanvas() {
-    canvas = document.querySelector('canvas');
+    canvas = document.getElementById('canvas-draw');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight - HEADER_HEIGHT;
@@ -64,7 +67,11 @@
   function init$1() {
 
     video = document.querySelector('video');
-    canvas$1 = document.querySelector('canvas');
+
+    canvas$1 = document.getElementById('canvas-camera');
+    canvas$1.width = window.innerWidth;
+    canvas$1.height = window.innerHeight - HEADER_HEIGHT;
+
     context = canvas$1.getContext('2d');
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
@@ -77,7 +84,7 @@
     navigator.getUserMedia({ audio: false, video: { facingMode: 'user' } }, function (mediaStream) {
       video.srcObject = mediaStream;
 
-      // Every 33ms copy video to canvas - TODO check if there's a better way!
+      // Every 33ms copy video to canvas (30 FPS). Is there a smarter way to do this...?
       setInterval(function () {
 
         if (video.paused || video.ended) {

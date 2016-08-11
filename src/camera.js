@@ -1,3 +1,5 @@
+import {HEADER_HEIGHT} from './constants';
+
 let video = null;
 let canvas = null;
 let context = null;
@@ -5,7 +7,11 @@ let context = null;
 function init() {
 
   video = document.querySelector('video');
-  canvas = document.querySelector('canvas');
+  
+  canvas = document.getElementById('canvas-camera');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight - HEADER_HEIGHT;
+
   context = canvas.getContext('2d');
   
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || 
@@ -20,7 +26,7 @@ function init() {
     (mediaStream) => {
       video.srcObject = mediaStream;
 
-      // Every 33ms copy video to canvas - TODO check if there's a better way!
+      // Every 33ms copy video to canvas (30 FPS). Is there a smarter way to do this...?
       setInterval(function() {
         
         if (video.paused || video.ended) {

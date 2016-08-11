@@ -1,10 +1,13 @@
-const HEADER_HEIGHT = 72;
+import {HEADER_HEIGHT} from './constants';
+
+console.log('header height', HEADER_HEIGHT);
+
 let canvas = null;
 let ctx = null;
 let drawing = false;
 
 function initCanvas() {
-  canvas = document.querySelector('canvas');
+  canvas = document.getElementById('canvas-draw');
     
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight - HEADER_HEIGHT;
