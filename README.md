@@ -2,7 +2,12 @@
 
 **Work in progress...**
 
-sna**pwa**t is a doodling app for the web. It's a demo to showcase progressive web app capabilities such as service workers.
+sna**pwa**t is a demo to showcase progressive web app capabilities.
+
+The idea of the app is to let you doodle and add emojis etc. on top of photos and videos.
+It may or may not have taken some inspiration from certain social apps' "Stories" features ;-D
+
+![First version](docs/first-version.jpg?raw=true "First version") 
 
 ## Instructions
 
