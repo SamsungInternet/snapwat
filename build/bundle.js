@@ -4,114 +4,59 @@
   (factory());
 }(this, function () { 'use strict';
 
-  var classCallCheck = function (instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  };
-
-  var createClass = function () {
-    function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i++) {
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-      }
-    }
-
-    return function (Constructor, protoProps, staticProps) {
-      if (protoProps) defineProperties(Constructor.prototype, protoProps);
-      if (staticProps) defineProperties(Constructor, staticProps);
-      return Constructor;
-    };
-  }();
-
   var HEADER_HEIGHT = 72;
   var canvas = null;
   var ctx = null;
   var drawing = false;
 
-  var Draw = function () {
-    function Draw() {
-      classCallCheck(this, Draw);
+  function initCanvas() {
+    canvas = document.getElementById('canvas');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - HEADER_HEIGHT;
+
+    canvas.addEventListener('touchstart', onTouchStartOrMouseDown, false);
+    canvas.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
+    canvas.addEventListener('touchend', onTouchEndOrMouseUp, false);
+
+    canvas.addEventListener('mousedown', onTouchStartOrMouseDown, false);
+    canvas.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
+    canvas.addEventListener('mouseup', onTouchEndOrMouseUp, false);
+  }
+
+  function initDrawingContext() {
+    ctx = canvas.getContext('2d');
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 3;
+  }
+
+  function init() {
+    initCanvas();
+    initDrawingContext();
+  }
+
+  function onTouchStartOrMouseDown(e) {
+    ctx.beginPath();
+    var touch = e.changedTouches ? e.changedTouches[0] : null;
+    var coords = touch ? { x: touch.pageX, y: touch.pageY } : { x: e.clientX, y: e.clientY };
+    ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
+    drawing = true;
+  }
+
+  function onTouchMoveOrMouseMove(e) {
+    if (drawing) {
+      e.preventDefault();
+      var touch = e.changedTouches ? e.changedTouches[0] : null;
+      var coords = touch ? { x: touch.pageX, y: touch.pageY } : { x: e.clientX, y: e.clientY };
+      ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
+      ctx.stroke();
     }
+  }
 
-    createClass(Draw, [{
-      key: 'init',
-      value: function init() {
+  function onTouchEndOrMouseUp() {
+    drawing = false;
+  }
 
-        canvas = document.getElementById('canvas');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight - HEADER_HEIGHT;
-
-        canvas.addEventListener('touchstart', this.onTouchStart, false);
-        canvas.addEventListener('touchmove', this.onTouchMove, false);
-        canvas.addEventListener('touchend', this.onTouchEnd, false);
-        canvas.addEventListener('mousedown', this.onMouseDown, false);
-        canvas.addEventListener('mousemove', this.onMouseMove, false);
-        canvas.addEventListener('mouseup', this.onMouseUp, false);
-
-        ctx = canvas.getContext('2d');
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 3;
-      }
-    }, {
-      key: 'onTouchStart',
-      value: function onTouchStart(e) {
-        ctx.beginPath();
-        var touch = e.changedTouches[0];
-        var x = touch.pageX;
-        var y = touch.pageY - HEADER_HEIGHT;
-        ctx.moveTo(x, y);
-        drawing = true;
-      }
-    }, {
-      key: 'onMouseDown',
-      value: function onMouseDown(e) {
-        ctx.beginPath();
-        ctx.moveTo(e.clientX, e.clientY - HEADER_HEIGHT);
-        drawing = true;
-      }
-    }, {
-      key: 'onTouchMove',
-      value: function onTouchMove(e) {
-        if (drawing) {
-          e.preventDefault();
-          var touch = e.changedTouches[0];
-          var x = touch.pageX;
-          var y = touch.pageY - HEADER_HEIGHT;
-          ctx.lineTo(x, y);
-          ctx.stroke();
-        }
-      }
-    }, {
-      key: 'onMouseMove',
-      value: function onMouseMove(e) {
-        if (drawing) {
-          e.preventDefault();
-          ctx.lineTo(e.clientX, e.clientY - HEADER_HEIGHT);
-          ctx.stroke();
-        }
-      }
-    }, {
-      key: 'onTouchEnd',
-      value: function onTouchEnd() {
-        drawing = false;
-      }
-    }, {
-      key: 'onMouseUp',
-      value: function onMouseUp() {
-        drawing = false;
-      }
-    }]);
-    return Draw;
-  }();
-
-  var Draw$1 = new Draw();
-
-  Draw$1.init();
+  init();
 
 }));
