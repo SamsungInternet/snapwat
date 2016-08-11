@@ -32,9 +32,9 @@ strong {
 
 video {
   position: absolute;
+  visibility: hidden;
 }
 
 canvas {
   position: absolute;
-  visibility: hidden;
 }

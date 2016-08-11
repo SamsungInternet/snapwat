@@ -19,21 +19,16 @@ function init() {
     .then((stream) => {
 
       let videoTracks = stream.getVideoTracks();
+      
       console.log('Using video device: ' + videoTracks[0].label);
+      
       stream.oninactive = function() {
         console.log('Stream inactive');
       };
+
       video.srcObject = stream;
 
-    })
-    .catch((err) => {
-
-      console.error('getUserMedia error', err);
-
-    });
-
       // Every 33ms copy video to canvas (30 FPS). Is there a smarter way to do this...?
-      /*
       setInterval(function() {
 
         const width = canvas.width;
@@ -43,15 +38,13 @@ function init() {
         context.drawImage(video, 0, 0, width, height);
 
       }, 33);
-      */
 
-      // setTimeout(() => {
-      //   console.log('Drawing video to canvas');
-      //   const width = canvas.width;
-      //   const height = canvas.height;        
-      //   context.fillRect(0, 0, width, height);
-      //   context.drawImage(video, 0, 0, width, height);
-      // }, 1000);
+    })
+    .catch((err) => {
+
+      console.error('getUserMedia error', err);
+
+    });
 
 }
 
