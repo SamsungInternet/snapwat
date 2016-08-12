@@ -2823,7 +2823,41 @@ var require$$0$4 = Object.freeze({
 	  });
 	}
 
+	var downloadBtn = null;
+	var cameraCanvas = null;
+	var drawingCanvas = null;
+	var saveCanvas = null;
+	var saveContext = null;
+
+	function download() {
+
+	  saveContext = saveCanvas.getContext('2d');
+	  saveContext.drawImage(drawingCanvas, 0, 0);
+
+	  var link = document.createElement('a');
+	  link.download = "snapwat-snapshot.png";
+	  link.href = saveCanvas.toDataURL('image/png'); //.replace('image/png', 'image/octet-stream');
+	  link.click();
+	}
+
+	function init$2() {
+
+	  cameraCanvas = document.getElementById('canvas-camera');
+	  drawingCanvas = document.getElementById('canvas-draw');
+	  saveCanvas = document.getElementById('canvas-save');
+
+	  saveCanvas.width = window.innerWidth;
+	  saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
+
+	  downloadBtn = document.getElementById('download');
+
+	  downloadBtn.addEventListener('click', function () {
+	    download();
+	  });
+	}
+
 	init();
 	init$1();
+	init$2();
 
 }));

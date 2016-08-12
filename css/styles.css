@@ -18,10 +18,24 @@ header {
 }
 
 #colour {
-  float: right;
+  float: left;
   border: 0;
   padding: 0;
-  margin: 24px 10px 0 0;
+  margin: 24px 0 0 14px;
+}
+
+#download {
+  float: right;
+  margin: 10px 0 0 0;
+  padding: 14px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+#download img {
+  width: 24px;
+  height: 24px;
 }
 
 h1 {
@@ -44,4 +58,8 @@ video {
 
 canvas {
   position: absolute;
+}
+
+#canvas-save {
+  visibility: hidden;
 }
