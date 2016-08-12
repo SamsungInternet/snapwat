@@ -29,11 +29,7 @@ Then to transpile and combine the JavaScript:
 
 (This just runs `rollup -c > build/bundle.js`).
 
-To run the app:
-
-```npm start```
-
-(This just runs `python -m SimpleHTTPServer`).
+To run the app, you can use any static web server. I just use `python -m SimpleHTTPServer`.
 
 To watch for changes (in a separate terminal):
 
