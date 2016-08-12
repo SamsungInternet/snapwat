@@ -15,11 +15,15 @@ all modern tooling and lose out on the latest syntax and JS bundling. So, I'm us
 for module loading.
 
 The [WebRTC adapter](https://github.com/webrtc/adapter) is used to polyfill the latest 
-MediaDevices promise-based solution.
+MediaDevices promise-based API.
 
-## Instructions
+## Local development
 
-To transpile and combine the JavaScript:
+As usual, the best place to begin is:
+
+```npm install```
+
+Then to transpile and combine the JavaScript:
 
 ```npm run build```
 
