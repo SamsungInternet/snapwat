@@ -13,8 +13,15 @@ body {
 }
 
 header {
-  background: #e88b11; 
-  background-image: linear-gradient(#e79d3d, #d57e0d); 
+  background: #e88b11;
+  background-image: linear-gradient(#e79d3d, #d57e0d);
+}
+
+#colour {
+  float: right;
+  border: 0;
+  padding: 0;
+  margin: 24px 10px 0 0;
 }
 
 h1 {

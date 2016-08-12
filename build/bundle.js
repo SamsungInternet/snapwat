@@ -11,6 +11,7 @@
 	var canvas = null;
 	var ctx = null;
 	var drawing = false;
+	var colourInput = null;
 
 	function initCanvas() {
 	  canvas = document.getElementById('canvas-draw');
@@ -29,13 +30,22 @@
 
 	function initDrawingContext() {
 	  ctx = canvas.getContext('2d');
-	  ctx.strokeStyle = '#000';
+	  ctx.strokeStyle = '#000000';
 	  ctx.lineWidth = 3;
+	}
+
+	function initControls() {
+	  colourInput = document.getElementById('colour');
+	  colourInput.addEventListener('input', function () {
+	    console.log('new colour', colourInput.value);
+	    ctx.strokeStyle = colourInput.value;
+	  });
 	}
 
 	function init() {
 	  initCanvas();
 	  initDrawingContext();
+	  initControls();
 	}
 
 	function onTouchStartOrMouseDown(e) {
