@@ -4,6 +4,20 @@
 	(factory());
 }(this, function () { 'use strict';
 
+	function SWRegister () {
+
+	  if ('serviceWorker' in navigator) {
+
+	    navigator.serviceWorker.register('/sw.js').then(function () {
+	      console.log('Service worker successfully registered');
+	    }).catch(function (err) {
+	      console.error('Service worker failed to register');
+	    });
+	  } else {
+	    console.log('Service workers not supported');
+	  }
+	}
+
 	var HEADER_HEIGHT = 72;
 
 	console.log('header height', HEADER_HEIGHT);
@@ -2834,10 +2848,33 @@ var require$$0$4 = Object.freeze({
 	  saveContext = saveCanvas.getContext('2d');
 	  saveContext.drawImage(drawingCanvas, 0, 0);
 
-	  var link = document.createElement('a');
-	  link.download = "snapwat-snapshot.png";
-	  link.href = saveCanvas.toDataURL('image/png'); //.replace('image/png', 'image/octet-stream');
+	  /*
+	  let link = document.createElement('a');
+	  link.download = 'snapwat-snapshot.png';
+	  
+	  let tempHref = 'data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7';
+	   link.href = tempHref; //saveCanvas.toDataURL('image/png'); //.replace('image/png', 'image/octet-stream');
 	  link.click();
+	  link.href = '';
+	  link.download = '';
+	  */
+
+	  /*
+	  if (!localStorage || !localStorage.setItem) {
+	    console.log('Local storage not available');
+	    return;
+	  }
+	   localStorage.setItem('snapshot', saveCanvas.toDataURL('image/png'));
+	   console.log('Stored in local storage', localStorage.getItem('snapshot'));
+	  */
+
+	  var imageBlob = saveCanvas.toDataURL('image/png');
+
+	  var link = document.createElement('a');
+	  link.download = 'snapshot.png';
+	  link.href = '/snapshot/' + imageBlob;
+	  link.click();
+	  link.remove();
 	}
 
 	function init$2() {
@@ -2856,6 +2893,7 @@ var require$$0$4 = Object.freeze({
 	  });
 	}
 
+	SWRegister();
 	init();
 	init$1();
 	init$2();

@@ -1,0 +1,17 @@
+export default function() {
+
+  if ('serviceWorker' in navigator) {
+    
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => {
+        console.log('Service worker successfully registered');
+      })
+      .catch((err) => {
+        console.error('Service worker failed to register');
+      });
+
+  } else {
+    console.log('Service workers not supported');
+  }
+
+}
