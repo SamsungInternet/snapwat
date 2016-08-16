@@ -2832,6 +2832,16 @@ var require$$0$4 = Object.freeze({
 	var canvas$1 = null;
 	var context = null;
 
+	function copyVideoToCanvas() {
+	  var width = canvas$1.width;
+	  var height = canvas$1.height;
+
+	  context.fillRect(0, 0, width, height);
+	  context.drawImage(video, 0, 0, width, height);
+
+	  requestAnimationFrame(copyVideoToCanvas);
+	}
+
 	function initCanvas$1() {
 
 	  canvas$1 = document.getElementById('canvas-camera');
@@ -2857,16 +2867,7 @@ var require$$0$4 = Object.freeze({
 
 	    video.srcObject = stream;
 
-	    // Every 33ms copy video to canvas (30 FPS). Is there a smarter way to do this...?
-	    // TODO try requestAnimationFrame...
-	    setInterval(function () {
-
-	      var width = canvas$1.width;
-	      var height = canvas$1.height;
-
-	      context.fillRect(0, 0, width, height);
-	      context.drawImage(video, 0, 0, width, height);
-	    }, 33);
+	    requestAnimationFrame(copyVideoToCanvas);
 	  }).catch(function (err) {
 	    console.error('getUserMedia error', err);
 	  });
