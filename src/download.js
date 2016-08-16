@@ -31,7 +31,7 @@ function initCanvases() {
 
 function initButton() {
   
-  downloadBtn = document.getElementById('download');
+  downloadBtn = document.getElementById('btn-download');
 
   downloadBtn.addEventListener('click', () => {
     openSnapshot();

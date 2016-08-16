@@ -20,12 +20,46 @@
 
 	var HEADER_HEIGHT = 72;
 
-	console.log('header height', HEADER_HEIGHT);
-
 	var canvas = null;
 	var ctx = null;
 	var drawing = false;
 	var colourInput = null;
+	var emojiButton = null;
+	var emojiModal = null;
+	var chosenEmoji = null;
+
+	function onTouchStartOrMouseDown(e) {
+
+	  var touch = e.changedTouches ? e.changedTouches[0] : null;
+	  var coords = touch ? { x: touch.pageX, y: touch.pageY } : { x: e.clientX, y: e.clientY };
+
+	  if (chosenEmoji) {
+
+	    // Increase the default SVG size
+	    var width = chosenEmoji.width * 1.5;
+	    var height = chosenEmoji.height * 1.5;
+
+	    ctx.drawImage(chosenEmoji, coords.x - width / 2, coords.y - height / 2 - HEADER_HEIGHT, width, height);
+	  } else {
+	    ctx.beginPath();
+	    ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
+	    drawing = true;
+	  }
+	}
+
+	function onTouchMoveOrMouseMove(e) {
+	  if (drawing) {
+	    e.preventDefault();
+	    var touch = e.changedTouches ? e.changedTouches[0] : null;
+	    var coords = touch ? { x: touch.pageX, y: touch.pageY } : { x: e.clientX, y: e.clientY };
+	    ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
+	    ctx.stroke();
+	  }
+	}
+
+	function onTouchEndOrMouseUp() {
+	  drawing = false;
+	}
 
 	function initCanvas() {
 	  canvas = document.getElementById('canvas-draw');
@@ -48,40 +82,38 @@
 	  ctx.lineWidth = 3;
 	}
 
+	function onEmojiClick(event) {
+	  console.log('chosen emoji', event.currentTarget);
+	  chosenEmoji = event.currentTarget;
+	  emojiModal.style.display = 'none';
+	}
+
 	function initControls() {
-	  colourInput = document.getElementById('colour');
+
+	  colourInput = document.getElementById('input-colour');
 	  colourInput.addEventListener('input', function () {
 	    console.log('new colour', colourInput.value);
 	    ctx.strokeStyle = colourInput.value;
+	    chosenEmoji = null;
+	  });
+
+	  emojiModal = document.getElementById('modal-emoji');
+	  var emojis = document.querySelectorAll('#modal-emoji img');
+	  for (var i = 0; i < emojis.length; i++) {
+	    var emoji = emojis[i];
+	    emoji.addEventListener('click', onEmojiClick);
+	  }
+
+	  emojiButton = document.getElementById('btn-emoji');
+	  emojiButton.addEventListener('click', function () {
+	    emojiModal.style.display = 'block';
 	  });
 	}
 
-	function init() {
+	function Draw () {
 	  initCanvas();
 	  initDrawingContext();
 	  initControls();
-	}
-
-	function onTouchStartOrMouseDown(e) {
-	  ctx.beginPath();
-	  var touch = e.changedTouches ? e.changedTouches[0] : null;
-	  var coords = touch ? { x: touch.pageX, y: touch.pageY } : { x: e.clientX, y: e.clientY };
-	  ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
-	  drawing = true;
-	}
-
-	function onTouchMoveOrMouseMove(e) {
-	  if (drawing) {
-	    e.preventDefault();
-	    var touch = e.changedTouches ? e.changedTouches[0] : null;
-	    var coords = touch ? { x: touch.pageX, y: touch.pageY } : { x: e.clientX, y: e.clientY };
-	    ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
-	    ctx.stroke();
-	  }
-	}
-
-	function onTouchEndOrMouseUp() {
-	  drawing = false;
 	}
 
 	function interopDefault(ex) {
@@ -2800,15 +2832,18 @@ var require$$0$4 = Object.freeze({
 	var canvas$1 = null;
 	var context = null;
 
-	function init$1() {
-
-	  video = document.querySelector('video');
+	function initCanvas$1() {
 
 	  canvas$1 = document.getElementById('canvas-camera');
 	  canvas$1.width = window.innerWidth;
 	  canvas$1.height = window.innerHeight - HEADER_HEIGHT;
 
 	  context = canvas$1.getContext('2d');
+	}
+
+	function initCameraStream() {
+
+	  video = document.querySelector('video');
 
 	  navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(function (stream) {
 
@@ -2823,6 +2858,7 @@ var require$$0$4 = Object.freeze({
 	    video.srcObject = stream;
 
 	    // Every 33ms copy video to canvas (30 FPS). Is there a smarter way to do this...?
+	    // TODO try requestAnimationFrame...
 	    setInterval(function () {
 
 	      var width = canvas$1.width;
@@ -2832,9 +2868,13 @@ var require$$0$4 = Object.freeze({
 	      context.drawImage(video, 0, 0, width, height);
 	    }, 33);
 	  }).catch(function (err) {
-
 	    console.error('getUserMedia error', err);
 	  });
+	}
+
+	function Camera () {
+	  initCanvas$1();
+	  initCameraStream();
 	}
 
 	var downloadBtn = null;
@@ -2843,19 +2883,19 @@ var require$$0$4 = Object.freeze({
 	var saveCanvas = null;
 	var saveContext = null;
 
-	function download() {
+	function openSnapshot() {
 
 	  saveContext = saveCanvas.getContext('2d');
 	  saveContext.drawImage(cameraCanvas, 0, 0);
 	  saveContext.drawImage(drawingCanvas, 0, 0);
 
 	  // Yeah I don't like this either, but unfortunately we can't download data URIs
-	  // on Samsung Internet and going via a Service Worker doesn't work due to:
+	  // on Samsung Internet. Also, going via a Service Worker doesn't work due to:
 	  // https://bugs.chromium.org/p/chromium/issues/detail?id=468227
 	  window.open(saveCanvas.toDataURL('image/png'), '_blank');
 	}
 
-	function init$2() {
+	function initCanvases() {
 
 	  cameraCanvas = document.getElementById('canvas-camera');
 	  drawingCanvas = document.getElementById('canvas-draw');
@@ -2863,17 +2903,26 @@ var require$$0$4 = Object.freeze({
 
 	  saveCanvas.width = window.innerWidth;
 	  saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
+	}
 
-	  downloadBtn = document.getElementById('download');
+	function initButton() {
+
+	  downloadBtn = document.getElementById('btn-download');
 
 	  downloadBtn.addEventListener('click', function () {
-	    download();
+	    openSnapshot();
 	  });
 	}
 
+	function Download () {
+
+	  initCanvases();
+	  initButton();
+	}
+
 	SWRegister();
-	init();
-	init$1();
-	init$2();
+	Draw();
+	Camera();
+	Download();
 
 }));

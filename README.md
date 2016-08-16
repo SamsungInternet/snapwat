@@ -5,12 +5,10 @@
 [sna**pwa**t](https://snapw.at) is a demo to showcase progressive web app capabilities.
 
 The idea of the app is to let you doodle and add emojis etc. on top of photos and videos.
-It may or may not have taken some inspiration from certain social apps' "Stories" features ;-D
+Right now you can just snap annotated stills from your camera view. Choosing a photo from your 
+gallery should be coming soon and recording videos may come later...
 
 <img src="docs/snapwat.png?raw=true" alt="First version" width="300px"/>
-
-Right now you can just snap annotated stills from your camera view. Choosing a photo from your 
-gallery should be coming soon and recording videos may come later... 
 
 
 ## How to use it
@@ -82,9 +80,14 @@ Also, it's abbreviated to SW, like Service Workers. Good eh?
 
 It's pronounced "snap what?" to rhyme with snapshot.
 
-Any resemblance to the names of any other popular apps is purely coincidental!
-
 
 ## Feedback or questions
 
 Please [tweet me](https://twitter.com/poshaughnessy) or email: peter dot oshaughnessy at gmail dot com.
+
+
+## Credits
+
+Emoji provided free by [EmojiOne](http://emojione.com/).
+
+Icons by [Iconic](https://useiconic.com/).

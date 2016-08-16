@@ -17,14 +17,28 @@ header {
   background-image: linear-gradient(#9767ae, #673280);
 }
 
-#colour {
+#input-colour {
   float: left;
   border: 0;
   padding: 0;
   margin: 24px 0 0 14px;
 }
 
-#download {
+#btn-emoji {
+  float: left;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  margin: 14px 0 0 20px;
+  padding: 0;
+}
+
+#btn-emoji img {
+  width: 40px;
+  height: 40px;
+}
+
+#btn-download {
   float: right;
   margin: 10px 0 0 0;
   padding: 14px;
@@ -33,7 +47,7 @@ header {
   cursor: pointer;
 }
 
-#download img {
+#btn-download img {
   width: 24px;
   height: 24px;
 }
@@ -41,7 +55,7 @@ header {
 h1 {
   font-size: 1.8em;
   color: #fff;
-  margin: 0;
+  margin: 0 60px 0 0;
   padding: 0.8em;
   text-align: center;
   font-weight: normal;
@@ -62,4 +76,24 @@ canvas {
 
 #canvas-save {
   visibility: hidden;
+}
+
+.modal {
+  display: none;
+  position: absolute;
+  width: 90%;
+  height: 85%;
+  top: 10%;
+  left: 5%;
+  padding: 15px;
+  box-sizing: border-box;
+  background: #9767ae;
+  border: 1px solid #673280;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+#modal-emoji img {
+  padding: 5px;
+  cursor: pointer;
 }
