@@ -27,23 +27,6 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
 
-  const url = event.request.url;
-  const snapshotIndex = url.indexOf('/snapshot/');
-
-  if (snapshotIndex > -1) {
-
-    console.log('This is a request for the snapshot!');
-
-    const dataUri = url.substr(snapshotIndex + 10, url.length - snapshotIndex - 10);
-
-    console.log('data uri', dataUri);
-
-    event.respondWith(new Response(dataURItoBlob(dataUri), //new Blob([blob], {type: 'image/png'}), 
-      {headers: { 'Content-Type': 'image/png' }}));
-
-    return;
-  }
-
   // Clone so we can consume it more than once
   let fetchRequest = event.request.clone();
 
@@ -61,7 +44,7 @@ self.addEventListener('fetch', event => {
       caches.open(CACHE_NAME)
         .then(cache => {
           cache.put(event.request, responseToCache);
-          console.log('Cached response', responseToCache);
+          console.log('Put response in cache', responseToCache);
         });
 
       return response;
@@ -79,9 +62,7 @@ self.addEventListener('fetch', event => {
                 console.log('Cache hit', event.request);
                 return response;
               } else {
-                // Offline 404
-                console.log('Offline 404');
-                return caches.match('offline.html');
+                console.log('Offline cache miss :(');
               }
             }
           )
@@ -107,22 +88,3 @@ self.addEventListener('activate', function(event) {
     })
   );
 });
-
-/**
- * Thanks to: http://stackoverflow.com/a/12300351/396246
- */
-function dataURItoBlob(dataURI) {
-  
-  const byteString = atob(dataURI.split(',')[1]);
-  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-  // write the bytes of the string to an ArrayBuffer
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
-  for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-  }
-
-  var blob = new Blob([ab], {type: mimeString});
-  return blob;
-}

@@ -12,13 +12,10 @@ function download() {
   saveContext.drawImage(cameraCanvas, 0, 0);
   saveContext.drawImage(drawingCanvas, 0, 0);
 
-  const imageBlob = saveCanvas.toDataURL('image/png');
-
-  let link = document.createElement('a');
-  //link.download = 'snapshot.png';
-  link.href = `/snapshot/${imageBlob}`;
-  link.click();
-  link.remove();
+  // Yeah I don't like this either, but unfortunately we can't download data URIs
+  // on Samsung Internet and going via a Service Worker doesn't work due to:
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=468227
+  window.open(saveCanvas.toDataURL('image/png'), '_blank');
 
 }
 
