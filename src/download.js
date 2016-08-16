@@ -6,20 +6,20 @@ let drawingCanvas = null;
 let saveCanvas = null;
 let saveContext = null;
 
-function download() {
+function openSnapshot() {
 
   saveContext = saveCanvas.getContext('2d');
   saveContext.drawImage(cameraCanvas, 0, 0);
   saveContext.drawImage(drawingCanvas, 0, 0);
 
   // Yeah I don't like this either, but unfortunately we can't download data URIs
-  // on Samsung Internet and going via a Service Worker doesn't work due to:
+  // on Samsung Internet. Also, going via a Service Worker doesn't work due to:
   // https://bugs.chromium.org/p/chromium/issues/detail?id=468227
   window.open(saveCanvas.toDataURL('image/png'), '_blank');
 
 }
 
-function init() {
+function initCanvases() {
 
   cameraCanvas = document.getElementById('canvas-camera');
   drawingCanvas = document.getElementById('canvas-draw');
@@ -27,13 +27,20 @@ function init() {
 
   saveCanvas.width  = window.innerWidth;
   saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
+}
 
+function initButton() {
+  
   downloadBtn = document.getElementById('download');
 
   downloadBtn.addEventListener('click', () => {
-    download();
+    openSnapshot();
   });
-
 }
 
-export default init;
+export default function() {
+
+  initCanvases();
+  initButton();
+
+}

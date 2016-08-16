@@ -5,16 +5,19 @@ let video = null;
 let canvas = null;
 let context = null;
 
-function init() {
-
-  video = document.querySelector('video');
+function initCanvas() {
 
   canvas = document.getElementById('canvas-camera');
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight - HEADER_HEIGHT;
 
   context = canvas.getContext('2d');
+}
 
+function initCameraStream() {
+
+  video = document.querySelector('video');
+  
   navigator.mediaDevices.getUserMedia({audio: false, video: true})
     .then((stream) => {
 
@@ -29,6 +32,7 @@ function init() {
       video.srcObject = stream;
 
       // Every 33ms copy video to canvas (30 FPS). Is there a smarter way to do this...?
+      // TODO try requestAnimationFrame...
       setInterval(function() {
 
         const width = canvas.width;
@@ -41,11 +45,12 @@ function init() {
 
     })
     .catch((err) => {
-
       console.error('getUserMedia error', err);
-
     });
 
 }
 
-export default init;
+export default function() {
+  initCanvas();
+  initCameraStream();
+}

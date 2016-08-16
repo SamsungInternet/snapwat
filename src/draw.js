@@ -1,11 +1,31 @@
 import {HEADER_HEIGHT} from './constants';
 
-console.log('header height', HEADER_HEIGHT);
-
 let canvas = null;
 let ctx = null;
 let drawing = false;
 let colourInput = null;
+
+function onTouchStartOrMouseDown(e) {
+  ctx.beginPath();
+  let touch = e.changedTouches ? e.changedTouches[0] : null;
+  let coords = touch ? {x: touch.pageX, y: touch.pageY} : {x: e.clientX, y: e.clientY};
+  ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
+  drawing = true;
+}
+
+function onTouchMoveOrMouseMove(e) {
+  if (drawing) {
+    e.preventDefault();
+    let touch = e.changedTouches ? e.changedTouches[0] : null;
+    let coords = touch ? {x: touch.pageX, y: touch.pageY} : {x: e.clientX, y: e.clientY};
+    ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
+    ctx.stroke();
+  }
+}
+
+function onTouchEndOrMouseUp() {
+  drawing = false;
+}
 
 function initCanvas() {
   canvas = document.getElementById('canvas-draw');
@@ -36,32 +56,8 @@ function initControls() {
   });
 }
 
-function init() {
+export default function() {
   initCanvas();
   initDrawingContext();
   initControls();
 }
-
-function onTouchStartOrMouseDown(e) {
-  ctx.beginPath();
-  let touch = e.changedTouches ? e.changedTouches[0] : null;
-  let coords = touch ? {x: touch.pageX, y: touch.pageY} : {x: e.clientX, y: e.clientY};
-  ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
-  drawing = true;
-}
-
-function onTouchMoveOrMouseMove(e) {
-  if (drawing) {
-    e.preventDefault();
-    let touch = e.changedTouches ? e.changedTouches[0] : null;
-    let coords = touch ? {x: touch.pageX, y: touch.pageY} : {x: e.clientX, y: e.clientY};
-    ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
-    ctx.stroke();
-  }
-}
-
-function onTouchEndOrMouseUp() {
-  drawing = false;
-}
-
-export default init;
