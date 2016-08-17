@@ -18,22 +18,26 @@
 	  }
 	}
 
+	/**
+	 * There does not appear to be a good polyfill for <input type="color"> right now. 
+	 * (Not vanilla JS anyway. The recommended one from html5please.com is a JQuery plugin).
+	 * For now, browsers without support will just get a placeholder and be limited to black.
+	 */
 	function initInputColourIfSupported() {
 
 	  var input = document.createElement('input');
 	  input.id = 'input-colour';
 	  input.type = 'color';
 
-	  console.log('input', input, input.type, input.value);
+	  // Unsupported browsers e.g. iOS Safari revert type to 'text'
+	  if (input.type === 'color') {
 
-	  // Temporary Safari test
-	  alert(input.type + ' ... ' + input.value);
+	    var container = document.getElementById('input-colour-container');
 
-	  var container = document.getElementById('input-colour-container');
-
-	  // Replace the substitute
-	  container.innerHTML = '';
-	  container.appendChild(input);
+	    // Replace the substitute
+	    container.innerHTML = '';
+	    container.appendChild(input);
+	  }
 	}
 
 	function InputColour () {
