@@ -2879,12 +2879,6 @@ var require$$0$4 = Object.freeze({
 
 	function initCameraStream() {
 
-	  // For browsers which don't yet support getUserMedia, like iOS Safari...
-	  if (!navigator.mediaDevices.getUserMedia) {
-	    alert('Oh no! Your browser does not have camera support (getUserMedia)');
-	    return;
-	  }
-
 	  video = document.querySelector('video');
 
 	  navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(function (stream) {
@@ -2902,6 +2896,7 @@ var require$$0$4 = Object.freeze({
 	    requestAnimationFrame(copyVideoToCanvas);
 	  }).catch(function (err) {
 	    console.error('getUserMedia error', err);
+	    alert('Oh no! Your browser does not appear to have camera support (getUserMedia)' + 'or there was a problem initiating it. Maybe try another browser? ;)');
 	  });
 	}
 
