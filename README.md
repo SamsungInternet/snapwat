@@ -8,9 +8,7 @@ The idea of the app is to let you doodle and add emojis etc. on top of photos an
 Right now you can snap selfie stills from your camera view with your lovely drawings and emojis
 on top. 
 
-<img src="docs/snapwat-snapshot1.png?raw=true" alt="A snapwat" width="300px"/>
-
-<img src="docs/snapwat-snapshot2.png?raw=true" alt="Another snapwat" width="300px"/>
+<img src="docs/snapwat-snapshots.png?raw=true" alt="A snapwat" width="600px"/>
 
 Choosing a photo from your gallery should be coming soon and recording videos may come later...
 
