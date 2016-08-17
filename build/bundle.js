@@ -2879,6 +2879,12 @@ var require$$0$4 = Object.freeze({
 
 	function initCameraStream() {
 
+	  // For browsers which don't yet support getUserMedia, like iOS Safari...
+	  if (!navigator.mediaDevices.getUserMedia) {
+	    alert('Oh no! Your browser does not have camera support (getUserMedia)');
+	    return;
+	  }
+
 	  video = document.querySelector('video');
 
 	  navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(function (stream) {
