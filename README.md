@@ -5,15 +5,20 @@
 [sna**pwa**t](https://snapw.at) is a demo to showcase progressive web app capabilities.
 
 The idea of the app is to let you doodle and add emojis etc. on top of photos and videos.
-Right now you can just snap annotated stills from your camera view. Choosing a photo from your 
-gallery should be coming soon and recording videos may come later...
+Right now you can snap selfie stills from your camera view with your lovely drawings and emojis
+on top. 
 
-<img src="docs/snapwat.png?raw=true" alt="First version" width="300px"/>
+<img src="docs/snapwat-snapshot1.png?raw=true" alt="A snapwat" width="300px"/>
 
+<img src="docs/snapwat-snapshot2.png?raw=true" alt="Another snapwat" width="300px"/>
+
+Choosing a photo from your gallery should be coming soon and recording videos may come later...
 
 ## How to use it
 
 Choose a colour using the colour picker in the corner and start drawing over the camera view.
+
+Select an emoji from the emoji menu and touch on the camera view to stamp it as a sticker.
 
 When you have a moment that you want to snap, press the download ↓ button.
 
@@ -79,6 +84,8 @@ Snapwat is called Snapwat because it's a snapshot with "pwa" in it - for Progres
 Also, it's abbreviated to SW, like Service Workers. Good eh? 
 
 It's pronounced "snap what?" to rhyme with snapshot.
+
+Any resemblance to other social apps is purely coincidental...
 
 
 ## Feedback or questions

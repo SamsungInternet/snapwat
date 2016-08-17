@@ -29,13 +29,13 @@ header {
   background: none;
   border: 0;
   cursor: pointer;
-  margin: 14px 0 0 20px;
+  margin: 19px 0 0 20px;
   padding: 0;
 }
 
 #btn-emoji img {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
 }
 
 #btn-download {
@@ -83,17 +83,21 @@ canvas {
   position: absolute;
   width: 90%;
   height: 85%;
-  top: 10%;
+  height: -webkit-calc(100% - 90px);
+  height: calc(100% - 90px);
+  top: 77px;
   left: 5%;
   padding: 15px;
   box-sizing: border-box;
   background: #9767ae;
-  border: 1px solid #673280;
-  border-radius: 5px;
+  border: 2px solid #673280;
+  border-radius: 10px;
   overflow-y: auto;
 }
 
 #modal-emoji img {
-  padding: 5px;
+  padding: 8px 0 8px 10px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
 }
