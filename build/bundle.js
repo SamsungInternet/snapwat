@@ -19,29 +19,21 @@
 	}
 
 	/**
-	 * There does not appear to be a good polyfill for <input type="color"> right now. 
+	 * Show the colour input element if <input type="color"> is supported.
+	 * There does not appear to be a good polyfill for it right now.
 	 * (Not vanilla JS anyway. The recommended one from html5please.com is a JQuery plugin).
-	 * For now, browsers without support will just get a placeholder and be limited to black.
+	 * For now, browsers without support will just get a placeholder and be limited to black. 
 	 */
-	function initInputColourIfSupported() {
+	function InputColour () {
 
-	  var input = document.createElement('input');
-	  input.id = 'input-colour';
-	  input.type = 'color';
+	  var input = document.getElementById('input-colour');
+	  var substitute = document.getElementById('input-colour-substitute');
 
 	  // Unsupported browsers e.g. iOS Safari revert type to 'text'
 	  if (input.type === 'color') {
-
-	    var container = document.getElementById('input-colour-container');
-
-	    // Replace the substitute
-	    container.innerHTML = '';
-	    container.appendChild(input);
+	    input.style.display = 'block';
+	    substitute.style.display = 'none';
 	  }
-	}
-
-	function InputColour () {
-	  initInputColourIfSupported();
 	}
 
 	var HEADER_HEIGHT = 72;
@@ -49,6 +41,7 @@
 	var canvas = document.getElementById('canvas-draw');
 	var ctx = ctx = canvas.getContext('2d');
 	var colourInput = document.getElementById('input-colour');
+	var trashButton = document.getElementById('btn-trash');
 	var emojiButton = document.getElementById('btn-emoji');
 	var emojiButtonImage = document.getElementById('btn-emoji-img');
 	var emojiModal = document.getElementById('modal-emoji');
@@ -92,10 +85,16 @@
 	}
 
 	function onEmojiClick(event) {
+
 	  console.log('chosen emoji', event.currentTarget);
+
 	  chosenEmoji = event.currentTarget;
+
 	  emojiModal.style.display = 'none';
 	  emojiButtonImage.src = chosenEmoji.src;
+
+	  emojiButton.classList.add('selected');
+	  colourInput.classList.remove('selected');
 	}
 
 	function initCanvas() {
@@ -122,6 +121,8 @@
 	    console.log('new colour', colourInput.value);
 	    ctx.strokeStyle = colourInput.value;
 	    chosenEmoji = null;
+	    colourInput.classList.add('selected');
+	    emojiButton.classList.remove('selected');
 	  });
 
 	  var emojis = document.querySelectorAll('#modal-emoji img');
@@ -132,6 +133,11 @@
 
 	  emojiButton.addEventListener('click', function () {
 	    emojiModal.style.display = 'block';
+	  });
+
+	  trashButton.addEventListener('click', function () {
+	    // TODO add confirmation prompt
+	    ctx.clearRect(0, 0, canvas.width, canvas.height);
 	  });
 	}
 
@@ -2911,22 +2917,49 @@ var require$$0$4 = Object.freeze({
 	var cameraCanvas = document.getElementById('canvas-camera');
 	var drawingCanvas = document.getElementById('canvas-draw');
 	var saveCanvas = document.getElementById('canvas-save');
-	var saveContext = saveCanvas.getContext('2d');
+	var saveCtx = saveCanvas.getContext('2d');
+	var saveLink = document.createElement('a');
 
 	function openSnapshot() {
 
-	  saveContext.drawImage(cameraCanvas, 0, 0);
-	  saveContext.drawImage(drawingCanvas, 0, 0);
+	  // Copy the other canvases onto a single canvas for saving
+	  saveCtx.drawImage(cameraCanvas, 0, 0);
+	  saveCtx.drawImage(drawingCanvas, 0, 0);
 
-	  // Yeah I don't like this either, but unfortunately we can't download data URIs
-	  // on Samsung Internet. Also, going via a Service Worker doesn't work due to:
-	  // https://bugs.chromium.org/p/chromium/issues/detail?id=468227
+	  saveLink.download = "snapwat.png";
+	  saveLink.href = saveCanvas.toDataURL('image/png');
+	  saveLink.click();
+	  saveLink.href = '';
+
+	  // Also load the image up in a new tab so the user can download manually if they need to... 
+	  // Yeah I don't like this either, but unfortunately we can't download data URIs automatically 
+	  // on Samsung Internet. Also, going via a Service Worker (so we can use an http/https URL) 
+	  // doesn't work due to: https://bugs.chromium.org/p/chromium/issues/detail?id=468227
 	  window.open(saveCanvas.toDataURL('image/png'), '_blank');
 	}
 
-	function initCanvases() {
+	/**
+	 * The 'save' canvas is HEADER_HEIGHT longer than the other canvases.
+	 * This is so we can take up the whole browser height and add the snapwat logo.
+	 */
+	function initSaveCanvas() {
+
 	  saveCanvas.width = window.innerWidth;
-	  saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
+	  saveCanvas.height = window.innerHeight;
+
+	  saveCtx.fillStyle = '#75448c';
+	  saveCtx.fillRect(0, cameraCanvas.height, saveCanvas.width, HEADER_HEIGHT);
+
+	  var logo = new Image();
+	  logo.src = 'images/logo-transparent.png';
+	  logo.onload = function () {
+	    //saveCtx.imageSmoothingEnabled = true;
+	    saveCtx.drawImage(logo, 20, saveCanvas.height - 60, 40, 40);
+	  };
+
+	  saveCtx.font = '25px Arial';
+	  saveCtx.fillStyle = '#fff';
+	  saveCtx.fillText('snapwat', saveCanvas.width - 110, saveCanvas.height - 28);
 	}
 
 	function initButton() {
@@ -2937,7 +2970,7 @@ var require$$0$4 = Object.freeze({
 
 	function Download () {
 
-	  initCanvases();
+	  initSaveCanvas();
 	  initButton();
 	}
 

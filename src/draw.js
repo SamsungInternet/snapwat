@@ -3,6 +3,7 @@ import {HEADER_HEIGHT} from './constants';
 let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');
 let colourInput = document.getElementById('input-colour');
+let trashButton = document.getElementById('btn-trash');
 let emojiButton = document.getElementById('btn-emoji');
 let emojiButtonImage = document.getElementById('btn-emoji-img');
 let emojiModal = document.getElementById('modal-emoji');
@@ -51,10 +52,17 @@ function onTouchEndOrMouseUp() {
 }
 
 function onEmojiClick(event) {
+  
   console.log('chosen emoji', event.currentTarget);
+  
   chosenEmoji = event.currentTarget;
+  
   emojiModal.style.display = 'none';
-  emojiButtonImage.src = chosenEmoji.src;  
+  emojiButtonImage.src = chosenEmoji.src;
+
+  emojiButton.classList.add('selected');
+  colourInput.classList.remove('selected');
+  
 }
 
 function initCanvas() {
@@ -81,6 +89,8 @@ function initControls() {
     console.log('new colour', colourInput.value);
     ctx.strokeStyle = colourInput.value;
     chosenEmoji = null;
+    colourInput.classList.add('selected');
+    emojiButton.classList.remove('selected');
   });
  
   let emojis = document.querySelectorAll('#modal-emoji img');
@@ -92,6 +102,11 @@ function initControls() {
   emojiButton.addEventListener('click', () => {
     emojiModal.style.display = 'block';
   });
+
+  trashButton.addEventListener('click', () => {
+    // TODO add confirmation prompt
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  })
 
 }
 

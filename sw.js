@@ -58,6 +58,8 @@ const RESOURCES = [
   '/images/emojione/2757.svg',
   '/images/emojione/2764.svg',
   '/images/iconic/data-transfer-download.svg',
+  '/images/iconic/trash.svg',
+  '/images/logo-transparent.png',
   'https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,400italic,700italic,300italic,600,600italic,800,800italic'
 ];
 
