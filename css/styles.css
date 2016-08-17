@@ -27,8 +27,8 @@ header {
 .input-colour-substitute {
   background: #000;
   border: 1px solid #ccc;
-  width: 40px;
-  height: 35px;
+  width: 35px;
+  height: 25px;
 }
 
 #btn-emoji {
