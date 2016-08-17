@@ -18,6 +18,28 @@
 	  }
 	}
 
+	function initInputColourIfSupported() {
+
+	  var input = document.createElement('input');
+	  input.id = 'input-colour';
+	  input.type = 'color';
+
+	  console.log('input', input, input.type, input.value);
+
+	  // Temporary Safari test
+	  alert(input.type + ' ... ' + input.value);
+
+	  var container = document.getElementById('input-colour-container');
+
+	  // Replace the substitute
+	  container.innerHTML = '';
+	  container.appendChild(input);
+	}
+
+	function InputColour () {
+	  initInputColourIfSupported();
+	}
+
 	var HEADER_HEIGHT = 72;
 
 	var canvas = null;
@@ -2922,6 +2944,7 @@ var require$$0$4 = Object.freeze({
 	}
 
 	SWRegister();
+	InputColour();
 	Draw();
 	Camera();
 	Download();
