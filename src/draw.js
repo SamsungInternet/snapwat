@@ -1,12 +1,14 @@
 import {HEADER_HEIGHT} from './constants';
 
-let canvas = null;
-let ctx = null;
-let drawing = false;
-let colourInput = null;
-let emojiButton = null;
-let emojiModal = null;
+let canvas = document.getElementById('canvas-draw');
+let ctx = ctx = canvas.getContext('2d');
+let colourInput = document.getElementById('input-colour');
+let emojiButton = document.getElementById('btn-emoji');
+let emojiButtonImage = document.getElementById('btn-emoji-img');
+let emojiModal = document.getElementById('modal-emoji');
 let chosenEmoji = null;
+
+let isDrawing = false;
 
 function onTouchStartOrMouseDown(e) {
 
@@ -28,13 +30,15 @@ function onTouchStartOrMouseDown(e) {
   } else {
     ctx.beginPath();  
     ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
-    drawing = true;
+    isDrawing = true;
   }
 }
 
 function onTouchMoveOrMouseMove(e) {
-  if (drawing) {
-    e.preventDefault();
+
+  e.preventDefault();
+
+  if (isDrawing) {
     let touch = e.changedTouches ? e.changedTouches[0] : null;
     let coords = touch ? {x: touch.pageX, y: touch.pageY} : {x: e.clientX, y: e.clientY};
     ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
@@ -43,12 +47,17 @@ function onTouchMoveOrMouseMove(e) {
 }
 
 function onTouchEndOrMouseUp() {
-  drawing = false;
+  isDrawing = false;
+}
+
+function onEmojiClick(event) {
+  console.log('chosen emoji', event.currentTarget);
+  chosenEmoji = event.currentTarget;
+  emojiModal.style.display = 'none';
+  emojiButtonImage.src = chosenEmoji.src;  
 }
 
 function initCanvas() {
-  canvas = document.getElementById('canvas-draw');
-
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight - HEADER_HEIGHT;
 
@@ -61,35 +70,25 @@ function initCanvas() {
   canvas.addEventListener('mouseup', onTouchEndOrMouseUp, false);
 }
 
-function initDrawingContext() {
-  ctx = canvas.getContext('2d');
+function initDrawingContext() {  
   ctx.strokeStyle = '#000000';
   ctx.lineWidth = 3;
 }
 
-function onEmojiClick(event) {
-  console.log('chosen emoji', event.currentTarget);
-  chosenEmoji = event.currentTarget;
-  emojiModal.style.display = 'none';  
-}
-
 function initControls() {
 
-  colourInput = document.getElementById('input-colour');
   colourInput.addEventListener('input', () => {
     console.log('new colour', colourInput.value);
     ctx.strokeStyle = colourInput.value;
     chosenEmoji = null;
   });
-
-  emojiModal = document.getElementById('modal-emoji');
+ 
   let emojis = document.querySelectorAll('#modal-emoji img');
   for (let i=0; i < emojis.length; i++) {
     let emoji = emojis[i];
     emoji.addEventListener('click', onEmojiClick);
   }
-
-  emojiButton = document.getElementById('btn-emoji');
+  
   emojiButton.addEventListener('click', () => {
     emojiModal.style.display = 'block';
   });

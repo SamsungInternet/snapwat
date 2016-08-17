@@ -1,9 +1,9 @@
 import webrtcAdapter from 'webrtc-adapter';
 import {HEADER_HEIGHT} from './constants';
 
-let video = null;
-let canvas = null;
-let context = null;
+let video = document.querySelector('video');
+let canvas = document.getElementById('canvas-camera');
+let context = context = canvas.getContext('2d');
 
 function copyVideoToCanvas() {
   const width = canvas.width;
@@ -16,17 +16,21 @@ function copyVideoToCanvas() {
 }
 
 function initCanvas() {
-
-  canvas = document.getElementById('canvas-camera');
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight - HEADER_HEIGHT;
+}
 
-  context = canvas.getContext('2d');
+function alertUnsupported() {
+  alert('Oh no! Your browser does not appear to have camera support (getUserMedia)' + 
+        'or there was a problem initiating it. Maybe try another browser? =)');
 }
 
 function initCameraStream() {
 
-  video = document.querySelector('video');
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alertUnsupported();
+    return;
+  }
 
   navigator.mediaDevices.getUserMedia({audio: false, video: true})
     .then((stream) => {
@@ -46,8 +50,7 @@ function initCameraStream() {
     })
     .catch((err) => {
       console.error('getUserMedia error', err);
-      alert('Oh no! Your browser does not appear to have camera support (getUserMedia)' + 
-        'or there was a problem initiating it. Maybe try another browser? ;)');
+      alertUnsupported();      
     });
 
 }

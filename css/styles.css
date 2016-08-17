@@ -17,6 +17,11 @@ header {
   background-image: linear-gradient(#9767ae, #673280);
 }
 
+header a {
+  color: #fff;
+  text-decoration: none;
+}
+
 #input-colour-container {
   float: left;
   border: 0;
@@ -52,6 +57,7 @@ header {
   background: none;
   border: 0;
   cursor: pointer;
+  outline: none;
 }
 
 #btn-download img {

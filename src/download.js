@@ -1,14 +1,13 @@
 import {HEADER_HEIGHT} from './constants';
 
-let downloadBtn = null;
-let cameraCanvas = null;
-let drawingCanvas = null;
-let saveCanvas = null;
-let saveContext = null;
+let downloadBtn = document.getElementById('btn-download');
+let cameraCanvas = document.getElementById('canvas-camera');
+let drawingCanvas = document.getElementById('canvas-draw');
+let saveCanvas = document.getElementById('canvas-save');
+let saveContext = saveCanvas.getContext('2d');
 
 function openSnapshot() {
 
-  saveContext = saveCanvas.getContext('2d');
   saveContext.drawImage(cameraCanvas, 0, 0);
   saveContext.drawImage(drawingCanvas, 0, 0);
 
@@ -20,19 +19,11 @@ function openSnapshot() {
 }
 
 function initCanvases() {
-
-  cameraCanvas = document.getElementById('canvas-camera');
-  drawingCanvas = document.getElementById('canvas-draw');
-  saveCanvas = document.getElementById('canvas-save');
-
   saveCanvas.width  = window.innerWidth;
   saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
 }
 
 function initButton() {
-  
-  downloadBtn = document.getElementById('btn-download');
-
   downloadBtn.addEventListener('click', () => {
     openSnapshot();
   });

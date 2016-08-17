@@ -46,13 +46,15 @@
 
 	var HEADER_HEIGHT = 72;
 
-	var canvas = null;
-	var ctx = null;
-	var drawing = false;
-	var colourInput = null;
-	var emojiButton = null;
-	var emojiModal = null;
+	var canvas = document.getElementById('canvas-draw');
+	var ctx = ctx = canvas.getContext('2d');
+	var colourInput = document.getElementById('input-colour');
+	var emojiButton = document.getElementById('btn-emoji');
+	var emojiButtonImage = document.getElementById('btn-emoji-img');
+	var emojiModal = document.getElementById('modal-emoji');
 	var chosenEmoji = null;
+
+	var isDrawing = false;
 
 	function onTouchStartOrMouseDown(e) {
 
@@ -69,13 +71,15 @@
 	  } else {
 	    ctx.beginPath();
 	    ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
-	    drawing = true;
+	    isDrawing = true;
 	  }
 	}
 
 	function onTouchMoveOrMouseMove(e) {
-	  if (drawing) {
-	    e.preventDefault();
+
+	  e.preventDefault();
+
+	  if (isDrawing) {
 	    var touch = e.changedTouches ? e.changedTouches[0] : null;
 	    var coords = touch ? { x: touch.pageX, y: touch.pageY } : { x: e.clientX, y: e.clientY };
 	    ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
@@ -84,12 +88,17 @@
 	}
 
 	function onTouchEndOrMouseUp() {
-	  drawing = false;
+	  isDrawing = false;
+	}
+
+	function onEmojiClick(event) {
+	  console.log('chosen emoji', event.currentTarget);
+	  chosenEmoji = event.currentTarget;
+	  emojiModal.style.display = 'none';
+	  emojiButtonImage.src = chosenEmoji.src;
 	}
 
 	function initCanvas() {
-	  canvas = document.getElementById('canvas-draw');
-
 	  canvas.width = window.innerWidth;
 	  canvas.height = window.innerHeight - HEADER_HEIGHT;
 
@@ -103,34 +112,24 @@
 	}
 
 	function initDrawingContext() {
-	  ctx = canvas.getContext('2d');
 	  ctx.strokeStyle = '#000000';
 	  ctx.lineWidth = 3;
 	}
 
-	function onEmojiClick(event) {
-	  console.log('chosen emoji', event.currentTarget);
-	  chosenEmoji = event.currentTarget;
-	  emojiModal.style.display = 'none';
-	}
-
 	function initControls() {
 
-	  colourInput = document.getElementById('input-colour');
 	  colourInput.addEventListener('input', function () {
 	    console.log('new colour', colourInput.value);
 	    ctx.strokeStyle = colourInput.value;
 	    chosenEmoji = null;
 	  });
 
-	  emojiModal = document.getElementById('modal-emoji');
 	  var emojis = document.querySelectorAll('#modal-emoji img');
 	  for (var i = 0; i < emojis.length; i++) {
 	    var emoji = emojis[i];
 	    emoji.addEventListener('click', onEmojiClick);
 	  }
 
-	  emojiButton = document.getElementById('btn-emoji');
 	  emojiButton.addEventListener('click', function () {
 	    emojiModal.style.display = 'block';
 	  });
@@ -2854,9 +2853,9 @@ var require$$0$4 = Object.freeze({
 
 	interopDefault(adapter_core);
 
-	var video = null;
-	var canvas$1 = null;
-	var context = null;
+	var video = document.querySelector('video');
+	var canvas$1 = document.getElementById('canvas-camera');
+	var context = context = canvas$1.getContext('2d');
 
 	function copyVideoToCanvas() {
 	  var width = canvas$1.width;
@@ -2869,17 +2868,20 @@ var require$$0$4 = Object.freeze({
 	}
 
 	function initCanvas$1() {
-
-	  canvas$1 = document.getElementById('canvas-camera');
 	  canvas$1.width = window.innerWidth;
 	  canvas$1.height = window.innerHeight - HEADER_HEIGHT;
+	}
 
-	  context = canvas$1.getContext('2d');
+	function alertUnsupported() {
+	  alert('Oh no! Your browser does not appear to have camera support (getUserMedia)' + 'or there was a problem initiating it. Maybe try another browser? =)');
 	}
 
 	function initCameraStream() {
 
-	  video = document.querySelector('video');
+	  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+	    alertUnsupported();
+	    return;
+	  }
 
 	  navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(function (stream) {
 
@@ -2896,7 +2898,7 @@ var require$$0$4 = Object.freeze({
 	    requestAnimationFrame(copyVideoToCanvas);
 	  }).catch(function (err) {
 	    console.error('getUserMedia error', err);
-	    alert('Oh no! Your browser does not appear to have camera support (getUserMedia)' + 'or there was a problem initiating it. Maybe try another browser? ;)');
+	    alertUnsupported();
 	  });
 	}
 
@@ -2905,15 +2907,14 @@ var require$$0$4 = Object.freeze({
 	  initCameraStream();
 	}
 
-	var downloadBtn = null;
-	var cameraCanvas = null;
-	var drawingCanvas = null;
-	var saveCanvas = null;
-	var saveContext = null;
+	var downloadBtn = document.getElementById('btn-download');
+	var cameraCanvas = document.getElementById('canvas-camera');
+	var drawingCanvas = document.getElementById('canvas-draw');
+	var saveCanvas = document.getElementById('canvas-save');
+	var saveContext = saveCanvas.getContext('2d');
 
 	function openSnapshot() {
 
-	  saveContext = saveCanvas.getContext('2d');
 	  saveContext.drawImage(cameraCanvas, 0, 0);
 	  saveContext.drawImage(drawingCanvas, 0, 0);
 
@@ -2924,19 +2925,11 @@ var require$$0$4 = Object.freeze({
 	}
 
 	function initCanvases() {
-
-	  cameraCanvas = document.getElementById('canvas-camera');
-	  drawingCanvas = document.getElementById('canvas-draw');
-	  saveCanvas = document.getElementById('canvas-save');
-
 	  saveCanvas.width = window.innerWidth;
 	  saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
 	}
 
 	function initButton() {
-
-	  downloadBtn = document.getElementById('btn-download');
-
 	  downloadBtn.addEventListener('click', function () {
 	    openSnapshot();
 	  });
