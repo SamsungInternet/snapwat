@@ -99,6 +99,8 @@ Please [tweet me](https://twitter.com/poshaughnessy) or email: peter dot oshaugh
 
 ## Credits
 
-Emoji provided free by [EmojiOne](http://emojione.com/).
+Emojis provided free by [EmojiOne](http://emojione.com/).
 
 Icons by [Iconic](https://useiconic.com/).
+
+Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/61059/).

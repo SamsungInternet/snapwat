@@ -2914,6 +2914,87 @@ var require$$0$4 = Object.freeze({
 	  initCameraStream();
 	}
 
+	/**
+	 * By Boris Smus.
+	 * From: http://www.html5rocks.com/en/tutorials/webaudio/intro/
+	 */
+	function BufferLoader(context, urlList, callback) {
+	  this.context = context;
+	  this.urlList = urlList;
+	  this.onload = callback;
+	  this.bufferList = new Array();
+	  this.loadCount = 0;
+	}
+
+	BufferLoader.prototype.loadBuffer = function (url, index) {
+	  // Load buffer asynchronously
+	  var request = new XMLHttpRequest();
+	  request.open("GET", url, true);
+	  request.responseType = "arraybuffer";
+
+	  var loader = this;
+
+	  request.onload = function () {
+	    // Asynchronously decode the audio file data in request.response
+	    loader.context.decodeAudioData(request.response, function (buffer) {
+	      if (!buffer) {
+	        alert('error decoding file data: ' + url);
+	        return;
+	      }
+	      loader.bufferList[index] = buffer;
+	      if (++loader.loadCount == loader.urlList.length) loader.onload(loader.bufferList);
+	    }, function (error) {
+	      console.error('decodeAudioData error', error);
+	    });
+	  };
+
+	  request.onerror = function () {
+	    alert('BufferLoader: XHR error');
+	  };
+
+	  request.send();
+	};
+
+	BufferLoader.prototype.load = function () {
+	  for (var i = 0; i < this.urlList.length; ++i) {
+	    this.loadBuffer(this.urlList[i], i);
+	  }
+	};
+
+	var context$1 = void 0;
+	var bufferLoader = void 0;
+	var bufferList = null;
+
+	function init() {
+	  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	  context$1 = new AudioContext();
+
+	  bufferLoader = new BufferLoader(context$1, ['/sounds/camera.wav'], finishedLoading);
+
+	  bufferLoader.load();
+	}
+
+	function finishedLoading(list) {
+	  bufferList = list;
+	}
+
+	function Audio () {
+	  init();
+	}
+
+	function playCameraSound() {
+
+	  if (!bufferList || bufferList.length < 1) {
+	    // Not ready to play yet
+	    return;
+	  }
+
+	  var source = context$1.createBufferSource();
+	  source.buffer = bufferList[0];
+	  source.connect(context$1.destination);
+	  source.start(0);
+	}
+
 	var homeHeader = document.getElementById('header-home');
 	var snapshotHeader = document.getElementById('header-snapshot');
 	var backBtn = document.getElementById('btn-back');
@@ -2925,6 +3006,8 @@ var require$$0$4 = Object.freeze({
 	var saveCtx = saveCanvas.getContext('2d');
 
 	function openSnapshot() {
+
+	  playCameraSound();
 
 	  // Copy the other canvases onto a single canvas for saving
 	  saveCtx.drawImage(cameraCanvas, 0, 0);
@@ -2976,5 +3059,6 @@ var require$$0$4 = Object.freeze({
 	Draw();
 	Camera();
 	Download();
+	Audio();
 
 }));

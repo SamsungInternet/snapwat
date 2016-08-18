@@ -1,4 +1,5 @@
 import {HEADER_HEIGHT} from './constants';
+import {playCameraSound} from './audio';
 
 let homeHeader = document.getElementById('header-home');
 let snapshotHeader = document.getElementById('header-snapshot');
@@ -12,6 +13,8 @@ let saveCtx = saveCanvas.getContext('2d');
 
 
 function openSnapshot() {
+
+  playCameraSound();
 
   // Copy the other canvases onto a single canvas for saving
   saveCtx.drawImage(cameraCanvas, 0, 0);
