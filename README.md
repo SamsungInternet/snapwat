@@ -17,12 +17,12 @@ Choosing a photo from your gallery should be coming soon and recording videos ma
 Choose a colour using the colour picker in the corner and start drawing over the camera view.
 
 Select an emoji from the emoji menu and touch on the camera view to stamp it as a sticker.
+Tap and drag to move an emoji around. Pinch an emoji to resize it.
 
-When you have a moment that you want to snap, press the camera button.
-
-The snapwat (that's the noun for a snapwat snapshot!) will open up in the page. Tap and hold / right-click 
-and choose the Save As / Download option to save to your device. (Unfortunately it doesn't seem possible right now to 
-download the generated file automatically across mobile browsers - I'll write a blog post on this soon).
+When you have a moment that you want to snap, press the camera button. The snapwat (that's the noun for a snapwat 
+snapshot!) will open up in the page. Tap and hold / right-click and choose your device's Save / Download option to save 
+the image. (Unfortunately it doesn't seem possible right now to download the generated file automatically across mobile 
+browsers - I'm planning to write a blog post about this soon).
 
 From there, be sure to share your beautiful creation with the world, hashtag snapwat! 
 
