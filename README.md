@@ -40,6 +40,12 @@ Unfortunately iOS Safari does not have support for getUserMedia yet, although yo
 If you have any problems with $your_browser, please create an issue (or even better, a PR).
 
 
+## Known issues
+
+Unfortunately the long-tap to save the image is disabled in standalone app mode in Samsung Internet, i.e. when you
+launch it from the home screen icon. So for now, I recommend using Snapwat in a regular browser view.
+
+
 ## Tech
 
 This demo is intended to be as lightweight as possible. However, it would be a shame to avoid
@@ -74,12 +80,6 @@ To watch for changes (in a separate terminal):
 ```npm run watch```
 
 (This just uses `watch` to rebuild the JS when a change is detected in the src directory).
-
-
-## Known issues
-
-Unfortunately the long-tap to save the image is disabled in standalone app mode in Samsung Internet, i.e. when you
-launch it from the home screen icon. So for now, I recommend using Snapwat in a regular browser view.
 
 
 ## Snapwat the name
