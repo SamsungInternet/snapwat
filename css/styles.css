@@ -13,8 +13,8 @@ body {
 }
 
 header {
-  background: #75448c;
-  background-image: linear-gradient(#9767ae, #75448c);
+  background: #9e54ff;
+  background-image: linear-gradient(#9e54ff, #7f4fff);
   height: 72px;
 }
 
@@ -57,7 +57,7 @@ button {
 
 input.selected,
 button.selected {
-  border: 2px solid #7df2f3;
+  border: 2px solid #d3b3fd;
 }
 
 #input-colour-container {
@@ -160,13 +160,13 @@ canvas {
   height: 85%;
   height: -webkit-calc(100% - 90px);
   height: calc(100% - 90px);
-  top: 77px;
+  top: 72px;
   left: 5%;
   padding: 15px;
   box-sizing: border-box;
-  background: #9767ae;
-  border: 2px solid #673280;
-  border-radius: 10px;
+  background: #7f4fff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   overflow-y: auto;
 }
 
@@ -175,4 +175,17 @@ canvas {
   width: 40px;
   height: 40px;
   cursor: pointer;
+}
+
+.display-mode-standalone {
+  display: none;
+}
+
+@media (display-mode: standalone), (display-mode: fullscreen) {
+  .display-mode-browser {
+    display: block;
+  }
+  .display-mode-browser {
+    display: none;
+  }
 }
