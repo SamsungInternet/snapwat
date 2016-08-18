@@ -2926,14 +2926,16 @@ var require$$0$4 = Object.freeze({
 	  saveCtx.drawImage(cameraCanvas, 0, 0);
 	  saveCtx.drawImage(drawingCanvas, 0, 0);
 
+	  /*
 	  saveLink.download = "snapwat.png";
 	  saveLink.href = saveCanvas.toDataURL('image/png');
 	  saveLink.click();
 	  saveLink.href = '';
+	  */
 
-	  // Also load the image up in a new tab so the user can download manually if they need to... 
-	  // Yeah I don't like this either, but unfortunately we can't download data URIs automatically 
-	  // on Samsung Internet. Also, going via a Service Worker (so we can use an http/https URL) 
+	  // Also load the image up in a new tab so the user can download manually if they need to...
+	  // Yeah I don't like this either, but unfortunately we can't download data URIs automatically
+	  // on Samsung Internet. Also, going via a Service Worker (so we can use an http/https URL)
 	  // doesn't work due to: https://bugs.chromium.org/p/chromium/issues/detail?id=468227
 	  window.open(saveCanvas.toDataURL('image/png'), '_blank');
 	}
