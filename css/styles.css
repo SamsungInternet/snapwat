@@ -41,7 +41,7 @@ header p {
 }
 
 #header-snapshot p {
-  padding-left: 20px;
+  padding-left: 15px;
 }
 
 button {
@@ -80,7 +80,7 @@ button.selected {
 
 #btn-back {
   float: left;
-  margin: 19px 0 0 20px;
+  margin: 19px 0 0 5px;
 }
 
 #btn-back img {

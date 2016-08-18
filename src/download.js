@@ -17,6 +17,9 @@ function openSnapshot() {
   saveCtx.drawImage(cameraCanvas, 0, 0);
   saveCtx.drawImage(drawingCanvas, 0, 0);
 
+  // Add the URL at the bottom
+  saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 15);
+
   saveImage.src = saveCanvas.toDataURL('image/png');
   saveImage.style.display = 'block';
 
@@ -30,9 +33,8 @@ function initSave() {
   saveCanvas.width  = window.innerWidth;
   saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
 
-  saveCtx.font = '18px Arial';
+  saveCtx.font = '16px Arial';
   saveCtx.fillStyle = '#fff';
-  saveCtx.fillText('snapw.at', saveCanvas.width - 100, saveCanvas.height - 28);
 
   saveImage.width  = window.innerWidth;
   saveImage.height = window.innerHeight - HEADER_HEIGHT;
