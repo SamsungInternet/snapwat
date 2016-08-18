@@ -15,11 +15,33 @@ body {
 header {
   background: #75448c;
   background-image: linear-gradient(#9767ae, #75448c);
+  height: 72px;
 }
 
 header a {
   color: #fff;
   text-decoration: none;
+}
+
+header p {
+  margin: 0;
+  height: 72px;
+  display: table-cell;
+  vertical-align: middle;
+  color: #fff;
+  font-size: 1.2em;
+}
+
+.header-instance {
+  display: none;
+}
+
+#header-home {
+  display: block;
+}
+
+#header-snapshot p {
+  padding-left: 20px;
 }
 
 button {
@@ -54,6 +76,16 @@ button.selected {
   border: 1px solid #ccc;
   width: 35px;
   height: 25px;
+}
+
+#btn-back {
+  float: left;
+  margin: 19px 0 0 20px;
+}
+
+#btn-back img {
+  width: 35px;
+  height: 35px;
 }
 
 #btn-emoji {
@@ -113,6 +145,12 @@ canvas {
 
 #canvas-save {
   visibility: hidden;
+}
+
+#image-save {
+  display: none;
+  position: absolute;
+  z-index: 10;
 }
 
 .modal {

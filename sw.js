@@ -57,6 +57,8 @@ const RESOURCES = [
   '/images/emojione/270c.svg',
   '/images/emojione/2757.svg',
   '/images/emojione/2764.svg',
+  '/images/iconic/arrow-left.svg',
+  '/images/iconic/camera-slr.svg',
   '/images/iconic/data-transfer-download.svg',
   '/images/iconic/trash.svg',
   '/images/logo-transparent.png',
@@ -109,7 +111,7 @@ self.addEventListener('fetch', event => {
 
       // Fetch failed. Maybe we're offline. Try the cache.
       console.log('Fetch failed, try cache', err);
-      
+
       event.respondWith(
         caches.match(event.request)
           .then(response => {

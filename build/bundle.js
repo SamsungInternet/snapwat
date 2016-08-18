@@ -2913,12 +2913,15 @@ var require$$0$4 = Object.freeze({
 	  initCameraStream();
 	}
 
+	var homeHeader = document.getElementById('header-home');
+	var snapshotHeader = document.getElementById('header-snapshot');
+	var backBtn = document.getElementById('btn-back');
 	var downloadBtn = document.getElementById('btn-download');
 	var cameraCanvas = document.getElementById('canvas-camera');
 	var drawingCanvas = document.getElementById('canvas-draw');
 	var saveCanvas = document.getElementById('canvas-save');
+	var saveImage = document.getElementById('image-save');
 	var saveCtx = saveCanvas.getContext('2d');
-	var saveLink = document.createElement('a');
 
 	function openSnapshot() {
 
@@ -2926,54 +2929,43 @@ var require$$0$4 = Object.freeze({
 	  saveCtx.drawImage(cameraCanvas, 0, 0);
 	  saveCtx.drawImage(drawingCanvas, 0, 0);
 
-	  /*
-	  saveLink.download = "snapwat.png";
-	  saveLink.href = saveCanvas.toDataURL('image/png');
-	  saveLink.click();
-	  saveLink.href = '';
-	  */
+	  saveImage.src = saveCanvas.toDataURL('image/png');
+	  saveImage.style.display = 'block';
 
-	  // Also load the image up in a new tab so the user can download manually if they need to...
-	  // Yeah I don't like this either, but unfortunately we can't download data URIs automatically
-	  // on Samsung Internet. Also, going via a Service Worker (so we can use an http/https URL)
-	  // doesn't work due to: https://bugs.chromium.org/p/chromium/issues/detail?id=468227
-	  window.open(saveCanvas.toDataURL('image/png'), '_blank');
+	  homeHeader.style.display = 'none';
+	  snapshotHeader.style.display = 'block';
 	}
 
-	/**
-	 * The 'save' canvas is HEADER_HEIGHT longer than the other canvases.
-	 * This is so we can take up the whole browser height and add the snapwat logo.
-	 */
-	function initSaveCanvas() {
+	function initSave() {
 
 	  saveCanvas.width = window.innerWidth;
-	  saveCanvas.height = window.innerHeight;
+	  saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
 
-	  saveCtx.fillStyle = '#75448c';
-	  saveCtx.fillRect(0, cameraCanvas.height, saveCanvas.width, HEADER_HEIGHT);
-
-	  var logo = new Image();
-	  logo.src = 'images/logo-transparent.png';
-	  logo.onload = function () {
-	    //saveCtx.imageSmoothingEnabled = true;
-	    saveCtx.drawImage(logo, 20, saveCanvas.height - 60, 40, 40);
-	  };
-
-	  saveCtx.font = '25px Arial';
+	  saveCtx.font = '18px Arial';
 	  saveCtx.fillStyle = '#fff';
-	  saveCtx.fillText('snapwat', saveCanvas.width - 110, saveCanvas.height - 28);
+	  saveCtx.fillText('snapw.at', saveCanvas.width - 100, saveCanvas.height - 28);
+
+	  saveImage.width = window.innerWidth;
+	  saveImage.height = window.innerHeight - HEADER_HEIGHT;
 	}
 
-	function initButton() {
+	function initControls$1() {
+
 	  downloadBtn.addEventListener('click', function () {
 	    openSnapshot();
+	  });
+
+	  backBtn.addEventListener('click', function () {
+	    homeHeader.style.display = 'block';
+	    snapshotHeader.style.display = 'none';
+	    saveImage.style.display = 'none';
 	  });
 	}
 
 	function Download () {
 
-	  initSaveCanvas();
-	  initButton();
+	  initSave();
+	  initControls$1();
 	}
 
 	SWRegister();

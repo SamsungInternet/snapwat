@@ -9,19 +9,26 @@
   </head>
   <body>
     <header>
-      <div id="input-colour-container">
-        <input id="input-colour" type="color" class="selected"/>
-        <div id="input-colour-substitute"></div>
-      </div>      
-      <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/></button>      
-      <button id="btn-download"><img src="images/iconic/data-transfer-download.svg" alt="Download"/></button>
-      <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Trash"/></button>
-      <h1><a href="/">sna<strong>pwa</strong>t</a></h1>
+      <div id="header-home" class="header-instance">
+        <div id="input-colour-container">
+          <input id="input-colour" type="color" class="selected"/>
+          <div id="input-colour-substitute"></div>
+        </div>
+        <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/></button>
+        <button id="btn-download"><img src="images/iconic/camera-slr.svg" alt="Download"/></button>
+        <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Trash"/></button>
+        <h1><a href="/">sna<strong>pwa</strong>t</a></h1>
+      </div>
+      <div id="header-snapshot" class="header-instance">
+        <button id="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+        <p>Here's your snapwat! Long tap or right click the image to save it.</p>
+      </div>
     </header>
     <main>
       <canvas id="canvas-camera"></canvas>
       <canvas id="canvas-draw"></canvas>
       <canvas id="canvas-save"></canvas>
+      <img id="image-save"/>
       <video autoplay/>
     </main>
     <div id="modal-emoji" class="modal">
