@@ -76,6 +76,12 @@ To watch for changes (in a separate terminal):
 (This just uses `watch` to rebuild the JS when a change is detected in the src directory).
 
 
+## Known issues
+
+Unfortunately the long-tap to save the image is disabled in standalone app mode in Samsung Internet, i.e. when you
+launch it from the home screen icon. So for now, I recommend using Snapwat in a regular browser view.
+
+
 ## Snapwat the name
 
 Snapwat is called Snapwat because it's a snapshot with "pwa" in it - for Progressive Web App. 
