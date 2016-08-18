@@ -7,6 +7,7 @@ let trashButton = document.getElementById('btn-trash');
 let emojiButton = document.getElementById('btn-emoji');
 let emojiButtonImage = document.getElementById('btn-emoji-img');
 let emojiModal = document.getElementById('modal-emoji');
+let touchedEmojiIndex = -1;
 let chosenEmoji = null;
 
 let isDrawing = false;
@@ -15,10 +16,42 @@ let isDrawing = false;
 let drawEvents = [];
 
 
+/**
+ * Returns index of touched emoji in the drawEvents, or -1 if none touched.
+ */
+function indexOfTouchedEmoji(coords) {
+
+  for (let i=0; i < drawEvents.length; i++) {
+
+    let evt = drawEvents[i];
+
+    if (!evt.image) {
+      continue;
+    }
+
+    if (coords.x >= evt.x && coords.x <= evt.x + evt.width &&
+        coords.y >= evt.y && coords.y <= evt.y + evt.height) {
+      return i;
+    }
+
+  }
+
+  return -1;
+
+}
+
 function onTouchStartOrMouseDown(e) {
 
   let touch = e.changedTouches ? e.changedTouches[0] : null;
-  let coords = touch ? {x: touch.pageX, y: touch.pageY} : {x: e.clientX, y: e.clientY};
+  let coords = touch ? {x: touch.pageX, y: touch.pageY - HEADER_HEIGHT} :
+    {x: e.clientX, y: e.clientY - HEADER_HEIGHT};
+
+  touchedEmojiIndex = indexOfTouchedEmoji(coords);
+
+  if (touchedEmojiIndex >= 0) {
+    // Touched an existing emoji. Proceed to drag / resize.
+    return;
+  }
 
   if (chosenEmoji) {
 
@@ -26,8 +59,9 @@ function onTouchStartOrMouseDown(e) {
     const width = chosenEmoji.width * 1.5;
     const height = chosenEmoji.height * 1.5;
 
+    // Centre the image around where we have tapped/clicked
     const x = coords.x - width / 2;
-    const y = coords.y - height / 2 - HEADER_HEIGHT;
+    const y = coords.y - height / 2;
 
     ctx.drawImage(chosenEmoji, x, y, width, height);
 
@@ -42,7 +76,7 @@ function onTouchStartOrMouseDown(e) {
   } else {
 
     const x = coords.x;
-    const y = coords.y - HEADER_HEIGHT;
+    const y = coords.y;
 
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -62,24 +96,35 @@ function onTouchMoveOrMouseMove(e) {
 
   e.preventDefault();
 
-  if (isDrawing) {
+  let touch = e.changedTouches ? e.changedTouches[0] : null;
+  let coords = touch ? {x: touch.pageX, y: touch.pageY - HEADER_HEIGHT} :
+    {x: e.clientX, y: e.clientY - HEADER_HEIGHT};
 
-    let touch = e.changedTouches ? e.changedTouches[0] : null;
-    let coords = touch ? {x: touch.pageX, y: touch.pageY} : {x: e.clientX, y: e.clientY};
+  if (touchedEmojiIndex >= 0) {
 
-    ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
+    // Update emoji position
+
+    let evt = drawEvents[touchedEmojiIndex];
+    evt.x = coords.x - evt.width / 2;
+    evt.y = coords.y - evt.height / 2;
+    redraw();
+
+  } else if (isDrawing) {
+
+    ctx.lineTo(coords.x, coords.y);
     ctx.stroke();
 
     drawEvents.push({
       stokeStyle: ctx.strokeStyle,
       x: coords.x,
-      y: coords.y - HEADER_HEIGHT
+      y: coords.y
     });
   }
 }
 
 function onTouchEndOrMouseUp() {
   isDrawing = false;
+  touchedEmojiIndex = -1;
 }
 
 function onEmojiClick(event) {
@@ -95,6 +140,8 @@ function onEmojiClick(event) {
 }
 
 function redraw() {
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   for (let i=0; i < drawEvents.length; i++) {
 
