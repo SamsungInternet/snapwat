@@ -119,7 +119,7 @@ self.addEventListener('fetch', event => {
                 console.log('Cache hit', event.request);
                 return response;
               } else {
-                console.log('Offline cache miss :(');
+                console.log('Offline cache miss =(');
               }
             }
           )

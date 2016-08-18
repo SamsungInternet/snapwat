@@ -1,6 +1,6 @@
 {
   "name": "snapwat",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A doodling app for the web. A progressive web app demo.",
   "scripts": {
     "start": "python -m SimpleHTTPServer",
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/poshaughnessy/snapwat.git"
   },
   "author": "Peter O'Shaughnessy",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/poshaughnessy/snapwat/issues"
   },

@@ -86,8 +86,6 @@
 
 	function onEmojiClick(event) {
 
-	  console.log('chosen emoji', event.currentTarget);
-
 	  chosenEmoji = event.currentTarget;
 
 	  emojiModal.style.display = 'none';
@@ -108,9 +106,7 @@
 	  canvas.addEventListener('mousedown', onTouchStartOrMouseDown, false);
 	  canvas.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
 	  canvas.addEventListener('mouseup', onTouchEndOrMouseUp, false);
-	}
 
-	function initDrawingContext() {
 	  ctx.strokeStyle = '#000000';
 	  ctx.lineWidth = 3;
 	}
@@ -118,13 +114,14 @@
 	function initControls() {
 
 	  colourInput.addEventListener('input', function () {
-	    console.log('new colour', colourInput.value);
+	    // New colour chosen
 	    ctx.strokeStyle = colourInput.value;
 	    chosenEmoji = null;
 	    colourInput.classList.add('selected');
 	    emojiButton.classList.remove('selected');
 	  });
 
+	  // Add click handlers to emojis so you can select one
 	  var emojis = document.querySelectorAll('#modal-emoji img');
 	  for (var i = 0; i < emojis.length; i++) {
 	    var emoji = emojis[i];
@@ -132,18 +129,22 @@
 	  }
 
 	  emojiButton.addEventListener('click', function () {
-	    emojiModal.style.display = 'block';
+	    // Toggle emoji selector modal dialog
+	    if (emojiModal.style.display !== 'block') {
+	      emojiModal.style.display = 'block';
+	    } else {
+	      emojiModal.style.display = 'none';
+	    }
 	  });
 
 	  trashButton.addEventListener('click', function () {
-	    // TODO add confirmation prompt
+	    // Could do with a confirmation prompt!
 	    ctx.clearRect(0, 0, canvas.width, canvas.height);
 	  });
 	}
 
 	function Draw () {
 	  initCanvas();
-	  initDrawingContext();
 	  initControls();
 	}
 
