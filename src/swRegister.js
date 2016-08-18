@@ -7,7 +7,7 @@ export default function() {
         console.log('Service worker successfully registered');
       })
       .catch((err) => {
-        console.error('Service worker failed to register');
+        console.error('Service worker failed to register', err);
       });
 
   } else {
