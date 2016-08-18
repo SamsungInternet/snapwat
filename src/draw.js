@@ -44,8 +44,8 @@ function indexOfSelectedEmoji(coords) {
 function stampEmoji(coords) {
 
   // Increase the default SVG size
-  const width = chosenEmoji.width * 3;
-  const height = chosenEmoji.height * 3;
+  const width = chosenEmoji.width * 2;
+  const height = chosenEmoji.height * 2;
 
   // Centre the image around where we have tapped/clicked
   const x = coords.x - width / 2;
@@ -220,6 +220,13 @@ function redraw() {
 
 }
 
+function onColourClickOrChange() {
+  ctx.strokeStyle = colourInput.value;
+  chosenEmoji = null;
+  colourInput.classList.add('selected');
+  emojiButton.classList.remove('selected');
+}
+
 function initCanvas() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight - HEADER_HEIGHT;
@@ -238,13 +245,8 @@ function initCanvas() {
 
 function initControls() {
 
-  colourInput.addEventListener('input', () => {
-    // New colour chosen
-    ctx.strokeStyle = colourInput.value;
-    chosenEmoji = null;
-    colourInput.classList.add('selected');
-    emojiButton.classList.remove('selected');
-  });
+  colourInput.addEventListener('input', onColourClickOrChange);
+  colourInput.addEventListener('click', onColourClickOrChange);
 
   // Add click handlers to emojis so you can select one
   let emojis = document.querySelectorAll('#modal-emoji img');
@@ -265,7 +267,8 @@ function initControls() {
 
   trashButton.addEventListener('click', () => {
     // Could do with a confirmation prompt!
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawEvents = [];
+    redraw();
   })
 
 }
