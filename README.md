@@ -18,13 +18,11 @@ Choose a colour using the colour picker in the corner and start drawing over the
 
 Select an emoji from the emoji menu and touch on the camera view to stamp it as a sticker.
 
-When you have a moment that you want to snap, press the download ↓ button.
+When you have a moment that you want to snap, press the camera button.
 
-Unfortunately it doesn't seem possible right now to download the generated file automatically 
-across mobile browsers. I'm about to write up a blog post on this. So for now it will open 
-up your snapwat (that's the noun for a snapwat snapshot!) in a new tab/window. 
-
-Tap and hold / right-click and choose the Save As / Download option to save to your device.
+The snapwat (that's the noun for a snapwat snapshot!) will open up in the page. Tap and hold / right-click 
+and choose the Save As / Download option to save to your device. (Unfortunately it doesn't seem possible right now to 
+download the generated file automatically across mobile browsers - I'll write a blog post on this soon).
 
 From there, be sure to share your beautiful creation with the world, hashtag snapwat! 
 
@@ -37,7 +35,9 @@ So far I have tested it in:
 * Chrome for Android
 * Chrome desktop
 
-If you have any problems with $your_browser, please create an Issue (or even better, a PR).
+Unfortunately iOS Safari does not have support for getUserMedia yet, although you can still doodle in it, if you like.
+
+If you have any problems with $your_browser, please create an issue (or even better, a PR).
 
 
 ## Tech
