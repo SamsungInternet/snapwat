@@ -11,6 +11,10 @@ let chosenEmoji = null;
 
 let isDrawing = false;
 
+// Store drawing events (lines and emojis) for redrawing
+let drawEvents = [];
+
+
 function onTouchStartOrMouseDown(e) {
 
   let touch = e.changedTouches ? e.changedTouches[0] : null;
@@ -22,16 +26,35 @@ function onTouchStartOrMouseDown(e) {
     const width = chosenEmoji.width * 1.5;
     const height = chosenEmoji.height * 1.5;
 
-    ctx.drawImage(chosenEmoji,
-      coords.x - width / 2,
-      coords.y - height / 2 - HEADER_HEIGHT,
-      width,
-      height);
+    const x = coords.x - width / 2;
+    const y = coords.y - height / 2 - HEADER_HEIGHT;
+
+    ctx.drawImage(chosenEmoji, x, y, width, height);
+
+    drawEvents.push({
+      image: chosenEmoji,
+      x: x,
+      y: y,
+      width: width,
+      height: height
+    })
 
   } else {
+
+    const x = coords.x;
+    const y = coords.y - HEADER_HEIGHT;
+
     ctx.beginPath();
-    ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
+    ctx.moveTo(x, y);
+
     isDrawing = true;
+
+    drawEvents.push({
+      begin: true,
+      x: x,
+      y: y
+    });
+
   }
 }
 
@@ -40,10 +63,18 @@ function onTouchMoveOrMouseMove(e) {
   e.preventDefault();
 
   if (isDrawing) {
+
     let touch = e.changedTouches ? e.changedTouches[0] : null;
     let coords = touch ? {x: touch.pageX, y: touch.pageY} : {x: e.clientX, y: e.clientY};
+
     ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
     ctx.stroke();
+
+    drawEvents.push({
+      stokeStyle: ctx.strokeStyle,
+      x: coords.x,
+      y: coords.y - HEADER_HEIGHT
+    });
   }
 }
 
@@ -60,6 +91,32 @@ function onEmojiClick(event) {
 
   emojiButton.classList.add('selected');
   colourInput.classList.remove('selected');
+
+}
+
+function redraw() {
+
+  for (let i=0; i < drawEvents.length; i++) {
+
+    let evt = drawEvents[i];
+
+    if (evt.image) {
+      // Emoji
+      ctx.drawImage(evt.image, evt.x, evt.y, evt.width, evt.height);
+
+    } else if (evt.begin) {
+      // Start a line
+      ctx.beginPath();
+      ctx.moveTo(evt.x, evt.y);
+
+    } else {
+      // Stroke
+      ctx.strokeStyle = evt.strokeStyle;
+      ctx.lineTo(evt.x, evt.y);
+      ctx.stroke();
+    }
+
+  }
 
 }
 

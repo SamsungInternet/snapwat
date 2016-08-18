@@ -49,6 +49,9 @@
 
 	var isDrawing = false;
 
+	// Store drawing events (lines and emojis) for redrawing
+	var drawEvents = [];
+
 	function onTouchStartOrMouseDown(e) {
 
 	  var touch = e.changedTouches ? e.changedTouches[0] : null;
@@ -60,11 +63,33 @@
 	    var width = chosenEmoji.width * 1.5;
 	    var height = chosenEmoji.height * 1.5;
 
-	    ctx.drawImage(chosenEmoji, coords.x - width / 2, coords.y - height / 2 - HEADER_HEIGHT, width, height);
+	    var x = coords.x - width / 2;
+	    var y = coords.y - height / 2 - HEADER_HEIGHT;
+
+	    ctx.drawImage(chosenEmoji, x, y, width, height);
+
+	    drawEvents.push({
+	      image: chosenEmoji,
+	      x: x,
+	      y: y,
+	      width: width,
+	      height: height
+	    });
 	  } else {
+
+	    var _x = coords.x;
+	    var _y = coords.y - HEADER_HEIGHT;
+
 	    ctx.beginPath();
-	    ctx.moveTo(coords.x, coords.y - HEADER_HEIGHT);
+	    ctx.moveTo(_x, _y);
+
 	    isDrawing = true;
+
+	    drawEvents.push({
+	      begin: true,
+	      x: _x,
+	      y: _y
+	    });
 	  }
 	}
 
@@ -73,10 +98,18 @@
 	  e.preventDefault();
 
 	  if (isDrawing) {
+
 	    var touch = e.changedTouches ? e.changedTouches[0] : null;
 	    var coords = touch ? { x: touch.pageX, y: touch.pageY } : { x: e.clientX, y: e.clientY };
+
 	    ctx.lineTo(coords.x, coords.y - HEADER_HEIGHT);
 	    ctx.stroke();
+
+	    drawEvents.push({
+	      stokeStyle: ctx.strokeStyle,
+	      x: coords.x,
+	      y: coords.y - HEADER_HEIGHT
+	    });
 	  }
 	}
 
