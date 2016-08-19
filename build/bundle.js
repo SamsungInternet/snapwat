@@ -3076,8 +3076,8 @@ var require$$0$4 = Object.freeze({
 	BufferLoader.prototype.loadBuffer = function (url, index) {
 	  // Load buffer asynchronously
 	  var request = new XMLHttpRequest();
-	  request.open("GET", url, true);
-	  request.responseType = "arraybuffer";
+	  request.open('GET', url, true);
+	  request.responseType = 'arraybuffer';
 
 	  var loader = this;
 
@@ -3125,21 +3125,23 @@ var require$$0$4 = Object.freeze({
 	  bufferList = list;
 	}
 
-	function Audio () {
-	  init();
-	}
-
 	function playCameraSound() {
 
 	  if (!bufferList || bufferList.length < 1) {
 	    // Not ready to play yet
-	    return;
+	    return false;
 	  }
 
 	  var source = context$1.createBufferSource();
 	  source.buffer = bufferList[0];
 	  source.connect(context$1.destination);
 	  source.start(0);
+
+	  return true;
+	}
+
+	function Audio () {
+	  init();
 	}
 
 	var homeHeader = document.getElementById('header-home');
