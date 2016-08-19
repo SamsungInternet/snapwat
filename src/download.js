@@ -58,9 +58,7 @@ function initControls() {
 
 }
 
-export default function() {
-
+export default function init() {
   initSave();
   initControls();
-
 }

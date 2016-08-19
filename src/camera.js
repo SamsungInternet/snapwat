@@ -55,7 +55,7 @@ function initCameraStream() {
 
 }
 
-export default function() {
+export default function init() {
   initCanvas();
   initCameraStream();
 }

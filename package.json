@@ -25,9 +25,11 @@
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-commonjs": "^3.3.1",
     "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-replace": "^1.1.1",
     "watch": "^0.19.1"
   },
   "dependencies": {
+    "hellojs": "^1.13.4",
     "webrtc-adapter": "^2.0.2"
   }
 }
