@@ -9030,8 +9030,6 @@ var require$$0$4 = Object.freeze({
 
 	var hello = hello_all$1;
 
-	console.log('hello 2', hello);
-
 	var TWITTER_CLIENT_ID = 'bkMmxlirv04KxJtAbWSgekbVM';
 
 	var saveCanvas$1 = document.getElementById('canvas-save');
@@ -9039,8 +9037,12 @@ var require$$0$4 = Object.freeze({
 
 	function init$4() {
 
+	  console.log('hello hello.js...');
+
 	  hello.init({
 	    twitter: TWITTER_CLIENT_ID
+	  }, {
+	    redirect_uri: 'http://localhost:8000' //'https://snapw.at/'
 	  });
 
 	  var imageDataURI = saveCanvas$1.toDataURL('image/png');
@@ -9048,17 +9050,22 @@ var require$$0$4 = Object.freeze({
 
 	  tweetButton.addEventListener('click', function () {
 
-	    hello('twitter').login().then(function () {
-	      console.log('Logged into twitter');
-	    }).catch(function (err) {
+	    hello('twitter').login().then(function (res) {
+	      console.log('Logged into twitter', res);
+
+	      /*
+	      hello('twitter')
+	        .api('me/share', 'POST', {
+	          message: 'hello?'
+	        })
+	        .then(json => {
+	          console.error('Twitter response', json);
+	        });
+	      */
+	    }, function (err) {
 	      console.error('Error logging in to Twitter', err);
 	    });
 
-	    hello('twitter').api('me/share', 'POST', {
-	      message: 'hello?'
-	    }).catch(function (err) {
-	      console.error('Error sharing to Twitter', err);
-	    });
 	    /*
 	    OAuth.callback('twitter')
 	      .done((result) => {

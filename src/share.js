@@ -3,8 +3,6 @@ import {dataURItoBlob} from './helpers';
 
 const hello = hellojs.default;
 
-console.log('hello 2', hello);
-
 const TWITTER_CLIENT_ID = 'bkMmxlirv04KxJtAbWSgekbVM';
 
 let saveCanvas = document.getElementById('canvas-save');
@@ -12,8 +10,12 @@ let tweetButton = document.getElementById('btn-share-twitter');
 
 function init() {
 
+  console.log('hello hello.js...');
+
   hello.init({
     twitter: TWITTER_CLIENT_ID
+  }, {
+    redirect_uri: 'http://localhost:8000' //'https://snapw.at/'
   });
 
   let imageDataURI = saveCanvas.toDataURL('image/png');
@@ -22,20 +24,23 @@ function init() {
   tweetButton.addEventListener('click', () => {
 
     hello('twitter').login()
-      .then(() => {
-        console.log('Logged into twitter');
-      })
-      .catch(err => {
+      .then(res => {
+        console.log('Logged into twitter', res);
+
+        /*
+        hello('twitter')
+          .api('me/share', 'POST', {
+            message: 'hello?'
+          })
+          .then(json => {
+            console.error('Twitter response', json);
+          });
+        */
+
+      }, err => {
         console.error('Error logging in to Twitter', err);
       });
 
-    hello('twitter')
-      .api('me/share', 'POST', {
-        message: 'hello?'
-      })
-      .catch(err => {
-        console.error('Error sharing to Twitter', err);
-      });
     /*
     OAuth.callback('twitter')
       .done((result) => {

@@ -124,6 +124,16 @@ button.selected {
   height: 24px;
 }
 
+#btn-share-twitter {
+  float: right;
+  margin: 10px 5px 0 0;
+  padding: 12px;
+}
+
+#btn-share-twitter img {
+  width: 36px;
+}
+
 h1 {
   font-size: 1.8em;
   color: #fff;
