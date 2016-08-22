@@ -2,7 +2,7 @@ export default function() {
 
   if ('serviceWorker' in navigator) {
 
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('/build/sw.js')
       .then(() => {
         console.log('Service worker successfully registered');
       })

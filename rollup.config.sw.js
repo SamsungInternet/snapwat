@@ -15,10 +15,10 @@ function generateCacheManifest(options) {
     },
     load(id) {
       if (id === options.id) {
+        // Pass in relative filepaths to glob, then prefix with '/' for cache list
         const files = glob.sync(options.patterns)
-          .map(file => `/${file}`)
-          .concat('/');
-          return `export default ${JSON.stringify(files)}`;
+          .map(file => `/${file}`);
+        return `export default ${JSON.stringify(files)};`;
       }
     }
   }
@@ -31,10 +31,12 @@ export default {
     generateCacheManifest({
       id: '\0cache-manifest',
       patterns: [
+        '.',
         'build/bundle.js',
         'css/styles.css',
-        'images/**',
-        'sounds/**'
+        'images/**/*.svg',
+        'images/**/*.png',
+        'sounds/**/*.wav'
       ]
     })
   ]

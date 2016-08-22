@@ -6,11 +6,11 @@ self.addEventListener('install', event => {
 
   function onInstall () {
 
-    console.log('Service worker installation');
+    console.log('Service worker installation', CACHE_NAME);
 
     return caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Caching pre-defined assets on installation', filesToCache);
+        console.log('Caching pre-defined assets on installation...', filesToCache);
         return cache.addAll( filesToCache )
           .then(() => {
             console.log('Cached files, now cache external resources...');
@@ -41,7 +41,7 @@ self.addEventListener('fetch', event => {
       caches.open(CACHE_NAME)
         .then(cache => {
           cache.put(event.request, responseToCache);
-          console.log('Put response in cache', responseToCache);
+          //console.log('Put response in cache', responseToCache);
         });
 
       return response;
