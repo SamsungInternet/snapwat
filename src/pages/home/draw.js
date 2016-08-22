@@ -1,4 +1,4 @@
-import {HEADER_HEIGHT} from './constants';
+import {HEADER_HEIGHT} from '../../shared/constants';
 
 let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');

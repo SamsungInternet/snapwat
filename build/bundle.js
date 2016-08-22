@@ -36,263 +36,79 @@
 	  }
 	}
 
-	var HEADER_HEIGHT = 72;
-
-	var canvas = document.getElementById('canvas-draw');
-	var ctx = ctx = canvas.getContext('2d');
-	var colourInput = document.getElementById('input-colour');
-	var trashButton = document.getElementById('btn-trash');
-	var emojiButton = document.getElementById('btn-emoji');
-	var emojiButtonImage = document.getElementById('btn-emoji-img');
-	var emojiModal = document.getElementById('modal-emoji');
-	var touchedEmojiIndex = -1;
-	var chosenEmoji = null;
-	var resizeTouchDelta = null;
-	var isDrawing = false;
-	var isRedrawing = false;
-
-	// Store drawing events (lines and emojis) for redrawing
-	var drawEvents = [];
-
 	/**
-	 * Returns index of touched emoji in the drawEvents, or -1 if none touched.
+	 * By Boris Smus.
+	 * From: http://www.html5rocks.com/en/tutorials/webaudio/intro/
 	 */
-	function indexOfSelectedEmoji(coords) {
-
-	  for (var i = 0; i < drawEvents.length; i++) {
-
-	    var evt = drawEvents[i];
-
-	    if (!evt.image) {
-	      continue;
-	    }
-
-	    if (coords.x >= evt.x && coords.x <= evt.x + evt.width && coords.y >= evt.y && coords.y <= evt.y + evt.height) {
-	      return i;
-	    }
-	  }
-
-	  return -1;
+	function BufferLoader(context, urlList, callback) {
+	  this.context = context;
+	  this.urlList = urlList;
+	  this.onload = callback;
+	  this.bufferList = new Array();
+	  this.loadCount = 0;
 	}
 
-	function stampEmoji(coords) {
+	BufferLoader.prototype.loadBuffer = function (url, index) {
+	  // Load buffer asynchronously
+	  var request = new XMLHttpRequest();
+	  request.open('GET', url, true);
+	  request.responseType = 'arraybuffer';
 
-	  // Increase the default SVG size
-	  var width = chosenEmoji.width * 2;
-	  var height = chosenEmoji.height * 2;
+	  var loader = this;
 
-	  // Centre the image around where we have tapped/clicked
-	  var x = coords.x - width / 2;
-	  var y = coords.y - height / 2;
-
-	  ctx.drawImage(chosenEmoji, x, y, width, height);
-
-	  drawEvents.push({
-	    image: chosenEmoji,
-	    x: x,
-	    y: y,
-	    width: width,
-	    height: height
-	  });
-	}
-
-	function onDrawingMouseDown(coords) {
-
-	  var x = coords.x;
-	  var y = coords.y;
-
-	  ctx.beginPath();
-	  ctx.moveTo(x, y);
-
-	  isDrawing = true;
-
-	  drawEvents.push({
-	    begin: true,
-	    x: x,
-	    y: y
-	  });
-	}
-
-	function onTouchStartOrMouseDown(e) {
-
-	  var touch = e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : null;
-
-	  var coords = touch ? { x: touch.pageX, y: touch.pageY - HEADER_HEIGHT } : { x: e.clientX, y: e.clientY - HEADER_HEIGHT };
-
-	  touchedEmojiIndex = indexOfSelectedEmoji(coords);
-
-	  if (touchedEmojiIndex > -1) {
-	    // Selected an existing emoji - fall through
-	    return;
-	  }
-
-	  if (chosenEmoji) {
-	    stampEmoji(coords);
-	  } else {
-	    onDrawingMouseDown(coords);
-	  }
-	}
-
-	function onTouchMoveOrMouseMove(e) {
-
-	  e.preventDefault();
-
-	  var touches = e.changedTouches || [];
-	  var touch1 = touches.length ? touches[0] : null;
-	  var touch2 = touches.length > 1 ? touches[1] : null;
-
-	  var coords1 = touch1 ? { x: touch1.pageX, y: touch1.pageY - HEADER_HEIGHT } : { x: e.clientX, y: e.clientY - HEADER_HEIGHT };
-
-	  if (touchedEmojiIndex >= 0) {
-
-	    var evt = drawEvents[touchedEmojiIndex];
-
-	    if (touch2) {
-
-	      // Resize emoji
-
-	      var coords2 = { x: touch2.pageX, y: touch2.pageY - HEADER_HEIGHT };
-	      var newResizeTouchDelta = { x: Math.abs(coords2.x - coords1.x),
-	        y: Math.abs(coords2.y - coords1.y) };
-
-	      if (resizeTouchDelta) {
-
-	        evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
-	        evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
-
-	        evt.x = (coords1.x + coords2.x) / 2 - evt.width / 2;
-	        evt.y = (coords1.y + coords2.y) / 2 - evt.height / 2;
-
-	        redrawOnNextFrame();
+	  request.onload = function () {
+	    // Asynchronously decode the audio file data in request.response
+	    loader.context.decodeAudioData(request.response, function (buffer) {
+	      if (!buffer) {
+	        alert('error decoding file data: ' + url);
+	        return;
 	      }
-
-	      resizeTouchDelta = newResizeTouchDelta;
-	    } else {
-
-	      // Update emoji position
-
-	      evt.x = coords1.x - evt.width / 2;
-	      evt.y = coords1.y - evt.height / 2;
-
-	      redrawOnNextFrame();
-	    }
-	  } else if (isDrawing) {
-
-	    ctx.lineTo(coords1.x, coords1.y);
-	    ctx.stroke();
-
-	    drawEvents.push({
-	      stokeStyle: ctx.strokeStyle,
-	      x: coords1.x,
-	      y: coords1.y
+	      loader.bufferList[index] = buffer;
+	      if (++loader.loadCount == loader.urlList.length) loader.onload(loader.bufferList);
+	    }, function (error) {
+	      console.error('decodeAudioData error', error);
 	    });
+	  };
+
+	  request.onerror = function () {
+	    alert('BufferLoader: XHR error');
+	  };
+
+	  request.send();
+	};
+
+	BufferLoader.prototype.load = function () {
+	  for (var i = 0; i < this.urlList.length; ++i) {
+	    this.loadBuffer(this.urlList[i], i);
 	  }
-	}
+	};
 
-	function onTouchEndOrMouseUp() {
-	  isDrawing = false;
-	  touchedEmojiIndex = -1;
-	  resizeTouchDelta = null;
-	}
+	var context = void 0;
+	var bufferLoader = void 0;
+	var bufferList = null;
 
-	function onEmojiClick(event) {
+	function playCameraSound() {
 
-	  chosenEmoji = event.currentTarget;
-
-	  emojiModal.style.display = 'none';
-	  emojiButtonImage.src = chosenEmoji.src;
-
-	  emojiButton.classList.add('selected');
-	  colourInput.classList.remove('selected');
-	}
-
-	function redrawOnNextFrame() {
-	  if (!isRedrawing) {
-	    isRedrawing = true;
-	    requestAnimationFrame(redraw);
-	  }
-	}
-
-	function redraw() {
-
-	  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-	  for (var i = 0; i < drawEvents.length; i++) {
-
-	    var evt = drawEvents[i];
-
-	    if (evt.image) {
-	      // Emoji
-	      ctx.drawImage(evt.image, evt.x, evt.y, evt.width, evt.height);
-	    } else if (evt.begin) {
-	      // Start a line
-	      ctx.beginPath();
-	      ctx.moveTo(evt.x, evt.y);
-	    } else {
-	      // Stroke
-	      ctx.strokeStyle = evt.strokeStyle;
-	      ctx.lineTo(evt.x, evt.y);
-	      ctx.stroke();
-	    }
+	  if (!bufferList || bufferList.length < 1) {
+	    // Not ready to play yet
+	    return false;
 	  }
 
-	  isRedrawing = false;
-	}
+	  var source = context.createBufferSource();
+	  source.buffer = bufferList[0];
+	  source.connect(context.destination);
+	  source.start(0);
 
-	function onColourClickOrChange() {
-	  ctx.strokeStyle = colourInput.value;
-	  chosenEmoji = null;
-	  colourInput.classList.add('selected');
-	  emojiButton.classList.remove('selected');
-	}
-
-	function initCanvas() {
-	  canvas.width = window.innerWidth;
-	  canvas.height = window.innerHeight - HEADER_HEIGHT;
-
-	  canvas.addEventListener('touchstart', onTouchStartOrMouseDown, false);
-	  canvas.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
-	  canvas.addEventListener('touchend', onTouchEndOrMouseUp, false);
-
-	  canvas.addEventListener('mousedown', onTouchStartOrMouseDown, false);
-	  canvas.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
-	  canvas.addEventListener('mouseup', onTouchEndOrMouseUp, false);
-
-	  ctx.strokeStyle = '#000000';
-	  ctx.lineWidth = 3;
-	}
-
-	function initControls() {
-
-	  colourInput.addEventListener('input', onColourClickOrChange);
-	  colourInput.addEventListener('click', onColourClickOrChange);
-
-	  // Add click handlers to emojis so you can select one
-	  var emojis = document.querySelectorAll('#modal-emoji img');
-	  for (var i = 0; i < emojis.length; i++) {
-	    var emoji = emojis[i];
-	    emoji.addEventListener('click', onEmojiClick);
-	  }
-
-	  emojiButton.addEventListener('click', function () {
-	    // Toggle emoji selector modal dialog
-	    if (emojiModal.style.display !== 'block') {
-	      emojiModal.style.display = 'block';
-	    } else {
-	      emojiModal.style.display = 'none';
-	    }
-	  });
-
-	  trashButton.addEventListener('click', function () {
-	    // Could do with a confirmation prompt!
-	    drawEvents = [];
-	    redraw();
-	  });
+	  return true;
 	}
 
 	function init() {
-	  initCanvas();
-	  initControls();
+	  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+	  context = new AudioContext();
+	  bufferLoader = new BufferLoader(context, ['/sounds/camera.wav'], function (list) {
+	    bufferList = list;
+	  });
+	  bufferLoader.load();
 	}
 
 	function interopDefault(ex) {
@@ -3007,23 +2823,25 @@ var require$$0$4 = Object.freeze({
 
 	interopDefault(adapter_core);
 
+	var HEADER_HEIGHT = 72;
+
 	var video = document.querySelector('video');
-	var canvas$1 = document.getElementById('canvas-camera');
-	var context = context = canvas$1.getContext('2d');
+	var canvas = document.getElementById('canvas-camera');
+	var context$1 = context$1 = canvas.getContext('2d');
 
 	function copyVideoToCanvas() {
-	  var width = canvas$1.width;
-	  var height = canvas$1.height;
+	  var width = canvas.width;
+	  var height = canvas.height;
 
-	  context.fillRect(0, 0, width, height);
-	  context.drawImage(video, 0, 0, width, height);
+	  context$1.fillRect(0, 0, width, height);
+	  context$1.drawImage(video, 0, 0, width, height);
 
 	  requestAnimationFrame(copyVideoToCanvas);
 	}
 
-	function initCanvas$1() {
-	  canvas$1.width = window.innerWidth;
-	  canvas$1.height = window.innerHeight - HEADER_HEIGHT;
+	function initCanvas() {
+	  canvas.width = window.innerWidth;
+	  canvas.height = window.innerHeight - HEADER_HEIGHT;
 	}
 
 	function alertUnsupported() {
@@ -3056,97 +2874,316 @@ var require$$0$4 = Object.freeze({
 	  });
 	}
 
-	function init$1() {
-	  initCanvas$1();
+	function init$2() {
+	  initCanvas();
 	  initCameraStream();
 	}
 
+	var canvas$1 = document.getElementById('canvas-draw');
+	var ctx = ctx = canvas$1.getContext('2d');
+	var colourInput = document.getElementById('input-colour');
+	var trashButton = document.getElementById('btn-trash');
+	var emojiButton = document.getElementById('btn-emoji');
+	var emojiButtonImage = document.getElementById('btn-emoji-img');
+	var emojiModal = document.getElementById('modal-emoji');
+	var touchedEmojiIndex = -1;
+	var chosenEmoji = null;
+	var resizeTouchDelta = null;
+	var isDrawing = false;
+	var isRedrawing = false;
+
+	// Store drawing events (lines and emojis) for redrawing
+	var drawEvents = [];
+
 	/**
-	 * By Boris Smus.
-	 * From: http://www.html5rocks.com/en/tutorials/webaudio/intro/
+	 * Returns index of touched emoji in the drawEvents, or -1 if none touched.
 	 */
-	function BufferLoader(context, urlList, callback) {
-	  this.context = context;
-	  this.urlList = urlList;
-	  this.onload = callback;
-	  this.bufferList = new Array();
-	  this.loadCount = 0;
+	function indexOfSelectedEmoji(coords) {
+
+	  for (var i = 0; i < drawEvents.length; i++) {
+
+	    var evt = drawEvents[i];
+
+	    if (!evt.image) {
+	      continue;
+	    }
+
+	    if (coords.x >= evt.x && coords.x <= evt.x + evt.width && coords.y >= evt.y && coords.y <= evt.y + evt.height) {
+	      return i;
+	    }
+	  }
+
+	  return -1;
 	}
 
-	BufferLoader.prototype.loadBuffer = function (url, index) {
-	  // Load buffer asynchronously
-	  var request = new XMLHttpRequest();
-	  request.open('GET', url, true);
-	  request.responseType = 'arraybuffer';
+	function stampEmoji(coords) {
 
-	  var loader = this;
+	  // Increase the default SVG size
+	  var width = chosenEmoji.width * 2;
+	  var height = chosenEmoji.height * 2;
 
-	  request.onload = function () {
-	    // Asynchronously decode the audio file data in request.response
-	    loader.context.decodeAudioData(request.response, function (buffer) {
-	      if (!buffer) {
-	        alert('error decoding file data: ' + url);
-	        return;
+	  // Centre the image around where we have tapped/clicked
+	  var x = coords.x - width / 2;
+	  var y = coords.y - height / 2;
+
+	  ctx.drawImage(chosenEmoji, x, y, width, height);
+
+	  drawEvents.push({
+	    image: chosenEmoji,
+	    x: x,
+	    y: y,
+	    width: width,
+	    height: height
+	  });
+	}
+
+	function onDrawingMouseDown(coords) {
+
+	  var x = coords.x;
+	  var y = coords.y;
+
+	  ctx.beginPath();
+	  ctx.moveTo(x, y);
+
+	  isDrawing = true;
+
+	  drawEvents.push({
+	    begin: true,
+	    x: x,
+	    y: y
+	  });
+	}
+
+	function onTouchStartOrMouseDown(e) {
+
+	  var touch = e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : null;
+
+	  var coords = touch ? { x: touch.pageX, y: touch.pageY - HEADER_HEIGHT } : { x: e.clientX, y: e.clientY - HEADER_HEIGHT };
+
+	  touchedEmojiIndex = indexOfSelectedEmoji(coords);
+
+	  if (touchedEmojiIndex > -1) {
+	    // Selected an existing emoji - fall through
+	    return;
+	  }
+
+	  if (chosenEmoji) {
+	    stampEmoji(coords);
+	  } else {
+	    onDrawingMouseDown(coords);
+	  }
+	}
+
+	function onTouchMoveOrMouseMove(e) {
+
+	  e.preventDefault();
+
+	  var touches = e.changedTouches || [];
+	  var touch1 = touches.length ? touches[0] : null;
+	  var touch2 = touches.length > 1 ? touches[1] : null;
+
+	  var coords1 = touch1 ? { x: touch1.pageX, y: touch1.pageY - HEADER_HEIGHT } : { x: e.clientX, y: e.clientY - HEADER_HEIGHT };
+
+	  if (touchedEmojiIndex >= 0) {
+
+	    var evt = drawEvents[touchedEmojiIndex];
+
+	    if (touch2) {
+
+	      // Resize emoji
+
+	      var coords2 = { x: touch2.pageX, y: touch2.pageY - HEADER_HEIGHT };
+	      var newResizeTouchDelta = { x: Math.abs(coords2.x - coords1.x),
+	        y: Math.abs(coords2.y - coords1.y) };
+
+	      if (resizeTouchDelta) {
+
+	        evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
+	        evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
+
+	        evt.x = (coords1.x + coords2.x) / 2 - evt.width / 2;
+	        evt.y = (coords1.y + coords2.y) / 2 - evt.height / 2;
+
+	        redrawOnNextFrame();
 	      }
-	      loader.bufferList[index] = buffer;
-	      if (++loader.loadCount == loader.urlList.length) loader.onload(loader.bufferList);
-	    }, function (error) {
-	      console.error('decodeAudioData error', error);
+
+	      resizeTouchDelta = newResizeTouchDelta;
+	    } else {
+
+	      // Update emoji position
+
+	      evt.x = coords1.x - evt.width / 2;
+	      evt.y = coords1.y - evt.height / 2;
+
+	      redrawOnNextFrame();
+	    }
+	  } else if (isDrawing) {
+
+	    ctx.lineTo(coords1.x, coords1.y);
+	    ctx.stroke();
+
+	    drawEvents.push({
+	      stokeStyle: ctx.strokeStyle,
+	      x: coords1.x,
+	      y: coords1.y
 	    });
-	  };
-
-	  request.onerror = function () {
-	    alert('BufferLoader: XHR error');
-	  };
-
-	  request.send();
-	};
-
-	BufferLoader.prototype.load = function () {
-	  for (var i = 0; i < this.urlList.length; ++i) {
-	    this.loadBuffer(this.urlList[i], i);
 	  }
-	};
+	}
 
-	var context$1 = void 0;
-	var bufferLoader = void 0;
-	var bufferList = null;
+	function onTouchEndOrMouseUp() {
+	  isDrawing = false;
+	  touchedEmojiIndex = -1;
+	  resizeTouchDelta = null;
+	}
 
-	function playCameraSound() {
+	function onEmojiClick(event) {
 
-	  if (!bufferList || bufferList.length < 1) {
-	    // Not ready to play yet
-	    return false;
+	  chosenEmoji = event.currentTarget;
+
+	  emojiModal.style.display = 'none';
+	  emojiButtonImage.src = chosenEmoji.src;
+
+	  emojiButton.classList.add('selected');
+	  colourInput.classList.remove('selected');
+	}
+
+	function redrawOnNextFrame() {
+	  if (!isRedrawing) {
+	    isRedrawing = true;
+	    requestAnimationFrame(redraw);
+	  }
+	}
+
+	function redraw() {
+
+	  ctx.clearRect(0, 0, canvas$1.width, canvas$1.height);
+
+	  for (var i = 0; i < drawEvents.length; i++) {
+
+	    var evt = drawEvents[i];
+
+	    if (evt.image) {
+	      // Emoji
+	      ctx.drawImage(evt.image, evt.x, evt.y, evt.width, evt.height);
+	    } else if (evt.begin) {
+	      // Start a line
+	      ctx.beginPath();
+	      ctx.moveTo(evt.x, evt.y);
+	    } else {
+	      // Stroke
+	      ctx.strokeStyle = evt.strokeStyle;
+	      ctx.lineTo(evt.x, evt.y);
+	      ctx.stroke();
+	    }
 	  }
 
-	  var source = context$1.createBufferSource();
-	  source.buffer = bufferList[0];
-	  source.connect(context$1.destination);
-	  source.start(0);
+	  isRedrawing = false;
+	}
 
-	  return true;
+	function onColourClickOrChange() {
+	  ctx.strokeStyle = colourInput.value;
+	  chosenEmoji = null;
+	  colourInput.classList.add('selected');
+	  emojiButton.classList.remove('selected');
+	}
+
+	function initCanvas$1() {
+	  canvas$1.width = window.innerWidth;
+	  canvas$1.height = window.innerHeight - HEADER_HEIGHT;
+
+	  canvas$1.addEventListener('touchstart', onTouchStartOrMouseDown, false);
+	  canvas$1.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
+	  canvas$1.addEventListener('touchend', onTouchEndOrMouseUp, false);
+
+	  canvas$1.addEventListener('mousedown', onTouchStartOrMouseDown, false);
+	  canvas$1.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
+	  canvas$1.addEventListener('mouseup', onTouchEndOrMouseUp, false);
+
+	  ctx.strokeStyle = '#000000';
+	  ctx.lineWidth = 3;
+	}
+
+	function initControls() {
+
+	  colourInput.addEventListener('input', onColourClickOrChange);
+	  colourInput.addEventListener('click', onColourClickOrChange);
+
+	  // Add click handlers to emojis so you can select one
+	  var emojis = document.querySelectorAll('#modal-emoji img');
+	  for (var i = 0; i < emojis.length; i++) {
+	    var emoji = emojis[i];
+	    emoji.addEventListener('click', onEmojiClick);
+	  }
+
+	  emojiButton.addEventListener('click', function () {
+	    // Toggle emoji selector modal dialog
+	    if (emojiModal.style.display !== 'block') {
+	      emojiModal.style.display = 'block';
+	    } else {
+	      emojiModal.style.display = 'none';
+	    }
+	  });
+
+	  trashButton.addEventListener('click', function () {
+	    // Could do with a confirmation prompt!
+	    drawEvents = [];
+	    redraw();
+	  });
 	}
 
 	function init$3() {
-	  window.AudioContext = window.AudioContext || window.webkitAudioContext;
-	  context$1 = new AudioContext();
-	  bufferLoader = new BufferLoader(context$1, ['/sounds/camera.wav'], function (list) {
-	    bufferList = list;
-	  });
-	  bufferLoader.load();
+	  initCanvas$1();
+	  initControls();
 	}
 
-	var homeHeader = document.getElementById('header-home');
-	var snapshotHeader = document.getElementById('header-snapshot');
-	var backBtn = document.getElementById('btn-back');
-	var downloadBtn = document.getElementById('btn-download');
+	function init$1() {
+	  init$2();
+	  init$3();
+	}
+
+	var headers = document.getElementsByTagName('header');
+	var pages = document.getElementsByClassName('page');
+
+	/**
+	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
+	 */
+	function dataURItoBlob(dataURI) {
+	  var byteString = atob(dataURI.split(',')[1]);
+	  var ab = new ArrayBuffer(byteString.length);
+	  var ia = new Uint8Array(ab);
+	  for (var i = 0; i < byteString.length; i++) {
+	    ia[i] = byteString.charCodeAt(i);
+	  }
+	  return new Blob([ab], { type: 'image/png' });
+	}
+
+	function showOrHideElements(elements, pageRef) {
+	  var showStyle = arguments.length <= 2 || arguments[2] === undefined ? 'block' : arguments[2];
+
+	  for (var i = 0; i < elements.length; i++) {
+	    var el = elements[i];
+	    if (el.id.endsWith('-' + pageRef)) {
+	      el.style.display = showStyle;
+	    } else {
+	      el.style.display = 'none';
+	    }
+	  }
+	}
+
+	function showPage(pageRef) {
+	  showOrHideElements(headers, pageRef, 'flex');
+	  showOrHideElements(pages, pageRef);
+	}
+
+	var backBtn = document.getElementById('btn-back-snapshot');
+	var snapshotBtn = document.getElementById('btn-snapshot');
 	var cameraCanvas = document.getElementById('canvas-camera');
 	var drawingCanvas = document.getElementById('canvas-draw');
 	var saveCanvas = document.getElementById('canvas-save');
 	var saveImage = document.getElementById('image-save');
 	var saveCtx = saveCanvas.getContext('2d');
 
-	function openSnapshot() {
+	function showSnapshotPage() {
 
 	  playCameraSound();
 
@@ -3160,8 +3197,7 @@ var require$$0$4 = Object.freeze({
 	  saveImage.src = saveCanvas.toDataURL('image/png');
 	  saveImage.style.display = 'block';
 
-	  homeHeader.style.display = 'none';
-	  snapshotHeader.style.display = 'block';
+	  showPage('snapshot');
 	}
 
 	function initSave() {
@@ -3178,18 +3214,16 @@ var require$$0$4 = Object.freeze({
 
 	function initControls$1() {
 
-	  downloadBtn.addEventListener('click', function () {
-	    openSnapshot();
+	  snapshotBtn.addEventListener('click', function () {
+	    showSnapshotPage();
 	  });
 
 	  backBtn.addEventListener('click', function () {
-	    homeHeader.style.display = 'block';
-	    snapshotHeader.style.display = 'none';
-	    saveImage.style.display = 'none';
+	    showPage('home');
 	  });
 	}
 
-	function init$2() {
+	function init$4() {
 	  initSave();
 	  initControls$1();
 	}
@@ -9015,86 +9049,75 @@ var require$$0$4 = Object.freeze({
 
 	var hello_all$1 = interopDefault(hello_all);
 
-	/**
-	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
-	 */
-	function dataURItoBlob(dataURI) {
-	  var byteString = atob(dataURI.split(',')[1]);
-	  var ab = new ArrayBuffer(byteString.length);
-	  var ia = new Uint8Array(ab);
-	  for (var i = 0; i < byteString.length; i++) {
-	    ia[i] = byteString.charCodeAt(i);
-	  }
-	  return new Blob([ab], { type: 'image/png' });
-	}
-
 	var hello = hello_all$1;
 
 	var TWITTER_CLIENT_ID = 'bkMmxlirv04KxJtAbWSgekbVM';
 
 	var saveCanvas$1 = document.getElementById('canvas-save');
 	var tweetButton = document.getElementById('btn-share-twitter');
+	var shareHeader = document.getElementById('header-share');
+	var sharePage = document.getElementById('page-share');
+	var backBtn$1 = document.getElementById('btn-back-share');
+	var shareTextInput = document.getElementById('share-text');
+	var shareImagePreview = document.getElementById('share-preview');
+	var shareSubmitButton = document.getElementById('share-submit');
 
-	function init$4() {
+	function showSharePage() {
 
-	  console.log('hello hello.js...');
+	  var imageDataURI = saveCanvas$1.toDataURL('image/png');
+	  var blob = dataURItoBlob(imageDataURI);
 
+	  shareImagePreview.src = imageDataURI;
+	  showPage('share');
+	}
+
+	function initOAuth() {
 	  hello.init({
 	    twitter: TWITTER_CLIENT_ID
 	  }, {
 	    redirect_uri: 'http://localhost:8000' //'https://snapw.at/'
 	  });
+	}
 
-	  var imageDataURI = saveCanvas$1.toDataURL('image/png');
-	  var blob = dataURItoBlob(imageDataURI);
+	function initControls$2() {
 
 	  tweetButton.addEventListener('click', function () {
 
 	    hello('twitter').login().then(function (res) {
-	      console.log('Logged into twitter', res);
-
-	      /*
-	      hello('twitter')
-	        .api('me/share', 'POST', {
-	          message: 'hello?'
-	        })
-	        .then(json => {
-	          console.error('Twitter response', json);
-	        });
-	      */
+	      console.log('Logged into Twitter', res);
+	      showSharePage();
 	    }, function (err) {
 	      console.error('Error logging in to Twitter', err);
 	    });
-
-	    /*
-	    OAuth.callback('twitter')
-	      .done((result) => {
-	        // token in result.access_token
-	        result.post('https://upload.twitter.com/1.1/media/upload.json', {
-	          data: {
-	            media: blob
-	          }
-	        })
-	        .done((response) => {
-	          console.log('Response', response);
-	        })
-	        .fail((err) => {
-	          console.error('Error', err);
-	        });
-	      })
-	      .fail((error) => {
-	        console.error('Error', error);  
-	      });
-	    */
 	  });
+
+	  shareSubmitButton.addEventListener('click', function () {
+
+	    hello('twitter').api('me/share', 'POST', {
+	      message: shareTextInput.value
+	    }).then(function (json) {
+	      console.error('Twitter response', json);
+	    });
+
+	    showPage('home');
+	  });
+
+	  backBtn$1.addEventListener('click', function () {
+	    showPage('snapshot');
+	  });
+	}
+
+	function init$5() {
+	  initOAuth();
+	  initControls$2();
 	}
 
 	SWRegister();
 	InputColour();
 	init();
+
 	init$1();
-	init$2();
-	init$3();
 	init$4();
+	init$5();
 
 }));

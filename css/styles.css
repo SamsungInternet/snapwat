@@ -1,6 +1,5 @@
 html {
   height: 100%;
-  max-height: 100%;
   overflow: hidden;
 }
 
@@ -10,15 +9,40 @@ body {
   margin: 0;
   padding: 0;
   background-color: #ccc;
+  color: #fff;
   height: 100%;
-  max-height: 100%;
   overflow: hidden;
 }
 
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: #9e54ff;
   background-image: linear-gradient(#9e54ff, #7f4fff);
   height: 72px;
+}
+
+header .left,
+header .right {
+  flex: 1;
+}
+
+header .left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start; 
+}
+
+header .right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+header h1,
+header p {
+  flex: 2;
 }
 
 header a {
@@ -28,23 +52,42 @@ header a {
 
 header p {
   margin: 0;
-  height: 72px;
-  display: table-cell;
-  vertical-align: middle;
   color: #fff;
   font-size: 1.2em;
+  text-align: center;
 }
 
-.header-instance {
+header {
   display: none;
 }
 
 #header-home {
+  display: flex;
+}
+
+.page {
+  display: none;
+  z-index: 1;
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  height: -webkit-calc(100% - 72px);
+  height: -moz-calc(100% - 72px);
+  height: -o-calc(100% - 72px);
+  height: -ms-calc(100% - 72px);
+  height: calc(100% - 72px);
+  top: 72px;
+  left: 0;
+  background: #7f4fff;
+}
+
+#page-home {
   display: block;
 }
 
-#header-snapshot p {
-  padding-left: 15px;
+#page-share {
+  padding: 15px;
 }
 
 button {
@@ -64,10 +107,9 @@ button.selected {
 }
 
 #input-colour-container {
-  float: left;
   border: 0;
-  padding: 0;
-  margin: 24px 0 0 14px;
+  padding: 4px 0 0 0;
+  margin-left: 14px;
 }
 
 #input-colour {
@@ -81,19 +123,17 @@ button.selected {
   height: 25px;
 }
 
-#btn-back {
-  float: left;
-  margin: 19px 0 0 5px;
+.btn-back {
+  margin-left: 5px;
 }
 
-#btn-back img {
+.btn-back img {
   width: 35px;
   height: 35px;
 }
 
 #btn-emoji {
-  float: left;
-  margin: 19px 0 0 20px;
+  margin-left: 20px;
   padding: 0;
 }
 
@@ -103,8 +143,6 @@ button.selected {
 }
 
 #btn-trash {
-  float: right;
-  margin: 10px 0 0 0;
   padding: 14px;
 }
 
@@ -113,20 +151,17 @@ button.selected {
   height: 24px;
 }
 
-#btn-download {
-  float: right;
-  margin: 10px 0 0 0;
+#btn-snapshot {
   padding: 14px;
 }
 
-#btn-download img {
+#btn-snapshot img {
   width: 24px;
   height: 24px;
 }
 
 #btn-share-twitter {
-  float: right;
-  margin: 10px 5px 0 0;
+  margin-right: 10px;
   padding: 12px;
 }
 
@@ -137,7 +172,7 @@ button.selected {
 h1 {
   font-size: 1.8em;
   color: #fff;
-  margin: 0 60px 0 0;
+  margin: 0;
   padding: 0.8em;
   text-align: center;
   font-weight: normal;
@@ -165,15 +200,18 @@ canvas {
 #image-save {
   display: none;
   position: absolute;
-  z-index: 10;
 }
 
 .modal {
   display: none;
+  z-index: 10;
   position: absolute;
   width: 90%;
   height: 85%;
   height: -webkit-calc(100% - 90px);
+  height: -moz-calc(100% - 90px);
+  height: -o-calc(100% - 90px);
+  height: -ms-calc(100% - 90px);
   height: calc(100% - 90px);
   top: 72px;
   left: 5%;
@@ -190,6 +228,36 @@ canvas {
   width: 40px;
   height: 40px;
   cursor: pointer;
+}
+
+#share-text {
+  display: block;
+  box-sizing: border-box;
+  width: 80%;
+  border: 0;
+  font-size: 1.3em;
+  padding: 10px;
+  margin: 0 auto;
+  border-radius: 5px;
+}
+
+#share-preview {
+  display: block;
+  max-width: 80%;
+  margin: 10px auto;
+}
+
+#share-submit {
+  display: block;
+  width: 80%;
+  margin: 10px auto;
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 5px;
+  font-size: 1.3em;
+  text-align: center;
+  border-radius: 5px;
 }
 
 .display-mode-standalone {
