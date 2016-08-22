@@ -21,13 +21,21 @@ function init() {
 
   tweetButton.addEventListener('click', () => {
 
-    hello('twitter').login().then(() => {
-      alert('logged into twitter');
-    });
+    hello('twitter').login()
+      .then(() => {
+        console.log('Logged into twitter');
+      })
+      .catch(err => {
+        console.error('Error logging in to Twitter', err);
+      });
 
-    hello('twitter').api('me/share', 'POST', {
-      message: 'hello?'
-    });
+    hello('twitter')
+      .api('me/share', 'POST', {
+        message: 'hello?'
+      })
+      .catch(err => {
+        console.error('Error sharing to Twitter', err);
+      });
     /*
     OAuth.callback('twitter')
       .done((result) => {

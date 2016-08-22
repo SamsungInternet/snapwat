@@ -9049,11 +9049,15 @@ var require$$0$4 = Object.freeze({
 	  tweetButton.addEventListener('click', function () {
 
 	    hello('twitter').login().then(function () {
-	      alert('logged into twitter');
+	      console.log('Logged into twitter');
+	    }).catch(function (err) {
+	      console.error('Error logging in to Twitter', err);
 	    });
 
 	    hello('twitter').api('me/share', 'POST', {
 	      message: 'hello?'
+	    }).catch(function (err) {
+	      console.error('Error sharing to Twitter', err);
 	    });
 	    /*
 	    OAuth.callback('twitter')

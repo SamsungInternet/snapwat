@@ -5,7 +5,7 @@
   "scripts": {
     "start": "python -m SimpleHTTPServer",
     "watch": "watch 'npm run build' ./src",
-    "build": "rollup -c > build/bundle.js && echo 'Build complete'",
+    "build": "rollup -c > build/bundle.js && rollup -c rollup.config.sw.js > build/sw.js && echo 'Build complete'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,6 +21,7 @@
   "devDependencies": {
     "babel-preset-es2015": "6.9.0",
     "babel-preset-es2015-rollup": "^1.1.1",
+    "glob-all": "^3.1.0",
     "rollup": "^0.34.7",
     "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-commonjs": "^3.3.1",
