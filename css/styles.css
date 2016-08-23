@@ -230,6 +230,10 @@ canvas {
   cursor: pointer;
 }
 
+#page-share {
+  overflow-y: auto;
+}
+
 #share-text {
   display: block;
   box-sizing: border-box;

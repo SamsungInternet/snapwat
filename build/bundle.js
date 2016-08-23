@@ -3144,19 +3144,6 @@ var require$$0$4 = Object.freeze({
 	var headers = document.getElementsByTagName('header');
 	var pages = document.getElementsByClassName('page');
 
-	/**
-	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
-	 */
-	function dataURItoBlob(dataURI) {
-	  var byteString = atob(dataURI.split(',')[1]);
-	  var ab = new ArrayBuffer(byteString.length);
-	  var ia = new Uint8Array(ab);
-	  for (var i = 0; i < byteString.length; i++) {
-	    ia[i] = byteString.charCodeAt(i);
-	  }
-	  return new Blob([ab], { type: 'image/png' });
-	}
-
 	function showOrHideElements(elements, pageRef) {
 	  var showStyle = arguments.length <= 2 || arguments[2] === undefined ? 'block' : arguments[2];
 
@@ -9062,10 +9049,11 @@ var require$$0$4 = Object.freeze({
 	var shareImagePreview = document.getElementById('share-preview');
 	var shareSubmitButton = document.getElementById('share-submit');
 
+	var imageDataURI = null;
+
 	function showSharePage() {
 
-	  var imageDataURI = saveCanvas$1.toDataURL('image/png');
-	  var blob = dataURItoBlob(imageDataURI);
+	  imageDataURI = saveCanvas$1.toDataURL('image/png');
 
 	  shareImagePreview.src = imageDataURI;
 	  showPage('share');
@@ -9093,13 +9081,28 @@ var require$$0$4 = Object.freeze({
 
 	  shareSubmitButton.addEventListener('click', function () {
 
-	    hello('twitter').api('me/share', 'POST', {
-	      message: shareTextInput.value
+	    // First we need to upload the image
+
+	    hello('twitter').api('media/upload.json', 'POST', {
+	      media_data: imageDataURI
 	    }).then(function (json) {
-	      console.error('Twitter response', json);
+
+	      console.log('Response from media upload', json);
+
+	      // Now share in a tweet
+
+	      /*
+	      hello('twitter')
+	        .api('me/share', 'POST', {
+	          message: shareTextInput.value
+	        })
+	        .then(json => {
+	          console.error('Twitter response', json);
+	        });
+	      */
 	    });
 
-	    showPage('home');
+	    //showPage('home');
 	  });
 
 	  backBtn$1.addEventListener('click', function () {
