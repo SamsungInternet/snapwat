@@ -7,8 +7,6 @@ const TWITTER_CLIENT_ID = 'bkMmxlirv04KxJtAbWSgekbVM';
 
 let saveCanvas = document.getElementById('canvas-save');
 let tweetButton = document.getElementById('btn-share-twitter');
-let shareHeader = document.getElementById('header-share');
-let sharePage = document.getElementById('page-share');
 let backBtn = document.getElementById('btn-back-share');
 let shareTextInput = document.getElementById('share-text');
 let shareImagePreview = document.getElementById('share-preview');
@@ -28,8 +26,6 @@ function showSharePage() {
 function initOAuth() {
   hello.init({
     twitter: TWITTER_CLIENT_ID
-  }, {
-    redirect_uri: 'http://localhost:8000' //'https://snapw.at/'
   });
 }
 

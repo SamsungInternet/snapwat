@@ -81,6 +81,9 @@ To watch for changes (in a separate terminal):
 
 (This just uses `watch` to rebuild the JS when a change is detected in the src directory).
 
+To test the sharing feature locally, ensure you have a `NODE_ENV` environment variable set to
+'development'.
+
 
 ## Snapwat the name
 
@@ -97,10 +100,13 @@ Any resemblance to other social apps is purely coincidental...
 Please [tweet me](https://twitter.com/poshaughnessy) or email: peter dot oshaughnessy at gmail dot com.
 
 
-## Credits
+## Credits and Thanks
 
 Emojis provided free by [EmojiOne](http://emojione.com/).
 
 Icons by [Iconic](https://useiconic.com/).
 
 Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/61059/).
+
+Thanks to Rich Harris for making a [rollup cache manifest example](https://gitlab.com/Rich-Harris/rollup-cache-manifest-example) 
+for me (and for [rollup](http://rollupjs.org/) in general!)

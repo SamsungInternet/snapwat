@@ -9055,8 +9055,6 @@ var require$$0$4 = Object.freeze({
 
 	var saveCanvas$1 = document.getElementById('canvas-save');
 	var tweetButton = document.getElementById('btn-share-twitter');
-	var shareHeader = document.getElementById('header-share');
-	var sharePage = document.getElementById('page-share');
 	var backBtn$1 = document.getElementById('btn-back-share');
 	var shareTextInput = document.getElementById('share-text');
 	var shareImagePreview = document.getElementById('share-preview');
@@ -9075,8 +9073,6 @@ var require$$0$4 = Object.freeze({
 	function initOAuth() {
 	  hello.init({
 	    twitter: TWITTER_CLIENT_ID
-	  }, {
-	    redirect_uri: 'http://localhost:8000' //'https://snapw.at/'
 	  });
 	}
 
