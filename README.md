@@ -24,7 +24,11 @@ snapshot!) will open up in the page. Tap and hold / right-click and choose your 
 the image. (Unfortunately it doesn't seem possible right now to download the generated file automatically across mobile 
 browsers - I'm planning to write a blog post about this soon).
 
-From there, be sure to share your beautiful creation with the world, hashtag snapwat! 
+Or press the tweet button and share it directly via the Twitter API. It will request read/write access for your
+Twitter account, but it will only ever be used to share your snapwats with your permission. It uses 
+[hello.js](https://adodson.com/hello.js/) with their [default auth proxy](https://auth-server.herokuapp.com/). 
+
+Be sure to share your beautiful creations with the world, [hashtag snapwat]()! 
 
 
 ## Browser Support
