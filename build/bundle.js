@@ -9062,10 +9062,11 @@ var require$$0$4 = Object.freeze({
 	var shareImagePreview = document.getElementById('share-preview');
 	var shareSubmitButton = document.getElementById('share-submit');
 
+	var imageDataURI = null;
+
 	function showSharePage() {
 
-	  var imageDataURI = saveCanvas$1.toDataURL('image/png');
-	  var blob = dataURItoBlob(imageDataURI);
+	  imageDataURI = saveCanvas$1.toDataURL('image/png');
 
 	  shareImagePreview.src = imageDataURI;
 	  showPage('share');
@@ -9093,10 +9094,13 @@ var require$$0$4 = Object.freeze({
 
 	  shareSubmitButton.addEventListener('click', function () {
 
+	    var blob = dataURItoBlob(imageDataURI);
+
 	    hello('twitter').api('me/share', 'POST', {
-	      message: shareTextInput.value
+	      message: shareTextInput.value,
+	      file: blob
 	    }).then(function (json) {
-	      console.error('Twitter response', json);
+	      console.log('Twitter response', json);
 	    });
 
 	    showPage('home');

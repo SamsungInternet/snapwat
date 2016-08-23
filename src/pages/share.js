@@ -14,10 +14,11 @@ let shareTextInput = document.getElementById('share-text');
 let shareImagePreview = document.getElementById('share-preview');
 let shareSubmitButton = document.getElementById('share-submit');
 
+let imageDataURI = null;
+
 function showSharePage() {
 
-  let imageDataURI = saveCanvas.toDataURL('image/png');
-  let blob = dataURItoBlob(imageDataURI);
+  imageDataURI = saveCanvas.toDataURL('image/png');
 
   shareImagePreview.src = imageDataURI;
   showPage('share');
@@ -47,12 +48,15 @@ function initControls() {
 
   shareSubmitButton.addEventListener('click', () => {
 
+    let blob = dataURItoBlob(imageDataURI);
+
     hello('twitter')
       .api('me/share', 'POST', {
-        message: shareTextInput.value
+        message: shareTextInput.value,
+        file: blob
       })
       .then(json => {
-        console.error('Twitter response', json);
+        console.log('Twitter response', json);
       });
 
     showPage('home');
