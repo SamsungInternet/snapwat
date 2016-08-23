@@ -1,5 +1,5 @@
 import webrtcAdapter from 'webrtc-adapter';
-import {HEADER_HEIGHT} from './constants';
+import {HEADER_HEIGHT} from '../../shared/constants';
 
 let video = document.querySelector('video');
 let canvas = document.getElementById('canvas-camera');
@@ -55,7 +55,7 @@ function initCameraStream() {
 
 }
 
-export default function() {
+export default function init() {
   initCanvas();
   initCameraStream();
 }

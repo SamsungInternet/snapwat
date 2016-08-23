@@ -1,13 +1,15 @@
 import SWRegister from './swRegister';
-import InputColour from './inputColour';
-import Draw from './draw';
-import Camera from './camera';
-import Download from './download';
-import Audio from './audio';
+import InputColour from './shared/inputColour';
+import Audio from './shared/audio';
+
+import PageHome from './pages/home';
+import PageSnapshot from './pages/snapshot';
+import PageShare from './pages/share';
 
 SWRegister();
 InputColour();
-Draw();
-Camera();
-Download();
 Audio();
+
+PageHome()
+PageSnapshot();
+PageShare();

@@ -4,19 +4,6 @@ let context;
 let bufferLoader;
 let bufferList = null;
 
-function init() {
-  window.AudioContext = window.AudioContext || window.webkitAudioContext;
-  context = new AudioContext();
-
-  bufferLoader = new BufferLoader(context, ['/sounds/camera.wav'], finishedLoading);
-
-  bufferLoader.load();
-}
-
-function finishedLoading(list) {
-  bufferList = list;
-}
-
 export function playCameraSound() {
 
   if (!bufferList || bufferList.length < 1) {
@@ -33,6 +20,9 @@ export function playCameraSound() {
 
 }
 
-export default function() {
-  init();
+export default function init() {
+  window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  context = new AudioContext();
+  bufferLoader = new BufferLoader(context, ['/sounds/camera.wav'], (list) => {bufferList = list;});
+  bufferLoader.load();
 }

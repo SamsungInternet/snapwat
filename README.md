@@ -71,7 +71,7 @@ Then to transpile and combine the JavaScript:
 
 ```npm run build```
 
-(This just runs `rollup -c > build/bundle.js`).
+(This just runs the `rollup` commands for the app source code and the service worker script).
 
 To run the app, you can use any static web server. I just use `python -m SimpleHTTPServer`.
 

@@ -8,30 +8,53 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,400italic,700italic,300italic,600,600italic,800,800italic"/>
   </head>
   <body>
-    <header>
-      <div id="header-home" class="header-instance">
+    
+    <header id="header-home">
+      <div class="left">
         <div id="input-colour-container">
           <input id="input-colour" type="color" class="selected"/>
           <div id="input-colour-substitute"></div>
         </div>
         <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/></button>
-        <button id="btn-download"><img src="images/iconic/camera-slr.svg" alt="Download"/></button>
-        <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Trash"/></button>
-        <h1>sna<strong>pwa</strong>t</h1>
       </div>
-      <div id="header-snapshot" class="header-instance">
-        <button id="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
-        <p class="display-mode-browser">Here's your snapwat! Long tap or right click the image to save it.</p>
-        <p class="display-mode-standalone">Here's your snapwat! Long tap to save it, or take a screenshot.</p>
+      <h1>sna<strong>pwa</strong>t</h1>
+      <div class="right">
+        <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Trash"/></button>
+        <button id="btn-snapshot"><img src="images/iconic/camera-slr.svg" alt="Snapshot"/></button>
       </div>
     </header>
-    <main>
+    <header id="header-snapshot">
+      <div class="left">
+        <button id="btn-back-snapshot" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+      </div>
+      <p>Share to Twitter or long tap / right click image to save</p>
+      <div class="right">
+        <button id="btn-share-twitter"><img src="images/twitter-logo.svg" alt="Tweet"></button>
+      </div>              
+    </header>
+    <header id="header-share">
+      <div class="left">
+        <button id="btn-back-share" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+      </div>      
+      <p>Share to Twitter</p>
+      <div class="right"></div>
+    </header>
+
+    <div id="page-home" class="page">
       <canvas id="canvas-camera"></canvas>
       <canvas id="canvas-draw"></canvas>
+      <video autoplay/>
+    </div>
+    <div id="page-snapshot" class="page">
       <canvas id="canvas-save"></canvas>
       <img id="image-save"/>
-      <video autoplay/>
-    </main>
+    </div>
+    <div id="page-share" class="page">
+      <textarea id="share-text">I made a #snapwat! Make yours at https://snapw.at.</textarea>
+      <img id="share-preview" src=""/>
+      <button id="share-submit">Submit</button>
+    </div>
+    
     <div id="modal-emoji" class="modal">
       <img data-ref="1f354" src="images/emojione/1f354.svg"/>
       <img data-ref="1f369" src="images/emojione/1f369.svg"/>
@@ -85,6 +108,7 @@
       <img data-ref="/2757" src="images/emojione/2757.svg"/>
       <img data-ref="/2764" src="images/emojione/2764.svg"/>
     </div>
+
     <script src="build/bundle.js"></script>
   </body>
 </html>
