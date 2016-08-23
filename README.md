@@ -28,7 +28,7 @@ Or press the tweet button and share it directly via the Twitter API. It will req
 Twitter account, but it will only ever be used to share your snapwats with your permission. It uses 
 [hello.js](https://adodson.com/hello.js/) with their [default auth proxy](https://auth-server.herokuapp.com/). 
 
-Be sure to share your beautiful creations with the world, [hashtag snapwat]()! 
+Be sure to share your beautiful creations with the world, hashtag snapwat! 
 
 
 ## Browser Support
