@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A doodling app for the web. A progressive web app demo.",
   "scripts": {
-    "start": "python -m SimpleHTTPServer",
+    "start": "node devServer",
     "watch": "watch 'npm run build' ./src",
     "build": "node build && echo 'Build complete'",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,6 +22,7 @@
   "devDependencies": {
     "babel-preset-es2015": "6.9.0",
     "babel-preset-es2015-rollup": "^1.1.1",
+    "express": "^4.14.0",
     "glob-all": "^3.1.0",
     "rollup": "^0.34.7",
     "rollup-plugin-babel": "^2.6.1",

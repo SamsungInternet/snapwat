@@ -78,8 +78,11 @@ Then to transpile and combine the JavaScript:
 
 (This just runs the `rollup` commands for the app source code and the service worker script).
 
-To run the app, you can use any static web server for the `public` directory. 
-I just use `python -m SimpleHTTPServer`.
+To run the app:
+
+```npm start```
+
+Or you can use any static web server for the `public` directory - it's all just front-end.
 
 To watch for changes (in a separate terminal):
 

@@ -17,9 +17,9 @@ function generateFileList(options) {
     },
     load(id) {
       if (id === options.id) {
-        // Pass in relative filepaths to glob, then prefix with '/' for cache list
+        // Pass in relative filepaths to glob, then adjust prefix appropriately for front-end
         const files = glob.sync(options.patterns)
-          .map(file => `/${file}`);
+          .map(file => `${file.replace('public/', '/')}`);
         return `export default ${JSON.stringify(files)};`;
       }
     }
