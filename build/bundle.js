@@ -2839,9 +2839,14 @@ var require$$0$4 = Object.freeze({
 	  requestAnimationFrame(copyVideoToCanvas);
 	}
 
-	function initCanvas() {
+	function setCanvasSize() {
 	  canvas.width = window.innerWidth;
 	  canvas.height = window.innerHeight - HEADER_HEIGHT;
+	}
+
+	function initCanvas() {
+	  setCanvasSize();
+	  window.addEventListener('resize', setCanvasSize, false);
 	}
 
 	function alertUnsupported() {
