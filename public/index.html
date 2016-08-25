@@ -10,35 +10,37 @@
   </head>
   <body>
 
-    <header id="header-home">
-      <div class="left">
-        <div id="input-colour-container">
-          <input id="input-colour" type="color" class="selected"/>
-          <div id="input-colour-substitute"></div>
-        </div>
-        <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/></button>
-      </div>
+    <header>
       <h1>sna<strong>pwa</strong>t</h1>
-      <div class="right">
-        <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Trash"/></button>
-        <button id="btn-snapshot"><img src="images/iconic/camera-slr.svg" alt="Snapshot"/></button>
+      <div class="toolbar" id="toolbar-home">        
+        <div class="left">
+          <div id="input-colour-container">
+            <input id="input-colour" type="color" class="selected"/>
+            <div id="input-colour-substitute"></div>
+          </div>
+          <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/></button>
+        </div>
+        <div class="right">
+          <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Trash"/></button>
+          <button id="btn-snapshot"><img src="images/iconic/camera-slr.svg" alt="Snapshot"/></button>
+        </div>
       </div>
-    </header>
-    <header id="header-snapshot">
-      <div class="left">
-        <button id="btn-back-snapshot" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+      <div class="toolbar" id="toolbar-snapshot">
+        <div class="left">
+          <button id="btn-back-snapshot" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+        </div>
+        <h2>Your Snapwat</h2>
+        <div class="right">
+          <button id="btn-share-twitter"><img src="images/twitter-logo.svg" alt="Tweet"></button>
+        </div>
       </div>
-      <p>Share to Twitter or long tap / right click image to save</p>
-      <div class="right">
-        <button id="btn-share-twitter"><img src="images/twitter-logo.svg" alt="Tweet"></button>
+      <div class="toolbar" id="toolbar-share">
+        <div class="left">
+          <button id="btn-back-share" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+        </div>
+        <h2>Tweet from <span id="twitter-handle"></span></h2>
+        <div class="right"></div>
       </div>
-    </header>
-    <header id="header-share">
-      <div class="left">
-        <button id="btn-back-share" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
-      </div>
-      <p>Share to Twitter</p>
-      <div class="right"></div>
     </header>
 
     <div id="page-home" class="page">
@@ -54,6 +56,10 @@
       <textarea id="share-text" maxlength="116">I made a #snapwat! Make yours at https://snapw.at.</textarea>
       <img id="share-preview" src=""/>
       <button id="share-submit">Submit</button>
+    </div>
+
+    <div class="prompt" id="prompt-snapshot">
+        <p>Tap-and-hold or right click the image to save it.</p>
     </div>
 
     <div id="modal-emoji" class="modal">

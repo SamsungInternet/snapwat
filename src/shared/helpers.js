@@ -1,5 +1,6 @@
-let headers = document.getElementsByTagName('header');
+let toolbars = document.getElementsByClassName('toolbar');
 let pages = document.getElementsByClassName('page');
+let prompts = document.getElementsByClassName('prompt');
 
 /**
  * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
@@ -26,6 +27,7 @@ function showOrHideElements(elements, pageRef, showStyle = 'block') {
 }
 
 export function showPage(pageRef) {
-  showOrHideElements(headers, pageRef, 'flex');
+  showOrHideElements(toolbars, pageRef, 'flex');
   showOrHideElements(pages, pageRef);
+  showOrHideElements(prompts, pageRef);
 }
