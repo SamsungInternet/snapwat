@@ -25,7 +25,7 @@ function generateFileList(options) {
       if (id === options.id) {
         // Pass in relative filepaths to glob, then adjust prefix appropriately for front-end
         const files = glob.sync(options.patterns)
-          .map(file => `${file.replace('public/', '/')}`);
+          .map(file => file.replace('public/', '/'));
         return `export default ${JSON.stringify(files)};`;
       }
     }
@@ -35,7 +35,7 @@ function generateFileList(options) {
 // Main app code
 rollup.rollup({
   entry: 'src/index.js',
-  plugins: [ 
+  plugins: [
     nodeResolve({ jsnext: true, main: true }),
     commonjs({
       include: 'node_modules/**'
@@ -52,7 +52,7 @@ rollup.rollup({
     replace({
       ENVIRONMENT: JSON.stringify(nodeEnv),
       TWITTER_CLIENT_ID: JSON.stringify(nodeEnv === 'development' ? TWITTER_CLIENT_DEV : TWITTER_CLIENT_PROD)
-    })     
+    })
   ]
 }).then(bundle => {
   bundle.write({
