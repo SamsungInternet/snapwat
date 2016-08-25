@@ -9068,8 +9068,6 @@ var require$$0$4 = Object.freeze({
 
 	var hello = hello_all$1;
 
-	var TWITTER_CLIENT_ID = 'bkMmxlirv04KxJtAbWSgekbVM';
-
 	var saveCanvas$1 = document.getElementById('canvas-save');
 	var tweetButton = document.getElementById('btn-share-twitter');
 	var backBtn$1 = document.getElementById('btn-back-share');
@@ -9088,8 +9086,9 @@ var require$$0$4 = Object.freeze({
 	}
 
 	function initOAuth() {
+	  // Twitter client ID provided by rollup replace plugin
 	  hello.init({
-	    twitter: TWITTER_CLIENT_ID
+	    twitter: "Eqrm5IQ5zgLUfZXrgpVuntjvA"
 	  });
 	}
 

@@ -7,6 +7,12 @@ let babel = require('rollup-plugin-babel');
 let rollup = require('rollup');
 let commonjs = require('rollup-plugin-commonjs');
 let nodeResolve = require('rollup-plugin-node-resolve');
+let replace = require('rollup-plugin-replace');
+
+const TWITTER_CLIENT_PROD = 'bkMmxlirv04KxJtAbWSgekbVM';
+const TWITTER_CLIENT_DEV = 'Eqrm5IQ5zgLUfZXrgpVuntjvA';
+
+let nodeEnv = process.env.NODE_ENV;
 
 function generateFileList(options) {
   return {
@@ -42,6 +48,10 @@ rollup.rollup({
       patterns: [
         'public/images/emojione/*.svg'
       ]
+    }),
+    replace({
+      ENVIRONMENT: JSON.stringify(nodeEnv),
+      TWITTER_CLIENT_ID: JSON.stringify(nodeEnv === 'development' ? TWITTER_CLIENT_DEV : TWITTER_CLIENT_PROD)
     })     
   ]
 }).then(bundle => {
