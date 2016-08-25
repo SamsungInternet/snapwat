@@ -9039,7 +9039,7 @@ var require$$0$4 = Object.freeze({
 	function initOAuth() {
 	  // Twitter client ID provided by rollup replace plugin
 	  hello$1.init({
-	    twitter: "Eqrm5IQ5zgLUfZXrgpVuntjvA"
+	    twitter: "bkMmxlirv04KxJtAbWSgekbVM"
 	  }, {
 	    redirect_uri: 'redirect.html'
 	  });
