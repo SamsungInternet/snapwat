@@ -40,40 +40,15 @@ rollup.rollup({
     generateFileList({
       id: '\0emoji-images',
       patterns: [
-        'images/emojione/*.svg'
+        'public/images/emojione/*.svg'
       ]
     })     
   ]
 }).then(bundle => {
   bundle.write({
     format: 'umd',
-    dest: 'build/bundle.js'
+    dest: 'public/build/bundle.js'
   })
-}).catch(err => {
-  console.error(err);
-});
-
-// Service worker
-rollup.rollup({
-  entry: 'src/sw.js',
-  plugins: [
-    // \0 is a plugin convention indicating a 'virtual module' as opposed to stuff from the filesystem
-    generateFileList({
-      id: '\0cache-manifest',
-      patterns: [
-        '.',
-        'build/bundle.js',
-        'css/styles.css',
-        'images/**/*.svg',
-        'images/**/*.png',
-        'sounds/**/*.wav'
-      ]
-    })
-  ]
-}).then(bundle => {
-  bundle.write({
-    dest: 'build/sw.js'
-  });
 }).catch(err => {
   console.error(err);
 });

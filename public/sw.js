@@ -1,26 +1,4 @@
-import filesToCache from '\0cache-manifest';
-
 const CACHE_NAME = 'cache-v1';
-
-self.addEventListener('install', event => {
-
-  function onInstall () {
-
-    console.log('Service worker installation', CACHE_NAME);
-
-    return caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Caching pre-defined assets on installation...', filesToCache);
-        return cache.addAll( filesToCache )
-          .then(() => {
-            console.log('Cached files, now cache external resources...');
-            return cache.add('https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,400italic,700italic,300italic,600,600italic,800,800italic');
-          });
-      });
-  }
-
-  event.waitUntil(onInstall(event));
-});
 
 self.addEventListener('fetch', event => {
 

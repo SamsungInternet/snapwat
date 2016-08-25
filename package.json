@@ -6,7 +6,8 @@
     "start": "python -m SimpleHTTPServer",
     "watch": "watch 'npm run build' ./src",
     "build": "node build && echo 'Build complete'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "git subtree push --prefix public origin gh-pages"
   },
   "repository": {
     "type": "git",
