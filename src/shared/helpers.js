@@ -29,5 +29,10 @@ function showOrHideElements(elements, pageRef, showStyle = 'block') {
 export function showPage(pageRef) {
   showOrHideElements(toolbars, pageRef, 'flex');
   showOrHideElements(pages, pageRef);
-  showOrHideElements(prompts, pageRef);
+  // Show default prompt for the page if there is one, else hide any prompts
+  showPrompt(pageRef);
+}
+
+export function showPrompt(promptRef) {
+  showOrHideElements(prompts, promptRef);
 }

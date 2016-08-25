@@ -12,7 +12,7 @@
 
     <header>
       <h1>sna<strong>pwa</strong>t</h1>
-      <div class="toolbar" id="toolbar-home">        
+      <div class="toolbar" id="toolbar-home">
         <div class="left">
           <div id="input-colour-container">
             <input id="input-colour" type="color" class="selected"/>
@@ -38,7 +38,7 @@
         <div class="left">
           <button id="btn-back-share" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
         </div>
-        <h2>Tweet from <span id="twitter-handle"></span></h2>
+        <p>Tweet from @<span id="twitter-username"></span></p>
         <div class="right"></div>
       </div>
     </header>
@@ -59,7 +59,13 @@
     </div>
 
     <div class="prompt" id="prompt-snapshot">
-        <p>Tap-and-hold or right click the image to save it.</p>
+      <p>Tap-and-hold or right click the image to save it.</p>
+    </div>
+    <div class="prompt" id="prompt-tweet-ok">
+      <p>Successfully tweeted.</p>
+    </div>
+    <div class="prompt" id="prompt-tweet-error">
+      <p>Unable to send tweet. Sorry =(</p>
     </div>
 
     <div id="modal-emoji" class="modal">

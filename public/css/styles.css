@@ -28,7 +28,7 @@ header .right {
 header .left {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start; 
+  align-items: flex-start;
 }
 
 header .right {
@@ -234,7 +234,7 @@ canvas {
 #share-text {
   display: block;
   box-sizing: border-box;
-  width: 80%;
+  width: 90%;
   border: 0;
   font-size: 1.3em;
   padding: 10px;
@@ -244,13 +244,13 @@ canvas {
 
 #share-preview {
   display: block;
-  max-width: 80%;
+  max-width: 70%;
   margin: 10px auto;
 }
 
 #share-submit {
   display: block;
-  width: 80%;
+  width: 90%;
   margin: 10px auto;
   background-color: transparent;
   color: #fff;
@@ -265,6 +265,7 @@ canvas {
   z-index: 11;
   display: none;
   position: absolute;
+  box-sizing: border-box;
   bottom: 15px;
   left: 5%;
   width: 90%;
