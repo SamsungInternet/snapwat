@@ -2825,6 +2825,12 @@ var require$$0$4 = Object.freeze({
 
 	var HEADER_HEIGHT = 72;
 
+	var PAGES = {
+	  HOME: 'home',
+	  SNAPSHOT: 'snapshot',
+	  SHARE: 'share'
+	};
+
 	var video = document.querySelector('video');
 	var canvas = document.getElementById('canvas-camera');
 	var context$1 = context$1 = canvas.getContext('2d');
@@ -2879,7 +2885,7 @@ var require$$0$4 = Object.freeze({
 	  });
 	}
 
-	function init$2() {
+	function init$1() {
 	  initCanvas();
 	  initCameraStream();
 	}
@@ -3110,7 +3116,7 @@ var require$$0$4 = Object.freeze({
 	  ctx.lineWidth = 3;
 	}
 
-	function initControls() {
+	function initControls$1() {
 
 	  colourInput.addEventListener('input', onColourClickOrChange);
 	  colourInput.addEventListener('click', onColourClickOrChange);
@@ -3150,103 +3156,9 @@ var require$$0$4 = Object.freeze({
 	  emojiModal.innerHTML = html;
 	}
 
-	function init$3() {
+	function init$2() {
 	  initCanvas$1();
 	  initEmojis();
-	  initControls();
-	}
-
-	function init$1() {
-	  init$2();
-	  init$3();
-	}
-
-	var toolbars = document.getElementsByClassName('toolbar');
-	var pages = document.getElementsByClassName('page');
-	var prompts = document.getElementsByClassName('prompt');
-
-	/**
-	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
-	 */
-	function dataURItoBlob(dataURI) {
-	  var byteString = atob(dataURI.split(',')[1]);
-	  var ab = new ArrayBuffer(byteString.length);
-	  var ia = new Uint8Array(ab);
-	  for (var i = 0; i < byteString.length; i++) {
-	    ia[i] = byteString.charCodeAt(i);
-	  }
-	  return new Blob([ab], { type: 'image/png' });
-	}
-
-	function showOrHideElements(elements, pageRef) {
-	  var showStyle = arguments.length <= 2 || arguments[2] === undefined ? 'block' : arguments[2];
-
-	  for (var i = 0; i < elements.length; i++) {
-	    var el = elements[i];
-	    if (el.id.endsWith('-' + pageRef)) {
-	      el.style.display = showStyle;
-	    } else {
-	      el.style.display = 'none';
-	    }
-	  }
-	}
-
-	function showPage(pageRef) {
-	  showOrHideElements(toolbars, pageRef, 'flex');
-	  showOrHideElements(pages, pageRef);
-	  showOrHideElements(prompts, pageRef);
-	}
-
-	var backBtn = document.getElementById('btn-back-snapshot');
-	var snapshotBtn = document.getElementById('btn-snapshot');
-	var cameraCanvas = document.getElementById('canvas-camera');
-	var drawingCanvas = document.getElementById('canvas-draw');
-	var saveCanvas = document.getElementById('canvas-save');
-	var saveImage = document.getElementById('image-save');
-	var saveCtx = saveCanvas.getContext('2d');
-
-	function showSnapshotPage() {
-
-	  playCameraSound();
-
-	  // Copy the other canvases onto a single canvas for saving
-	  saveCtx.drawImage(cameraCanvas, 0, 0);
-	  saveCtx.drawImage(drawingCanvas, 0, 0);
-
-	  // Add the URL at the bottom
-	  saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 15);
-
-	  saveImage.src = saveCanvas.toDataURL('image/png');
-	  saveImage.style.display = 'block';
-
-	  showPage('snapshot');
-	}
-
-	function initSave() {
-
-	  saveCanvas.width = window.innerWidth;
-	  saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
-
-	  saveCtx.font = '16px Arial';
-	  saveCtx.fillStyle = '#fff';
-
-	  saveImage.width = window.innerWidth;
-	  saveImage.height = window.innerHeight - HEADER_HEIGHT;
-	}
-
-	function initControls$1() {
-
-	  snapshotBtn.addEventListener('click', function () {
-	    showSnapshotPage();
-	  });
-
-	  backBtn.addEventListener('click', function () {
-	    showPage('home');
-	  });
-	}
-
-	function init$4() {
-	  initSave();
 	  initControls$1();
 	}
 
@@ -9071,30 +8983,131 @@ var require$$0$4 = Object.freeze({
 
 	var hello_all$1 = interopDefault(hello_all);
 
-	var hello = hello_all$1;
+	var toolbars = document.getElementsByClassName('toolbar');
+	var pages = document.getElementsByClassName('page');
+	var prompts = document.getElementsByClassName('prompt');
+
+	/**
+	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
+	 */
+	function dataURItoBlob(dataURI) {
+	  var byteString = atob(dataURI.split(',')[1]);
+	  var ab = new ArrayBuffer(byteString.length);
+	  var ia = new Uint8Array(ab);
+	  for (var i = 0; i < byteString.length; i++) {
+	    ia[i] = byteString.charCodeAt(i);
+	  }
+	  return new Blob([ab], { type: 'image/png' });
+	}
+
+	function showOrHideElements(elements, pageRef) {
+	  var showStyle = arguments.length <= 2 || arguments[2] === undefined ? 'block' : arguments[2];
+
+	  for (var i = 0; i < elements.length; i++) {
+	    var el = elements[i];
+	    if (el.id.endsWith('-' + pageRef)) {
+	      el.style.display = showStyle;
+	    } else {
+	      el.style.display = 'none';
+	    }
+	  }
+	}
+
+	function showPage(pageRef) {
+	  showOrHideElements(toolbars, pageRef, 'flex');
+	  showOrHideElements(pages, pageRef);
+	  // Show default prompt for the page if there is one, else hide any prompts
+	  showPrompt(pageRef);
+	}
+
+	function showPrompt(promptRef) {
+	  showOrHideElements(prompts, promptRef);
+	}
+
+	var hello$1 = hello_all$1;
+	var PAGE_NAME$2 = PAGES.SHARE;
 
 	var saveCanvas$1 = document.getElementById('canvas-save');
-	var tweetButton = document.getElementById('btn-share-twitter');
 	var backBtn$1 = document.getElementById('btn-back-share');
 	var shareTextInput = document.getElementById('share-text');
 	var shareImagePreview = document.getElementById('share-preview');
 	var shareSubmitButton = document.getElementById('share-submit');
+	var twitterUsernameDisplay = document.getElementById('twitter-username');
 
 	var imageDataURI = null;
 
-	function showSharePage() {
-
-	  imageDataURI = saveCanvas$1.toDataURL('image/png');
-
-	  shareImagePreview.src = imageDataURI;
-	  showPage('share');
-	}
-
 	function initOAuth() {
 	  // Twitter client ID provided by rollup replace plugin
-	  hello.init({
+	  hello$1.init({
 	    twitter: "Eqrm5IQ5zgLUfZXrgpVuntjvA"
 	  });
+	}
+
+	function initControls$3() {
+
+	  shareSubmitButton.addEventListener('click', function () {
+
+	    var blob = dataURItoBlob(imageDataURI);
+
+	    hello$1('twitter').api('me/share', 'POST', {
+	      message: shareTextInput.value,
+	      file: blob
+	    }).then(function (json) {
+	      console.log('Twitter response', json);
+	      HomePage.show();
+	      showPrompt('tweet-ok');
+	    }, function (err) {
+	      console.error('Twitter error', err);
+	      HomePage.show();
+	      showPrompt('tweet-error');
+	    });
+	  });
+
+	  backBtn$1.addEventListener('click', function () {
+	    SnapshotPage.show();
+	  });
+	}
+
+	var SharePage = {
+
+	  init: function init() {
+	    initOAuth();
+	    initControls$3();
+	  },
+
+	  show: function show(data) {
+
+	    imageDataURI = saveCanvas$1.toDataURL('image/png');
+	    shareImagePreview.src = imageDataURI;
+
+	    twitterUsernameDisplay.innerText = data.username;
+
+	    showPage(PAGE_NAME$2);
+	  }
+
+	};
+
+	var hello = hello_all$1;
+	var PAGE_NAME$1 = PAGES.SNAPSHOT;
+
+	var backBtn = document.getElementById('btn-back-snapshot');
+	var tweetButton = document.getElementById('btn-share-twitter');
+	var cameraCanvas = document.getElementById('canvas-camera');
+	var drawingCanvas = document.getElementById('canvas-draw');
+	var saveCanvas = document.getElementById('canvas-save');
+	var saveImage = document.getElementById('image-save');
+	var saveCtx = saveCanvas.getContext('2d');
+
+	function initSave() {
+
+	  saveCanvas.width = window.innerWidth;
+	  saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
+
+	  saveCtx.font = '16px Arial';
+	  saveCtx.fillStyle = '#fff';
+
+	  saveImage.width = window.innerWidth;
+	  saveImage.height = window.innerHeight - HEADER_HEIGHT;
 	}
 
 	function initControls$2() {
@@ -9103,42 +9116,75 @@ var require$$0$4 = Object.freeze({
 
 	    hello('twitter').login().then(function (res) {
 	      console.log('Logged into Twitter', res);
-	      showSharePage();
+	      SharePage.show({ username: res.authResponse.screen_name });
 	    }, function (err) {
 	      console.error('Error logging in to Twitter', err);
 	    });
 	  });
 
-	  shareSubmitButton.addEventListener('click', function () {
-
-	    var blob = dataURItoBlob(imageDataURI);
-
-	    hello('twitter').api('me/share', 'POST', {
-	      message: shareTextInput.value,
-	      file: blob
-	    }).then(function (json) {
-	      console.log('Twitter response', json);
-	    });
-
-	    showPage('home');
-	  });
-
-	  backBtn$1.addEventListener('click', function () {
-	    showPage('snapshot');
+	  backBtn.addEventListener('click', function () {
+	    HomePage.show();
 	  });
 	}
 
-	function init$5() {
-	  initOAuth();
-	  initControls$2();
+	var SnapshotPage = {
+
+	  init: function init() {
+	    initSave();
+	    initControls$2();
+	  },
+
+	  show: function show() {
+
+	    playCameraSound();
+
+	    // Copy the other canvases onto a single canvas for saving
+	    saveCtx.drawImage(cameraCanvas, 0, 0);
+	    saveCtx.drawImage(drawingCanvas, 0, 0);
+
+	    // Add the URL at the bottom
+	    saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 15);
+
+	    saveImage.src = saveCanvas.toDataURL('image/png');
+	    saveImage.style.display = 'block';
+
+	    showPage(PAGE_NAME$1);
+	    showPrompt(PAGE_NAME$1);
+	  }
+
+	};
+
+	var PAGE_NAME = PAGES.HOME;
+
+	var snapshotBtn = document.getElementById('btn-snapshot');
+
+	function initControls() {
+
+	  snapshotBtn.addEventListener('click', function () {
+	    SnapshotPage.show();
+	  });
 	}
+
+	var HomePage = {
+
+	  init: function init() {
+	    init$1();
+	    init$2();
+	    initControls();
+	  },
+
+	  show: function show() {
+	    showPage(PAGE_NAME);
+	  }
+
+	};
 
 	SWRegister();
 	InputColour();
 	init();
 
-	init$1();
-	init$4();
-	init$5();
+	HomePage.init();
+	SnapshotPage.init();
+	SharePage.init();
 
 }));
