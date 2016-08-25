@@ -40,17 +40,15 @@ rollup.rollup({
     generateFileList({
       id: '\0emoji-images',
       patterns: [
-        'images/**/*.svg'
+        'images/emojione/*.svg'
       ]
     })     
   ]
 }).then(bundle => {
-
   bundle.write({
     format: 'umd',
     dest: 'build/bundle.js'
   })
-
 }).catch(err => {
   console.error(err);
 });
@@ -73,11 +71,9 @@ rollup.rollup({
     })
   ]
 }).then(bundle => {
-
   bundle.write({
     dest: 'build/sw.js'
   });
-
 }).catch(err => {
   console.error(err);
 });
