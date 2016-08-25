@@ -3156,8 +3156,9 @@ var require$$0$4 = Object.freeze({
 	  init$3();
 	}
 
-	var headers = document.getElementsByTagName('header');
+	var toolbars = document.getElementsByClassName('toolbar');
 	var pages = document.getElementsByClassName('page');
+	var prompts = document.getElementsByClassName('prompt');
 
 	/**
 	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
@@ -3186,8 +3187,9 @@ var require$$0$4 = Object.freeze({
 	}
 
 	function showPage(pageRef) {
-	  showOrHideElements(headers, pageRef, 'flex');
+	  showOrHideElements(toolbars, pageRef, 'flex');
 	  showOrHideElements(pages, pageRef);
+	  showOrHideElements(prompts, pageRef);
 	}
 
 	var backBtn = document.getElementById('btn-back-snapshot');
