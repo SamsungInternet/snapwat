@@ -12,6 +12,7 @@ on top.
 
 Choosing a photo from your gallery should be coming soon and recording videos may come later...
 
+
 ## How to use it
 
 Choose a colour using the colour picker in the corner and start drawing over the camera view.
@@ -114,3 +115,7 @@ Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/6105
 
 Thanks to Rich Harris for making a [rollup cache manifest example](https://gitlab.com/Rich-Harris/rollup-cache-manifest-example) 
 for me (and for [rollup](http://rollupjs.org/) in general!)
+
+# Licence
+
+MIT

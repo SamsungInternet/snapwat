@@ -1,3 +1,4 @@
+import emojiImages from '\0emoji-images';
 import {HEADER_HEIGHT} from '../../shared/constants';
 
 let canvas = document.getElementById('canvas-draw');
@@ -273,7 +274,21 @@ function initControls() {
 
 }
 
+function initEmojis() {
+
+  let html = '';
+
+  for (let i=0; i < emojiImages.length; i++) {
+    const path = emojiImages[i];
+    html += `<img src="${path}" alt="Emoji"/>`;
+  }
+
+  emojiModal.innerHTML = html;
+
+}
+
 export default function init() {
   initCanvas();
+  initEmojis();
   initControls();
 }
