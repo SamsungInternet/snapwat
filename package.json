@@ -7,7 +7,7 @@
     "watch": "watch 'NODE_ENV=development npm run build' ./src",
     "build": "node build && echo 'Build complete'",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "NODE_ENV=production && git commit -m public/build 'Production build for deployment' && git subtree push --prefix public origin gh-pages"
+    "deploy": "NODE_ENV=production npm run build && git commit -m 'Production build for deployment' public/build && git subtree push --prefix public origin gh-pages"
   },
   "repository": {
     "type": "git",
