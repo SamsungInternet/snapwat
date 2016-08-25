@@ -20,6 +20,8 @@ function initOAuth() {
   // Twitter client ID provided by rollup replace plugin
   hello.init({
     twitter: TWITTER_CLIENT_ID
+  }, {
+    redirect_uri: 'redirect.html'
   });
 }
 
@@ -36,13 +38,13 @@ function initControls() {
       })
       .then(json => {
         console.log('Twitter response', json);
-        HomePage.show();
         showPrompt('tweet-ok');
       }, err => {
         console.error('Twitter error', err);
-        HomePage.show();
         showPrompt('tweet-error');
       });
+
+    HomePage.show();
 
   });
 
