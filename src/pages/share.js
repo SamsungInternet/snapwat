@@ -16,11 +16,10 @@ let shareSubmitButton = document.getElementById('share-submit');
 
 let imageDataURI = null;
 
-
 function showSharePage() {
 
   imageDataURI = saveCanvas.toDataURL('image/png');
-  
+
   shareImagePreview.src = imageDataURI;
   showPage('share');
 
@@ -49,31 +48,18 @@ function initControls() {
 
   shareSubmitButton.addEventListener('click', () => {
 
-    // First we need to upload the image
+    let blob = dataURItoBlob(imageDataURI);
 
     hello('twitter')
-      .api('media/upload.json', 'POST', {
-        media_data: imageDataURI
+      .api('me/share', 'POST', {
+        message: shareTextInput.value,
+        file: blob
       })
       .then(json => {
+        console.log('Twitter response', json);
+      });
 
-        console.log('Response from media upload', json);
-
-        // Now share in a tweet
-
-        /*
-        hello('twitter')
-          .api('me/share', 'POST', {
-            message: shareTextInput.value
-          })
-          .then(json => {
-            console.error('Twitter response', json);
-          });
-        */
-
-      })
-
-    //showPage('home');
+    showPage('home');
 
   });
 

@@ -2879,8 +2879,6 @@ var require$$0$4 = Object.freeze({
 	  initCameraStream();
 	}
 
-	var emojiImages = ["/images/emojione/1f354.svg","/images/emojione/1f369.svg","/images/emojione/1f3a4.svg","/images/emojione/1f3a9.svg","/images/emojione/1f3b8.svg","/images/emojione/1f3c6.svg","/images/emojione/1f415.svg","/images/emojione/1f420.svg","/images/emojione/1f43c.svg","/images/emojione/1f444.svg","/images/emojione/1f445.svg","/images/emojione/1f448.svg","/images/emojione/1f449.svg","/images/emojione/1f44d.svg","/images/emojione/1f44f.svg","/images/emojione/1f484.svg","/images/emojione/1f48b.svg","/images/emojione/1f4a1.svg","/images/emojione/1f4af.svg","/images/emojione/1f4b0.svg","/images/emojione/1f4ef.svg","/images/emojione/1f525.svg","/images/emojione/1f58c.svg","/images/emojione/1f600.svg","/images/emojione/1f602.svg","/images/emojione/1f606.svg","/images/emojione/1f609.svg","/images/emojione/1f60d.svg","/images/emojione/1f60e.svg","/images/emojione/1f612.svg","/images/emojione/1f61d.svg","/images/emojione/1f621.svg","/images/emojione/1f622.svg","/images/emojione/1f628.svg","/images/emojione/1f62d.svg","/images/emojione/1f62e.svg","/images/emojione/1f631.svg","/images/emojione/1f644.svg","/images/emojione/1f911.svg","/images/emojione/1f918.svg","/images/emojione/1f922.svg","/images/emojione/1f926.svg","/images/emojione/1f947.svg","/images/emojione/1f98d.svg","/images/emojione/2600.svg","/images/emojione/261d.svg","/images/emojione/2620.svg","/images/emojione/2622.svg","/images/emojione/262e.svg","/images/emojione/270c.svg","/images/emojione/2757.svg","/images/emojione/2764.svg","/images/iconic/arrow-left.svg","/images/iconic/camera-slr.svg","/images/iconic/data-transfer-download.svg","/images/iconic/trash.svg","/images/twitter-logo.svg"];
-
 	var canvas$1 = document.getElementById('canvas-draw');
 	var ctx = ctx = canvas$1.getContext('2d');
 	var colourInput = document.getElementById('input-colour');
@@ -3133,22 +3131,9 @@ var require$$0$4 = Object.freeze({
 	  });
 	}
 
-	function initEmojis() {
-
-	  var html = '';
-
-	  for (var i = 0; i < emojiImages.length; i++) {
-	    var path = emojiImages[i];
-	    html += '<img src="' + path + '" alt="Emoji"/>';
-	  }
-
-	  emojiModal.innerHTML = html;
-	}
-
 	function init$3() {
 	  initCanvas$1();
 	  initControls();
-	  initEmojis();
 	}
 
 	function init$1() {
@@ -3158,6 +3143,19 @@ var require$$0$4 = Object.freeze({
 
 	var headers = document.getElementsByTagName('header');
 	var pages = document.getElementsByClassName('page');
+
+	/**
+	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
+	 */
+	function dataURItoBlob(dataURI) {
+	  var byteString = atob(dataURI.split(',')[1]);
+	  var ab = new ArrayBuffer(byteString.length);
+	  var ia = new Uint8Array(ab);
+	  for (var i = 0; i < byteString.length; i++) {
+	    ia[i] = byteString.charCodeAt(i);
+	  }
+	  return new Blob([ab], { type: 'image/png' });
+	}
 
 	function showOrHideElements(elements, pageRef) {
 	  var showStyle = arguments.length <= 2 || arguments[2] === undefined ? 'block' : arguments[2];
@@ -9096,28 +9094,16 @@ var require$$0$4 = Object.freeze({
 
 	  shareSubmitButton.addEventListener('click', function () {
 
-	    // First we need to upload the image
+	    var blob = dataURItoBlob(imageDataURI);
 
-	    hello('twitter').api('media/upload.json', 'POST', {
-	      media_data: imageDataURI
+	    hello('twitter').api('me/share', 'POST', {
+	      message: shareTextInput.value,
+	      file: blob
 	    }).then(function (json) {
-
-	      console.log('Response from media upload', json);
-
-	      // Now share in a tweet
-
-	      /*
-	      hello('twitter')
-	        .api('me/share', 'POST', {
-	          message: shareTextInput.value
-	        })
-	        .then(json => {
-	          console.error('Twitter response', json);
-	        });
-	      */
+	      console.log('Twitter response', json);
 	    });
 
-	    //showPage('home');
+	    showPage('home');
 	  });
 
 	  backBtn$1.addEventListener('click', function () {
