@@ -9040,6 +9040,8 @@ var require$$0$4 = Object.freeze({
 	  // Twitter client ID provided by rollup replace plugin
 	  hello$1.init({
 	    twitter: "Eqrm5IQ5zgLUfZXrgpVuntjvA"
+	  }, {
+	    redirect_uri: 'redirect.html'
 	  });
 	}
 
@@ -9054,13 +9056,13 @@ var require$$0$4 = Object.freeze({
 	      file: blob
 	    }).then(function (json) {
 	      console.log('Twitter response', json);
-	      HomePage.show();
 	      showPrompt('tweet-ok');
 	    }, function (err) {
 	      console.error('Twitter error', err);
-	      HomePage.show();
 	      showPrompt('tweet-error');
 	    });
+
+	    HomePage.show();
 	  });
 
 	  backBtn$1.addEventListener('click', function () {
