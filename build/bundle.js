@@ -9151,7 +9151,6 @@ var require$$0$4 = Object.freeze({
 	    saveImage.style.display = 'block';
 
 	    showPage(PAGE_NAME$1);
-	    showPrompt(PAGE_NAME$1);
 	  }
 
 	};
