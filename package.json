@@ -5,7 +5,7 @@
   "scripts": {
     "start": "python -m SimpleHTTPServer",
     "watch": "watch 'npm run build' ./src",
-    "build": "rollup -c > build/bundle.js && rollup -c rollup.config.sw.js > build/sw.js && echo 'Build complete'",
+    "build": "node build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
