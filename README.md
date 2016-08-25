@@ -12,6 +12,7 @@ on top.
 
 Choosing a photo from your gallery should be coming soon and recording videos may come later...
 
+
 ## How to use it
 
 Choose a colour using the colour picker in the corner and start drawing over the camera view.
@@ -104,3 +105,8 @@ Emojis provided free by [EmojiOne](http://emojione.com/).
 Icons by [Iconic](https://useiconic.com/).
 
 Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/61059/).
+
+
+# Licence
+
+MIT
