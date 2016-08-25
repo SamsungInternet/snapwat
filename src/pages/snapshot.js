@@ -73,7 +73,6 @@ export default {
     saveImage.style.display = 'block';
 
     showPage(PAGE_NAME);
-    showPrompt(PAGE_NAME);
 
   }
 
