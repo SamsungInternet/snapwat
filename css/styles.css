@@ -206,7 +206,7 @@ canvas {
   display: none;
   z-index: 10;
   position: absolute;
-  width: 90%;
+  width: 95%;
   height: 85%;
   height: -webkit-calc(100% - 90px);
   height: -moz-calc(100% - 90px);
@@ -214,7 +214,7 @@ canvas {
   height: -ms-calc(100% - 90px);
   height: calc(100% - 90px);
   top: 72px;
-  left: 5%;
+  left: 2.5%;
   padding: 15px;
   box-sizing: border-box;
   background: #7f4fff;

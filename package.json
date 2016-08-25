@@ -5,7 +5,7 @@
   "scripts": {
     "start": "python -m SimpleHTTPServer",
     "watch": "watch 'npm run build' ./src",
-    "build": "node build",
+    "build": "node build && echo 'Build complete'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
