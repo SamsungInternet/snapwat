@@ -1,8 +1,7 @@
 /**
  * Server just used to serve our static front-end for local development.
- * (Previously I was just doing `python -m SimpleHTTPServer` but once 
- * I moved the static files under `public`, this became annoying).
  */
+
 'use strict';
 
 const express = require('express');
