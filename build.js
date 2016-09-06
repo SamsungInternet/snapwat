@@ -23,7 +23,7 @@ function generateFileList(options) {
     },
     load(id) {
       if (id === options.id) {
-        // Pass in relative filepaths to glob, then adjust prefix appropriately for front-end
+        // Pass in relative filepaths to glob, then convert to appropriate URLs for service worker
         const files = glob.sync(options.patterns)
           .map(file => file.replace('public/', '/'));
         return `export default ${JSON.stringify(files)};`;
