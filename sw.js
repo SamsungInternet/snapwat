@@ -1,5 +1,28 @@
 const CACHE_NAME = 'cache-v1';
 
+const IMMEDIATE_CACHE_URLS = [
+  '/',
+  '/css/styles.css',
+  '/build/bundle.js',
+  'https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,400italic,700italic,300italic,600,600italic,800,800italic'
+];
+
+self.addEventListener('install', event => {
+
+  function onInstall () {
+
+    console.log('Service worker installation', CACHE_NAME);
+
+    return caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Caching pre-defined assets on installation...', );
+        return cache.addAll(IMMEDIATE_CACHE_URLS);
+      });
+  }
+
+  event.waitUntil(onInstall(event));
+});
+
 self.addEventListener('fetch', event => {
 
   // Clone so we can consume it more than once
@@ -25,8 +48,7 @@ self.addEventListener('fetch', event => {
     })
     .catch(err => {
 
-      // Fetch failed. Maybe we're offline. Try the cache.
-      console.log('Fetch failed, try cache', err);
+      console.log('Fetch failed, maybe we are offline. Try cache...', err);
 
       event.respondWith(
         caches.match(event.request)
