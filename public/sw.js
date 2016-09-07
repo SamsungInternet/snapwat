@@ -2,6 +2,7 @@ const CACHE_NAME = 'cache-v1';
 
 const IMMEDIATE_CACHE_URLS = [
   '/',
+  '/index.html',
   '/css/styles.css',
   '/build/bundle.js',
   'https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,400italic,700italic,300italic,600,600italic,800,800italic'
