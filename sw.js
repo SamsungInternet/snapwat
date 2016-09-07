@@ -26,11 +26,8 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
 
-  // Clone so we can consume it more than once
-  let fetchRequest = event.request.clone();
-
   // If we can fetch latest version, then do so
-  return fetch(fetchRequest)
+  const responsePromise = fetch(event.request)
     .then(response => {
 
       if (!response || response.status >= 300 || response.type !== 'basic') {
@@ -38,7 +35,8 @@ self.addEventListener('fetch', event => {
         return response;
       }
 
-      let responseToCache = response.clone();
+      // Clone so we can consume it to cache it, as well as allow it to return normally
+      const responseToCache = response.clone();
 
       caches.open(CACHE_NAME)
         .then(cache => {
@@ -51,20 +49,20 @@ self.addEventListener('fetch', event => {
 
       console.log('Fetch failed, maybe we are offline. Try cache...', err);
 
-      event.respondWith(
-        caches.match(event.request)
-          .then(response => {
-              if (response) {
-                console.log('Cache hit', event.request);
-                return response;
-              } else {
-                console.log('Offline cache miss =(');
-              }
+      return caches.match(event.request)
+        .then(response => {
+            if (response) {
+              console.log('Cache hit', event.request);
+              return response;
+            } else {
+              console.log('Offline cache miss =(');
             }
-          )
-      );
+          }
+        );
 
     });
+
+  event.respondWith(responsePromise);
 
 });
 
