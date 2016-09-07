@@ -16,7 +16,7 @@ self.addEventListener('install', event => {
 
     return caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Caching pre-defined assets on installation...', );
+        console.log('Caching pre-defined assets on installation...', IMMEDIATE_CACHE_URLS);
         return cache.addAll(IMMEDIATE_CACHE_URLS);
       });
   }
