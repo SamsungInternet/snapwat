@@ -1,10 +1,15 @@
 const CACHE_NAME = 'cache-v1';
 
+// The advice is to not cache too much on install.
+// This is the minimal amount needed to display the initial page.
 const IMMEDIATE_CACHE_URLS = [
   '/',
   '/index.html',
   '/css/styles.css',
   '/build/bundle.js',
+  '/images/emojione/1f600.svg',
+  '/images/iconic/trash.svg',
+  '/images/iconic/camera-slr.svg',
   'https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,400italic,700italic,300italic,600,600italic,800,800italic'
 ];
 
@@ -32,10 +37,10 @@ self.addEventListener('fetch', event => {
 
       if (!response || response.status >= 300 || response.type !== 'basic') {
         // Don't cache response if it's not within our domain or not 2xx status
-        return response;
+        reiturn response;
       }
 
-      // Clone so we can consume it to cache it, as well as allow it to return normally
+      // Clone it to allow us to cache it
       const responseToCache = response.clone();
 
       caches.open(CACHE_NAME)
@@ -66,14 +71,15 @@ self.addEventListener('fetch', event => {
 
 });
 
-// Clear out old versions
 self.addEventListener('activate', function(event) {
+  
   const cacheWhitelist = [CACHE_NAME];
 
   event.waitUntil(
     caches.keys(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
+          // Clear out old cache versions
           if (cacheWhitelist.indexOf(cacheName) == -1) {
             return caches.delete(cacheName);
           }
