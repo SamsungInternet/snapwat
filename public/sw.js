@@ -37,7 +37,7 @@ self.addEventListener('fetch', event => {
 
       if (!response || response.status >= 300 || response.type !== 'basic') {
         // Don't cache response if it's not within our domain or not 2xx status
-        reiturn response;
+        return response;
       }
 
       // Clone it to allow us to cache it
