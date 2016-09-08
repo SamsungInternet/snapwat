@@ -2,7 +2,7 @@ const CACHE_NAME = 'cache-v1';
 
 // The advice is to not cache too much on install.
 // This is the minimal amount needed to display the initial page.
-const IMMEDIATE_CACHE_URLS = [
+const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/css/styles.css',
@@ -21,14 +21,17 @@ self.addEventListener('install', event => {
 
     return caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Caching pre-defined assets on installation...', IMMEDIATE_CACHE_URLS);
-        return cache.addAll(IMMEDIATE_CACHE_URLS);
+        console.log('Caching pre-defined assets on installation...', PRECACHE_URLS);
+        return cache.addAll(PRECACHE_URLS);
       });
   }
 
   event.waitUntil(onInstall(event));
 });
 
+/**
+ * Cache other resources, e.g. the rest of the emojis, on fetch.
+ */
 self.addEventListener('fetch', event => {
 
   // If we can fetch latest version, then do so
@@ -56,14 +59,13 @@ self.addEventListener('fetch', event => {
 
       return caches.match(event.request)
         .then(response => {
-            if (response) {
-              console.log('Cache hit', event.request);
-              return response;
-            } else {
-              console.log('Offline cache miss =(');
-            }
+          if (response) {
+            console.log('Cache hit', event.request);
+            return response;
+          } else {
+            console.log('Offline cache miss =(');
           }
-        );
+        });
 
     });
 
@@ -71,6 +73,9 @@ self.addEventListener('fetch', event => {
 
 });
 
+/**
+ * Clear out old caches on activation
+ */
 self.addEventListener('activate', function(event) {
   
   const cacheWhitelist = [CACHE_NAME];
@@ -79,7 +84,7 @@ self.addEventListener('activate', function(event) {
     caches.keys(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          // Clear out old cache versions
+          // If it is not a current cache, delete it
           if (cacheWhitelist.indexOf(cacheName) == -1) {
             return caches.delete(cacheName);
           }
