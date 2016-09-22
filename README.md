@@ -93,6 +93,12 @@ To watch for changes (in a separate terminal):
 To test the sharing feature locally, ensure you have a `NODE_ENV` environment variable set to
 'development'.
 
+For reference, deploying is currently a bit messy - I should make this easier later:
+
+* ```NODE_ENV=production npm run build``` to build with prod config
+* Git commit
+* ```git subtree push --prefix public origin gh-pages```
+
 
 ## Snapwat the name
 
