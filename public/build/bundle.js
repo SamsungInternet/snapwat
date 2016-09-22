@@ -2831,6 +2831,47 @@ var require$$0$4 = Object.freeze({
 	  SHARE: 'share'
 	};
 
+	var toolbars = document.getElementsByClassName('toolbar');
+	var pages = document.getElementsByClassName('page');
+	var prompts = document.getElementsByClassName('prompt');
+
+	/**
+	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
+	 */
+	function dataURItoBlob(dataURI) {
+	  var byteString = atob(dataURI.split(',')[1]);
+	  var ab = new ArrayBuffer(byteString.length);
+	  var ia = new Uint8Array(ab);
+	  for (var i = 0; i < byteString.length; i++) {
+	    ia[i] = byteString.charCodeAt(i);
+	  }
+	  return new Blob([ab], { type: 'image/png' });
+	}
+
+	function showOrHideElements(elements, pageRef) {
+	  var showStyle = arguments.length <= 2 || arguments[2] === undefined ? 'block' : arguments[2];
+
+	  for (var i = 0; i < elements.length; i++) {
+	    var el = elements[i];
+	    if (el.id.endsWith('-' + pageRef)) {
+	      el.style.display = showStyle;
+	    } else {
+	      el.style.display = 'none';
+	    }
+	  }
+	}
+
+	function showPage(pageRef) {
+	  showOrHideElements(toolbars, pageRef, 'flex');
+	  showOrHideElements(pages, pageRef);
+	  // Show default prompt for the page if there is one, else hide any prompts
+	  showPrompt(pageRef);
+	}
+
+	function showPrompt(promptRef) {
+	  showOrHideElements(prompts, promptRef);
+	}
+
 	var video = document.querySelector('video');
 	var canvas = document.getElementById('canvas-camera');
 	var context$1 = context$1 = canvas.getContext('2d');
@@ -2855,14 +2896,14 @@ var require$$0$4 = Object.freeze({
 	  window.addEventListener('resize', setCanvasSize, false);
 	}
 
-	function alertUnsupported() {
-	  alert('Oh no! Your browser does not appear to have camera support (getUserMedia)' + 'or there was a problem initiating it. Maybe try another browser? =)');
+	function showUnsupported() {
+	  showPrompt('webrtc-unsupported');
 	}
 
 	function initCameraStream() {
 
 	  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-	    alertUnsupported();
+	    showUnsupported();
 	    return;
 	  }
 
@@ -2881,7 +2922,7 @@ var require$$0$4 = Object.freeze({
 	    requestAnimationFrame(copyVideoToCanvas);
 	  }).catch(function (err) {
 	    console.error('getUserMedia error', err);
-	    alertUnsupported();
+	    showUnsupported();
 	  });
 	}
 
@@ -8982,47 +9023,6 @@ var require$$0$4 = Object.freeze({
 	});
 
 	var hello_all$1 = interopDefault(hello_all);
-
-	var toolbars = document.getElementsByClassName('toolbar');
-	var pages = document.getElementsByClassName('page');
-	var prompts = document.getElementsByClassName('prompt');
-
-	/**
-	 * Thanks to: http://gorigins.com/posting-a-canvas-image-to-facebook-and-twitter/
-	 */
-	function dataURItoBlob(dataURI) {
-	  var byteString = atob(dataURI.split(',')[1]);
-	  var ab = new ArrayBuffer(byteString.length);
-	  var ia = new Uint8Array(ab);
-	  for (var i = 0; i < byteString.length; i++) {
-	    ia[i] = byteString.charCodeAt(i);
-	  }
-	  return new Blob([ab], { type: 'image/png' });
-	}
-
-	function showOrHideElements(elements, pageRef) {
-	  var showStyle = arguments.length <= 2 || arguments[2] === undefined ? 'block' : arguments[2];
-
-	  for (var i = 0; i < elements.length; i++) {
-	    var el = elements[i];
-	    if (el.id.endsWith('-' + pageRef)) {
-	      el.style.display = showStyle;
-	    } else {
-	      el.style.display = 'none';
-	    }
-	  }
-	}
-
-	function showPage(pageRef) {
-	  showOrHideElements(toolbars, pageRef, 'flex');
-	  showOrHideElements(pages, pageRef);
-	  // Show default prompt for the page if there is one, else hide any prompts
-	  showPrompt(pageRef);
-	}
-
-	function showPrompt(promptRef) {
-	  showOrHideElements(prompts, promptRef);
-	}
 
 	var hello$1 = hello_all$1;
 	var PAGE_NAME$2 = PAGES.SHARE;

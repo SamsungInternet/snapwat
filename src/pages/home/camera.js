@@ -1,5 +1,6 @@
 import webrtcAdapter from 'webrtc-adapter';
 import {HEADER_HEIGHT} from '../../shared/constants';
+import {showPrompt} from '../../shared/helpers';
 
 let video = document.querySelector('video');
 let canvas = document.getElementById('canvas-camera');
@@ -25,15 +26,14 @@ function initCanvas() {
   window.addEventListener('resize', setCanvasSize, false);
 }
 
-function alertUnsupported() {
-  alert('Oh no! Your browser does not appear to have camera support (getUserMedia)' +
-        'or there was a problem initiating it. Maybe try another browser? =)');
+function showUnsupported() {
+  showPrompt('webrtc-unsupported');
 }
 
 function initCameraStream() {
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alertUnsupported();
+    showUnsupported();
     return;
   }
 
@@ -55,7 +55,7 @@ function initCameraStream() {
     })
     .catch((err) => {
       console.error('getUserMedia error', err);
-      alertUnsupported();
+      showUnsupported();
     });
 
 }
