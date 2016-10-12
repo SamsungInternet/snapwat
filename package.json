@@ -1,10 +1,10 @@
 {
   "name": "snapwat",
   "version": "1.0.0",
-  "description": "A doodling app for the web. A progressive web app demo.",
+  "description": "A image/video doodling app for the web. A progressive web app demo.",
   "scripts": {
     "start": "node devServer",
-    "watch": "watch 'NODE_ENV=development npm run build' ./src",
+    "watch": "watch 'npm run build' ./src",
     "build": "node build && echo 'Build complete'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "NODE_ENV=production npm run build && git commit -m 'Production build for deployment' public/build && git subtree push --prefix public origin gh-pages"

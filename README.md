@@ -96,11 +96,9 @@ Sounds like it should work once [this gets released](https://github.com/yarnpkg/
 To test the sharing feature locally, ensure you have a `NODE_ENV` environment variable set to
 'development'.
 
-For reference, deploying is currently a bit messy - I should make this easier later:
+For reference, I deploy to Github pages using:
 
-* ```NODE_ENV=production npm run build``` to build with prod config
-* Git commit
-* ```git subtree push --prefix public origin gh-pages```
+```git subtree push --prefix public origin gh-pages```
 
 
 ## Snapwat the name

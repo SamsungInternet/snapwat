@@ -6,6 +6,8 @@ import {dataURItoBlob, showPage, showPrompt} from '../shared/helpers';
 
 const hello = hellojs.default;
 const PAGE_NAME = PAGES.SHARE;
+const TWITTER_CLIENT_PROD = 'bkMmxlirv04KxJtAbWSgekbVM';
+const TWITTER_CLIENT_DEV = 'Eqrm5IQ5zgLUfZXrgpVuntjvA';
 
 let saveCanvas = document.getElementById('canvas-save');
 let backBtn = document.getElementById('btn-back-share');
@@ -17,9 +19,8 @@ let twitterUsernameDisplay = document.getElementById('twitter-username');
 let imageDataURI = null;
 
 function initOAuth() {
-  // Twitter client ID provided by rollup replace plugin
   hello.init({
-    twitter: TWITTER_CLIENT_ID
+    twitter: window.location.hostname === 'localhost' ? TWITTER_CLIENT_DEV : TWITTER_CLIENT_PROD
   }, {
     redirect_uri: 'redirect.html'
   });
