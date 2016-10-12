@@ -70,25 +70,28 @@ for offline use. Yes, you can take a snapwat on an airplane!
 
 As usual, the best place to begin is:
 
-```npm install```
+```npm install``` or ```yarn```
 
 Then to transpile and combine the JavaScript:
 
-```npm run build```
+```npm run build```*
 
 (This just runs the `rollup` commands for the app source code and the service worker script).
 
 To run the app:
 
-```npm start```
+```npm start```*
 
 Or you can use any static web server for the `public` directory - it's all just front-end.
 
 To watch for changes (in a separate terminal):
 
-```npm run watch```
+```npm run watch```*
 
 (This just uses `watch` to rebuild the JS when a change is detected in the src directory).
+
+*NB. You should be able to replace `npm` with `yarn` here, but it's not working with yarn v0.15.1. 
+Sounds like it should work once [this gets released](https://github.com/yarnpkg/yarn/pull/809).
 
 To test the sharing feature locally, ensure you have a `NODE_ENV` environment variable set to
 'development'.
