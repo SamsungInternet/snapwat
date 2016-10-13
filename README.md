@@ -47,8 +47,12 @@ If you have any problems with $your_browser, please create an issue (or even bet
 
 ## Known issues
 
+I released Snapwat early - I still need to fix up some basic issues such as having an input type="file" fallback and not requesting camera permission as soon as you load the page. Paul Kinlan's [Chrome Developers guide](https://developers.google.com/web/fundamentals/native-hardware/capturing-images/) captures those things and more really well.
+
 Unfortunately the long-tap to save the image is disabled in standalone app mode in Samsung Internet, i.e. when you
 launch it from the home screen icon. So for now, I recommend using Snapwat in a regular browser view.
+
+See also the Issues tab here on Github.
 
 
 ## Tech
