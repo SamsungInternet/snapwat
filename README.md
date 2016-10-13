@@ -1,6 +1,6 @@
 # snapwat?
 
-**Work in progress...**
+**Disclaimer: Snapwat is a product of a learning process for me (I'm [sharing that](https://medium.com/samsung-internet-dev/things-i-learned-making-a-progressive-web-app-for-super-selfies-49e76d154e4f#.3m59s4t4n) as I go) and it's a work in progress. It shouldn't be seen as a best practice guide (yet)!**
 
 [sna**pwa**t](https://snapw.at) is a demo to showcase progressive web app capabilities.
 
