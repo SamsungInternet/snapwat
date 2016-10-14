@@ -2958,7 +2958,17 @@ function initCameraStream() {
     return;
   }
 
-  navigator.mediaDevices.getUserMedia({ audio: false, video: true }).then(function (stream) {
+  var maxWidth = canvas.clientWidth;
+  var maxHeight = canvas.clientHeight;
+
+  // const constraints = {
+  //   width: {ideal: maxWidth, max: maxWidth},
+  //   height: {ideal: maxHeight, max: maxHeight}
+  // };
+
+  var constraints = true;
+
+  navigator.mediaDevices.getUserMedia({ audio: false, video: constraints }).then(function (stream) {
 
     var videoTracks = stream.getVideoTracks();
 

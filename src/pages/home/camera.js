@@ -37,7 +37,17 @@ function initCameraStream() {
     return;
   }
 
-  navigator.mediaDevices.getUserMedia({audio: false, video: true})
+  const maxWidth = canvas.clientWidth;
+  const maxHeight = canvas.clientHeight;
+
+  // const constraints = {
+  //   width: {ideal: maxWidth, max: maxWidth},
+  //   height: {ideal: maxHeight, max: maxHeight}
+  // };
+
+  const constraints = true;
+
+  navigator.mediaDevices.getUserMedia({audio: false, video: constraints})
     .then((stream) => {
 
       let videoTracks = stream.getVideoTracks();
