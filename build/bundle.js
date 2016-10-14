@@ -2910,12 +2910,10 @@ var require$$0$4 = Object.freeze({
 	  var maxWidth = canvas.clientWidth;
 	  var maxHeight = canvas.clientHeight;
 
-	  // const constraints = {
-	  //   width: {ideal: maxWidth, max: maxWidth},
-	  //   height: {ideal: maxHeight, max: maxHeight}
-	  // };
-
-	  var constraints = true;
+	  var constraints = {
+	    width: { ideal: maxWidth, max: maxWidth },
+	    height: { ideal: maxHeight, max: maxHeight }
+	  };
 
 	  navigator.mediaDevices.getUserMedia({ audio: false, video: constraints }).then(function (stream) {
 
