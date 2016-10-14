@@ -40,12 +40,10 @@ function initCameraStream() {
   const maxWidth = canvas.clientWidth;
   const maxHeight = canvas.clientHeight;
 
-  // const constraints = {
-  //   width: {ideal: maxWidth, max: maxWidth},
-  //   height: {ideal: maxHeight, max: maxHeight}
-  // };
-
-  const constraints = true;
+  const constraints = {
+   width: {ideal: maxWidth, max: maxWidth},
+   height: {ideal: maxHeight, max: maxHeight}
+  };
 
   navigator.mediaDevices.getUserMedia({audio: false, video: constraints})
     .then((stream) => {
