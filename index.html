@@ -11,8 +11,7 @@
   <body>
 
     <header>
-      <h1>sna<strong>pwa</strong>t</h1>
-      <div class="toolbar" id="toolbar-home">
+      <div class="toolbar" id="toolbar-annotate">
         <div class="left">
           <div id="input-colour-container">
             <input id="input-colour" type="color" class="selected"/>
@@ -44,18 +43,47 @@
     </header>
 
     <div id="page-home" class="page">
+      <h1>sna<strong>pwa</strong>t</h1>
+      <h2><em>Draw on your photos and add emojis!</em></h2>
+      <p class="info">All photos will remain strictly private, unless you choose to share them later. <a href="#" id="link-about">More information</a>.</p>
+      <div id="select-photo">
+        <div class="file-input">
+          <input type="file" id="input-photo" accept="image/*" capture="camera"/>
+          <label for="input-photo">Start by choosing or taking a photo</label>
+        </div>
+      </div>
+      <div id="start-camera">
+        <button id="btn-start-camera">Or switch on your camera</button> 
+        <p><em>Recommended: draw while you pose!</em></p>
+      </div>
+    </div>
+
+    <div id="page-annotate" class="page">
       <canvas id="canvas-camera"></canvas>
       <canvas id="canvas-draw"></canvas>
       <video autoplay/>
     </div>
+    
     <div id="page-snapshot" class="page">
       <canvas id="canvas-save"></canvas>
       <img id="image-save"/>
     </div>
+    
     <div id="page-share" class="page">
       <textarea id="share-text" maxlength="116">I made a #snapwat! Make yours at https://snapw.at.</textarea>
       <img id="share-preview" src=""/>
       <button id="share-submit">Submit</button>
+    </div>
+
+    <div id="page-about" class="page">
+      <h2>About Snapwat</h2>
+      <p>Snapwat is a work-in-progress 'progressive web app' demo. The source code is shared at:
+        <a href="https://github.com/samsunginternet/snapwat">github.com/samsunginternet/snapwat</a>.</p>
+      <p>The app functions purely in your web browser (except for Twitter authentication if you choose to 
+        do that). If you do not choose to share your photos, they will remain only on your phone.
+      </p>
+      <p>For questions, feedback etc, please contact the developer <a href="https://twitter.com/poshaughnessy">Peter O'Shaughnessy</a>.</p>
+      <button id="link-home">Back</button>
     </div>
 
     <div class="prompt" id="prompt-snapshot">
@@ -68,8 +96,7 @@
       <p>Unable to send tweet. Sorry =(</p>
     </div>
     <div class="prompt" id="prompt-webrtc-unsupported">
-      <p>Oh no! Your browser does not appear to have camera support (getUserMedia). Please check back again later,
-        I hope to add a fallback shortly...</p>
+      <p>Oh no! Your browser does not appear to have camera support (getUserMedia) =(</p>
     </div>
 
     <div id="modal-emoji" class="modal">
