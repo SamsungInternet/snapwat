@@ -1,7 +1,7 @@
 import * as hellojs from 'hellojs';
 import {HEADER_HEIGHT} from '../shared/constants';
 import {playCameraSound} from '../shared/audio';
-import HomePage from './home';
+import AnnotatePage from './annotate';
 import SharePage from './share';
 import {PAGES} from '../shared/constants';
 import {showPage, showPrompt} from '../shared/helpers';
@@ -46,7 +46,7 @@ function initControls() {
 
 
   backBtn.addEventListener('click', () => {
-    HomePage.show();
+    AnnotatePage.show();
   });
 
 }

@@ -5,13 +5,14 @@ html {
 
 body {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-  font-size: 85%;
+  font-size: 100%;
   margin: 0;
   padding: 0;
   background-color: #ccc;
   color: #fff;
   height: 100%;
   overflow: hidden;
+  text-align: center;
 }
 
 header {
@@ -50,11 +51,9 @@ header h2 {
 }
 
 h1 {
-  font-size: 1.2em;
-  padding-left: 5px;
+  font-size: 3em;
   color: #fff;
-  margin: 0;
-  padding: 4px 0;
+  margin: 1em;
   text-align: center;
   font-weight: normal;
 }
@@ -63,7 +62,7 @@ h1 {
   display: none;
   justify-content: space-between;
   align-items: center;
-  height: 30px;
+  height: 72px;
 }
 
 #toolbar-home {
@@ -89,25 +88,28 @@ h1 {
 
 #page-home {
   display: block;
+  height: 100%;
+  top: 0;
+  padding: 20px;
 }
 
 #page-share {
   padding: 15px;
 }
 
-button {
+header button {
   border: 0;
   background: none;
   cursor: pointer;
 }
 
-input,
-button {
+header input,
+header button {
   outline: none;
 }
 
-input.selected,
-button.selected {
+header input.selected,
+header button.selected {
   border: 2px solid #d3b3fd;
 }
 
@@ -173,6 +175,20 @@ button.selected {
 
 #btn-share-twitter img {
   width: 36px;
+}
+
+.page a,
+.page a:hover {
+  color: #fff;
+}
+
+.page button {
+  cursor: pointer;
+  border-radius: 3px;
+  border: 0;
+  background: #fff;
+  color: #333;
+  padding: 10px;
 }
 
 strong {
@@ -278,6 +294,47 @@ canvas {
 .prompt p {
   margin: 0;
   text-align: center;
+}
+
+#select-photo {
+  margin-top: 2em;
+}
+
+#input-photo {
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+#input-photo + label {
+  font-size: 1.5em;
+  background: #fff;
+  color: #333;
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+}
+
+#input-photo:focus + label {
+  outline: 1px dotted #333;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+#start-camera {
+  display: none;
+  margin-top: 2.5em;
+}
+
+#start-camera p {
+  margin-top: 0.5em;
+}
+
+#btn-start-camera {
+  font-size: 1.5em;
 }
 
 .display-mode-standalone {

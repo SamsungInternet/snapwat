@@ -1,15 +1,24 @@
 import SWRegister from './swRegister';
-import InputColour from './shared/inputColour';
+import InputColourShim from './shared/inputColourShim';
+//import FileInputStyler from './shared/fileInputStyler';
 import Audio from './shared/audio';
 
+import Pages from './pages';
 import HomePage from './pages/home';
-import SnapshotPage from './pages/snapshot';
-import SharePage from './pages/share';
 
-SWRegister();
-InputColour();
-Audio();
+function initApp() {
+  SWRegister();
+  InputColourShim();
+  //FileInputStyler();
+  Audio();
+}
 
-HomePage.init();
-SnapshotPage.init();
-SharePage.init();
+function initPages(pages) {
+  for (let page of pages) {
+    page.init();
+  }
+}
+
+initApp();
+initPages(Pages);
+HomePage.show();
