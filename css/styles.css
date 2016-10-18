@@ -19,6 +19,20 @@ header {
   background: #9e54ff;
   background-image: linear-gradient(#9e54ff, #7f4fff);
   height: 72px;
+  color: #fff;
+}
+
+header label,
+header button {
+  font-size: 0.9em;
+}
+
+header button img {
+  display: block;
+}
+
+header button {
+  color: #fff;
 }
 
 header .left,
@@ -101,22 +115,24 @@ header button {
 header input,
 header button {
   outline: none;
+  line-height: 1em;
 }
 
-header input.selected,
+#input-colour-container.selected,
 header button.selected {
-  border: 2px solid #d3b3fd;
+  border: 2px dashed #10f9e6;
 }
 
 #input-colour-container {
-  border: 0;
-  padding: 4px 0 0 0;
-  margin-left: 10px;
+  border: 2px solid transparent;
+  padding: 8px 8px 4px 8px;
+  margin-left: 15px;
 }
 
 #input-colour {
   display: none;
   width: 32px;
+  cursor: pointer;
 }
 
 #input-colour-substitute {
@@ -126,50 +142,27 @@ header button.selected {
   height: 25px;
 }
 
-.btn-back {
-  margin-left: 5px;
+#input-colour-container label {
+  margin-top: 1px;
 }
 
-.btn-back img {
-  width: 35px;
-  height: 35px;
+header button {
+  padding: 8px 8px 4px 8px;
+  border: 2px solid transparent;
 }
 
-#btn-emoji {
+header .left button {
   margin-left: 20px;
-  padding: 0;
 }
 
-#btn-emoji img {
-  width: 35px;
-  height: 35px;
-}
-
-#btn-trash {
-  padding: 14px;
-}
-
-#btn-trash img {
-  width: 24px;
-  height: 24px;
-}
-
-#btn-snapshot {
-  padding: 14px;
-}
-
-#btn-snapshot img {
-  width: 24px;
-  height: 24px;
-}
-
-#btn-share-twitter {
+header .right button {
   margin-right: 10px;
-  padding: 12px;
 }
 
-#btn-share-twitter img {
-  width: 36px;
+header button img {
+  width: 38px;
+  height: 28px;
+  margin: 0 auto 5px auto;
 }
 
 .page a,
@@ -244,10 +237,12 @@ video {
   cursor: pointer;
 }
 
+#page-home {
+  display: block;
+}
 
 #page-home,
 #page-about {
-  display: block;
   height: 100%;
   top: 0;
   padding: 4%;
@@ -294,18 +289,23 @@ video {
   display: none;
   position: absolute;
   box-sizing: border-box;
-  bottom: 15px;
+  bottom: 25px;
   left: 5%;
   width: 90%;
   background: #7f4fff;
   border-radius: 8px;
   padding: 5px 8px;
   font-size: 1.1em;
+  transition: opacity 2s ease-in-out;
 }
 
 .prompt p {
   margin: 0;
   text-align: center;
+}
+
+.fade-out {
+  opacity: 0;
 }
 
 #select-photo {
