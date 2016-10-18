@@ -70,6 +70,7 @@ export default {
     saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 10);
 
     saveImage.src = saveCanvas.toDataURL('image/png');
+    saveCanvas.style.display = 'none';
     saveImage.style.display = 'block';
 
     showPage(PAGE_NAME);

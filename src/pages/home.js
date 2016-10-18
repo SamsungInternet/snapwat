@@ -1,5 +1,6 @@
 import {PAGES, HEADER_HEIGHT} from '../shared/constants';
 import {showPage} from '../shared/helpers';
+import drawImageContain from '../shared/drawImageContain';
 import AnnotatePage from './annotate';
 import AboutPage from './about';
 
@@ -21,7 +22,8 @@ function onPhotoInputChange(e) {
       canvas.width  = window.innerWidth;
       canvas.height = window.innerHeight - HEADER_HEIGHT;
       var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+      drawImageContain(ctx, img, 0, 0, canvas.width, canvas.height, 0.5, 0.5);
+      //ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
       AnnotatePage.show({live: false});
     };
 
