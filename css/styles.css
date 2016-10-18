@@ -51,6 +51,14 @@ header .right {
   align-items: flex-end;
 }
 
+header .centre-to-right {
+  flex: 4;
+}
+
+header .centre-to-right h3 {
+  text-align: left;
+}
+
 header a {
   color: #fff;
   text-decoration: none;
@@ -61,6 +69,11 @@ header h2 {
   color: #fff;
   font-size: 1.3em;
   text-align: center;
+}
+
+header h3 {
+  font-size: 1.1em;
+  font-weight: normal;
 }
 
 h1 {
@@ -156,6 +169,10 @@ header button {
 
 header .left button {
   margin-left: 20px;
+}
+
+header .left button.btn-back {
+  margin: 0 15px 0 5px;
 }
 
 header .right button {
@@ -278,13 +295,8 @@ video {
   display: block;
   width: 90%;
   margin: 10px auto;
-  background-color: transparent;
-  color: #fff;
-  border: 2px solid #fff;
   padding: 5px;
   font-size: 1.3em;
-  text-align: center;
-  border-radius: 5px;
 }
 
 .prompt {
@@ -295,7 +307,7 @@ video {
   bottom: 25px;
   left: 5%;
   width: 90%;
-  background: #7f4fff;
+  background: #987fff;
   border-radius: 8px;
   padding: 5px 8px;
   font-size: 1.1em;

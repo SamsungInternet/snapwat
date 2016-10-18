@@ -9174,7 +9174,7 @@ function initControls$4() {
       showPrompt('tweet-error');
     });
 
-    HomePage.show();
+    AnnotatePage.show();
   });
 
   backBtn$1.addEventListener('click', function () {
