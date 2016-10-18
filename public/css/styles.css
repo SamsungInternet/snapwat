@@ -16,8 +16,7 @@ body {
 }
 
 header {
-  background: #9e54ff;
-  background-image: linear-gradient(#9e54ff, #7f4fff);
+  background: #987fff;
   height: 72px;
   color: #fff;
 }
@@ -65,11 +64,15 @@ header h2 {
 }
 
 h1 {
+  display: inline-block;
   font-size: 3em;
   color: #fff;
   margin: 0 0 0.25em 0;
-  text-align: center;
+  text-align: left;
   font-weight: normal;
+  padding-left: 1.3em;
+  background: url(../images/snapwat-icon-white.svg) left 0.25em no-repeat;
+  background-size: 1em 1em;
 }
 
 h2 {
@@ -103,7 +106,7 @@ h2 {
   top: 72px;
   left: 0;
   overflow: hidden;
-  background: #7f4fff;
+  background: #987fff;
 }
 
 header button {

@@ -3,8 +3,8 @@
   "short_name": "Snapwat",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#9e54ff",
-  "theme_color": "#9e54ff",
+  "background_color": "#987fff",
+  "theme_color": "#987fff",
   "description": "A doodling app for the web. A progressive web app demo.",
   "icons": [
     {
