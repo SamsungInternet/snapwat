@@ -1,4 +1,4 @@
-import {PAGES} from '../shared/constants';
+import {PAGES, HEADER_HEIGHT} from '../shared/constants';
 import {showPage} from '../shared/helpers';
 import AnnotatePage from './annotate';
 import AboutPage from './about';
@@ -18,10 +18,10 @@ function onPhotoInputChange(e) {
     let img = new Image();
     
     img.onload = function() {
-      canvas.width = img.width;
-      canvas.height = img.height;
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight - HEADER_HEIGHT;
       var ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
       AnnotatePage.show({live: false});
     };
 
