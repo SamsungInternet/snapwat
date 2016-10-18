@@ -67,7 +67,7 @@ export default {
     saveCtx.drawImage(drawingCanvas, 0, 0);
 
     // Add the URL at the bottom
-    saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 15);
+    saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 10);
 
     saveImage.src = saveCanvas.toDataURL('image/png');
     saveImage.style.display = 'block';
