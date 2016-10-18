@@ -7,11 +7,12 @@
   <link rel="stylesheet" href="css/styles.css"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,400italic,700italic,300italic,600,600italic,800,800italic"/>
   <style>
-    #toolbar-snapshot {
-      display: flex;
-    }
-    #page-snapshot {
+    #page-redirect {
       display: block;
+      height: 100%;
+      top: 0;
+      padding: 4%;
+      overflow-y: auto;
     }
     #prompt-callback {
       display: block;
@@ -20,26 +21,12 @@
 </head>
 <body>
 
-<header>
+<div id="page-redirect" class="page">
   <h1>sna<strong>pwa</strong>t</h1>
-  <div class="toolbar" id="toolbar-snapshot">
-    <div class="left">
-      <button id="btn-back-snapshot" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
-    </div>
-    <h2>Your Snapwat</h2>
-    <div class="right">
-      <button id="btn-share-twitter"><img src="images/twitter-logo.svg" alt="Tweet"></button>
-    </div>
-  </div>
-</header>
-
-<div id="page-snapshot" class="page">
-  <canvas id="canvas-save"></canvas>
-  <img id="image-save"/>
 </div>
 
 <div class="prompt" id="prompt-callback">
-  <p>Just a moment, please...</p>
+  <p>Redirecting you back... If this takes more than a couple of seconds, please close this tab.</p>
 </div>
 
 <script src="vendor/hello.polyfill.js"></script>
