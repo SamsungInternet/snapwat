@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-    <meta name="theme-color" content="#9e54ff">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#987fff">
     <title>snapwat</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/styles.css"/>
@@ -11,51 +11,84 @@
   <body>
 
     <header>
-      <h1>sna<strong>pwa</strong>t</h1>
-      <div class="toolbar" id="toolbar-home">
+      <div class="toolbar" id="toolbar-annotate">
         <div class="left">
-          <div id="input-colour-container">
-            <input id="input-colour" type="color" class="selected"/>
+          <div id="input-colour-container" class="selected">
+            <input id="input-colour" type="color"/>
             <div id="input-colour-substitute"></div>
+            <label for="input-colour">Pencil</label>
           </div>
-          <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/></button>
+          <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/>Emojis</button>
+          <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Clear"/>Clear</button>
         </div>
-        <div class="right">
-          <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Trash"/></button>
-          <button id="btn-snapshot"><img src="images/iconic/camera-slr.svg" alt="Snapshot"/></button>
+        <div class="right">          
+          <button id="btn-snapshot"><img src="images/iconic/arrow-right.svg" alt="Proceed"/>Next</button>
         </div>
       </div>
       <div class="toolbar" id="toolbar-snapshot">
         <div class="left">
-          <button id="btn-back-snapshot" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+          <button id="btn-back-snapshot" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/>Back</button>
         </div>
         <h2>Your Snapwat</h2>
         <div class="right">
-          <button id="btn-share-twitter"><img src="images/twitter-logo.svg" alt="Tweet"></button>
+          <button id="btn-share-twitter"><img src="images/twitter-logo.svg" alt="Tweet">Tweet it</button>
         </div>
       </div>
       <div class="toolbar" id="toolbar-share">
         <div class="left">
-          <button id="btn-back-share" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+          <button id="btn-back-share" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/>Back</button>
         </div>
-        <p>Tweet from @<span id="twitter-username"></span></p>
-        <div class="right"></div>
+        <div class="centre-to-right">
+          <h3>Tweet from @<span id="twitter-username"></span></h3>
+        </div>        
       </div>
     </header>
 
     <div id="page-home" class="page">
+      <h1>sna<strong>pwa</strong>t</h1>
+      <h2><em>Draw on your photos and add emojis!</em></h2>
+      <div id="select-photo">
+        <div class="file-input">
+          <input type="file" id="input-photo" accept="image/*" capture="camera"/>
+          <label for="input-photo">Choose or take a photo</label>
+        </div>
+      </div>
+      <div id="start-camera">
+        <button id="btn-start-camera">Or switch on your camera</button> 
+        <p><em><strong>Recommended:</strong> draw while you pose!</em></p>
+      </div>
+      <div class="footer">
+        <p class="info">All photos will remain strictly private, unless you choose to share them later. <a href="#" id="link-about">More information</a>.</p>
+        By <a href="https://twitter.com/poshaughnessy">@poshaughnessy</a> from <a href="https://twitter.com/sbrowserdevrel">@sbrowserdevrel</a> &middot; <a href="https://github.com/samsunginternet/snapwat">Source code on Github</a>
+      </div>
+    </div>
+
+    <div id="page-annotate" class="page">
       <canvas id="canvas-camera"></canvas>
       <canvas id="canvas-draw"></canvas>
       <video autoplay/>
     </div>
+    
     <div id="page-snapshot" class="page">
       <canvas id="canvas-save"></canvas>
       <img id="image-save"/>
     </div>
+    
     <div id="page-share" class="page">
-      <textarea id="share-text" maxlength="116">I made a #snapwat! Make yours at https://snapw.at.</textarea>
       <img id="share-preview" src=""/>
+      <textarea id="share-text" maxlength="116">I made a #snapwat! Make yours at https://snapw.at.</textarea>
       <button id="share-submit">Submit</button>
+    </div>
+
+    <div id="page-about" class="page">
+      <h2>About Snapwat</h2>
+      <p>Snapwat is a work-in-progress 'progressive web app' demo. The source code is shared at:
+        <a href="https://github.com/samsunginternet/snapwat">github.com/samsunginternet/snapwat</a>.</p>
+      <p>The app functions purely in your web browser (except for Twitter authentication if you choose to 
+        do that). If you do not choose to share your photos, they will remain only on your phone.
+      </p>
+      <p>For questions, feedback etc, please contact the developer <a href="https://twitter.com/poshaughnessy">Peter O'Shaughnessy</a>.</p>
+      <button id="link-home">Back</button>
     </div>
 
     <div class="prompt" id="prompt-snapshot">
@@ -68,8 +101,7 @@
       <p>Unable to send tweet. Sorry =(</p>
     </div>
     <div class="prompt" id="prompt-webrtc-unsupported">
-      <p>Oh no! Your browser does not appear to have camera support (getUserMedia). Please check back again later,
-        I hope to add a fallback shortly...</p>
+      <p>Oh no! Your browser does not appear to have camera support (getUserMedia) =(</p>
     </div>
 
     <div id="modal-emoji" class="modal">

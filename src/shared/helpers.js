@@ -1,3 +1,5 @@
+const DEFAULT_POPUP_SHOW_TIME = 5000;
+
 let toolbars = document.getElementsByClassName('toolbar');
 let pages = document.getElementsByClassName('page');
 let prompts = document.getElementsByClassName('prompt');
@@ -15,10 +17,10 @@ export function dataURItoBlob(dataURI) {
   return new Blob([ab], {type: 'image/png'});
 }
 
-function showOrHideElements(elements, pageRef, showStyle = 'block') {
+function hideExceptMatchingId(elements, id, showStyle = 'block') {
   for (let i=0; i < elements.length; i++) {
     let el = elements[i];
-    if (el.id.endsWith(`-${pageRef}`)) {
+    if (el.id === id) {
       el.style.display = showStyle;
     } else {
       el.style.display = 'none';
@@ -26,13 +28,47 @@ function showOrHideElements(elements, pageRef, showStyle = 'block') {
   }
 }
 
-export function showPage(pageRef) {
-  showOrHideElements(toolbars, pageRef, 'flex');
-  showOrHideElements(pages, pageRef);
-  // Show default prompt for the page if there is one, else hide any prompts
-  showPrompt(pageRef);
+function hide(elements) {
+  for (let i=0; i < elements.length; i++) {
+    elements[i].style.display = 'none';
+  }
 }
 
-export function showPrompt(promptRef) {
-  showOrHideElements(prompts, promptRef);
+function updateToolbarVisibility(pageRef) {
+  hide(toolbars);
+  let toolbar = document.getElementById(`toolbar-${pageRef}`);
+  if (toolbar) {
+    toolbar.style.display = 'flex';
+  }
+}
+
+function updatePageVisibility(pageRef) {
+  hide(pages);
+  let page = document.getElementById(`page-${pageRef}`);
+  if (page) {
+    page.style.display = 'block';
+  }  
+}
+
+export function showPrompt(ref) {
+  
+  hide(prompts);
+  
+  let prompt = document.getElementById(`prompt-${ref}`);
+
+  if (prompt) {
+    prompt.classList.remove('fade-out');
+    prompt.style.display = 'block';
+
+    setTimeout(() => {
+      prompt.classList.add('fade-out');
+    }, DEFAULT_POPUP_SHOW_TIME); 
+  }
+
+}
+
+export function showPage(pageRef) {
+  updateToolbarVisibility(pageRef);
+  updatePageVisibility(pageRef);
+  showPrompt(pageRef);
 }

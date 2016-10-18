@@ -1,6 +1,6 @@
 import * as hellojs from 'hellojs';
 import {PAGES} from '../shared/constants';
-import HomePage from './home';
+import AnnotatePage from './annotate';
 import SnapshotPage from './snapshot';
 import {dataURItoBlob, showPage, showPrompt} from '../shared/helpers';
 
@@ -45,7 +45,7 @@ function initControls() {
         showPrompt('tweet-error');
       });
 
-    HomePage.show();
+    AnnotatePage.show();
 
   });
 

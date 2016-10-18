@@ -1,7 +1,7 @@
 import * as hellojs from 'hellojs';
 import {HEADER_HEIGHT} from '../shared/constants';
 import {playCameraSound} from '../shared/audio';
-import HomePage from './home';
+import AnnotatePage from './annotate';
 import SharePage from './share';
 import {PAGES} from '../shared/constants';
 import {showPage, showPrompt} from '../shared/helpers';
@@ -46,7 +46,7 @@ function initControls() {
 
 
   backBtn.addEventListener('click', () => {
-    HomePage.show();
+    AnnotatePage.show();
   });
 
 }
@@ -67,9 +67,10 @@ export default {
     saveCtx.drawImage(drawingCanvas, 0, 0);
 
     // Add the URL at the bottom
-    saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 15);
+    saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 10);
 
     saveImage.src = saveCanvas.toDataURL('image/png');
+    saveCanvas.style.display = 'none';
     saveImage.style.display = 'block';
 
     showPage(PAGE_NAME);

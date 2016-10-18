@@ -5,19 +5,33 @@ html {
 
 body {
   font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-  font-size: 85%;
+  font-size: 100%;
   margin: 0;
   padding: 0;
   background-color: #ccc;
   color: #fff;
   height: 100%;
   overflow: hidden;
+  text-align: center;
 }
 
 header {
-  background: #9e54ff;
-  background-image: linear-gradient(#9e54ff, #7f4fff);
+  background: #987fff;
   height: 72px;
+  color: #fff;
+}
+
+header label,
+header button {
+  font-size: 0.9em;
+}
+
+header button img {
+  display: block;
+}
+
+header button {
+  color: #fff;
 }
 
 header .left,
@@ -37,6 +51,14 @@ header .right {
   align-items: flex-end;
 }
 
+header .centre-to-right {
+  flex: 4;
+}
+
+header .centre-to-right h3 {
+  text-align: left;
+}
+
 header a {
   color: #fff;
   text-decoration: none;
@@ -49,21 +71,33 @@ header h2 {
   text-align: center;
 }
 
-h1 {
-  font-size: 1.2em;
-  padding-left: 5px;
-  color: #fff;
-  margin: 0;
-  padding: 4px 0;
-  text-align: center;
+header h3 {
+  font-size: 1.1em;
   font-weight: normal;
+}
+
+h1 {
+  display: inline-block;
+  font-size: 3em;
+  color: #fff;
+  margin: 0 0 0.25em 0;
+  text-align: left;
+  font-weight: normal;
+  padding-left: 1.3em;
+  background: url(../images/snapwat-icon-white.svg) left 0.25em no-repeat;
+  background-size: 1em 1em;
+}
+
+h2 {
+  font-size: 1.4em;
+  margin: 0.5em 0;
 }
 
 .toolbar {
   display: none;
   justify-content: space-between;
   align-items: center;
-  height: 30px;
+  height: 72px;
 }
 
 #toolbar-home {
@@ -84,42 +118,37 @@ h1 {
   height: calc(100% - 72px);
   top: 72px;
   left: 0;
-  background: #7f4fff;
+  overflow: hidden;
+  background: #987fff;
 }
 
-#page-home {
-  display: block;
-}
-
-#page-share {
-  padding: 15px;
-}
-
-button {
+header button {
   border: 0;
   background: none;
   cursor: pointer;
 }
 
-input,
-button {
+header input,
+header button {
   outline: none;
+  line-height: 1em;
 }
 
-input.selected,
-button.selected {
-  border: 2px solid #d3b3fd;
+#input-colour-container.selected,
+header button.selected {
+  border: 2px dashed #10f9e6;
 }
 
 #input-colour-container {
-  border: 0;
-  padding: 4px 0 0 0;
-  margin-left: 10px;
+  border: 2px solid transparent;
+  padding: 8px 8px 4px 8px;
+  margin-left: 15px;
 }
 
 #input-colour {
   display: none;
   width: 32px;
+  cursor: pointer;
 }
 
 #input-colour-substitute {
@@ -129,50 +158,45 @@ button.selected {
   height: 25px;
 }
 
-.btn-back {
-  margin-left: 5px;
+#input-colour-container label {
+  margin-top: 1px;
 }
 
-.btn-back img {
-  width: 35px;
-  height: 35px;
+header button {
+  padding: 8px 8px 4px 8px;
+  border: 2px solid transparent;
 }
 
-#btn-emoji {
+header .left button {
   margin-left: 20px;
-  padding: 0;
 }
 
-#btn-emoji img {
-  width: 35px;
-  height: 35px;
+header .left button.btn-back {
+  margin: 0 15px 0 5px;
 }
 
-#btn-trash {
-  padding: 14px;
-}
-
-#btn-trash img {
-  width: 24px;
-  height: 24px;
-}
-
-#btn-snapshot {
-  padding: 14px;
-}
-
-#btn-snapshot img {
-  width: 24px;
-  height: 24px;
-}
-
-#btn-share-twitter {
+header .right button {
   margin-right: 10px;
-  padding: 12px;
 }
 
-#btn-share-twitter img {
-  width: 36px;
+header button img {
+  width: 38px;
+  height: 28px;
+  margin: 0 auto 5px auto;
+}
+
+.page a,
+.page a:hover {
+  color: #fff;
+}
+
+.page button {
+  cursor: pointer;
+  border-radius: 5px;
+  border: 0;
+  background: #fff;
+  color: #333;
+  padding: 10px;
 }
 
 strong {
@@ -186,12 +210,18 @@ video {
   height: 100%;
 }
 
-canvas {
+#canvas-camera,
+#camera-draw {
   position: absolute;
+  left: 0;
 }
 
-#canvas-save {
-  visibility: hidden;
+#canvas-camera {
+  z-index: -1;
+}
+
+#canvas-draw {
+  z-index: 1;
 }
 
 #image-save {
@@ -227,7 +257,20 @@ canvas {
   cursor: pointer;
 }
 
+#page-home {
+  display: block;
+}
+
+#page-home,
+#page-about {
+  height: 100%;
+  top: 0;
+  padding: 4%;
+  overflow-y: auto;
+}
+
 #page-share {
+  padding: 15px;
   overflow-y: auto;
 }
 
@@ -252,13 +295,8 @@ canvas {
   display: block;
   width: 90%;
   margin: 10px auto;
-  background-color: transparent;
-  color: #fff;
-  border: 2px solid #fff;
   padding: 5px;
   font-size: 1.3em;
-  text-align: center;
-  border-radius: 5px;
 }
 
 .prompt {
@@ -266,13 +304,14 @@ canvas {
   display: none;
   position: absolute;
   box-sizing: border-box;
-  bottom: 15px;
+  bottom: 25px;
   left: 5%;
   width: 90%;
-  background: #7f4fff;
+  background: #987fff;
   border-radius: 8px;
   padding: 5px 8px;
   font-size: 1.1em;
+  transition: opacity 2s ease-in-out;
 }
 
 .prompt p {
@@ -280,8 +319,58 @@ canvas {
   text-align: center;
 }
 
+.fade-out {
+  opacity: 0;
+}
+
+#select-photo {
+  margin-top: 2em;
+}
+
+#input-photo {
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+#input-photo + label {
+  font-size: 1.3em;
+  background: #fff;
+  color: #333;
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+}
+
+#input-photo:focus + label {
+  outline: 1px dotted #333;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+#start-camera {
+  display: none;
+  margin-top: 1.5em;
+}
+
+#start-camera p {
+  margin-top: 0.4em;
+}
+
+#btn-start-camera {
+  font-size: 1.3em;
+}
+
 .display-mode-standalone {
   display: none;
+}
+
+.footer {
+  margin-top: 2.5em;
+  font-size: 0.8em;
 }
 
 @media (display-mode: standalone), (display-mode: fullscreen) {

@@ -1,10 +1,10 @@
-import Camera from './camera';
+import LiveCamera from './liveCamera';
 import Draw from './draw';
 import SnapshotPage from '../snapshot';
 import {PAGES} from '../../shared/constants';
 import {showPage} from '../../shared/helpers';
 
-const PAGE_NAME = PAGES.HOME;
+const PAGE_NAME = PAGES.ANNOTATE;
 
 let snapshotBtn = document.getElementById('btn-snapshot');
 
@@ -19,13 +19,16 @@ function initControls() {
 export default {
 
   init: function () {
-    Camera();
     Draw();
     initControls();
   },
 
-  show: function () {
+  // TODO what about when you click back from snapshot page? Should be app-level config?
+  show: function (config) {
     showPage(PAGE_NAME);
+    if (config && config.live) {
+      LiveCamera();
+    }
   }
 
 };
