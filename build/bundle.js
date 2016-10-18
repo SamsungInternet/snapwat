@@ -1,7 +1,7 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(factory());
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (factory());
 }(this, (function () { 'use strict';
 
 function SWRegister () {
@@ -182,6 +182,23 @@ function showPage(pageRef) {
   updateToolbarVisibility(pageRef);
   updatePageVisibility(pageRef);
   showPrompt(pageRef);
+}
+
+function drawImageContain(ctx, img) {
+
+    var canvasWidth = ctx.canvas.width,
+        canvasHeight = ctx.canvas.height,
+        offsetX = 0.5,
+        offsetY = 0.5,
+        imgWidth = img.width,
+        imgHeight = img.height,
+        ratio = Math.min(canvasWidth / imgWidth, canvasHeight / imgHeight),
+        newWidth = imgWidth * ratio,
+        newHeight = imgHeight * ratio,
+        newX = (canvasWidth - newWidth) / 2,
+        newY = (canvasHeight - newHeight) / 2;
+
+    ctx.drawImage(img, 0, 0, imgWidth, imgHeight, newX, newY, newWidth, newHeight);
 }
 
 function interopDefault(ex) {
@@ -9243,6 +9260,7 @@ var SnapshotPage = {
     saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 10);
 
     saveImage.src = saveCanvas.toDataURL('image/png');
+    saveCanvas.style.display = 'none';
     saveImage.style.display = 'block';
 
     showPage(PAGE_NAME$2);
@@ -9318,7 +9336,8 @@ function onPhotoInputChange(e) {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight - HEADER_HEIGHT;
     var ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+    drawImageContain(ctx, img, 0, 0, canvas.width, canvas.height, 0.5, 0.5);
+    //ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
     AnnotatePage.show({ live: false });
   };
 
