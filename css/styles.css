@@ -53,9 +53,14 @@ header h2 {
 h1 {
   font-size: 3em;
   color: #fff;
-  margin: 1em;
+  margin: 0 0 0.25em 0;
   text-align: center;
   font-weight: normal;
+}
+
+h2 {
+  font-size: 1.4em;
+  margin: 0.5em 0;
 }
 
 .toolbar {
@@ -83,18 +88,8 @@ h1 {
   height: calc(100% - 72px);
   top: 72px;
   left: 0;
+  overflow: hidden;
   background: #7f4fff;
-}
-
-#page-home {
-  display: block;
-  height: 100%;
-  top: 0;
-  padding: 20px;
-}
-
-#page-share {
-  padding: 15px;
 }
 
 header button {
@@ -184,7 +179,7 @@ header button.selected {
 
 .page button {
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 5px;
   border: 0;
   background: #fff;
   color: #333;
@@ -202,12 +197,18 @@ video {
   height: 100%;
 }
 
-canvas {
+#canvas-camera,
+#camera-draw {
   position: absolute;
+  left: 0;
 }
 
-#canvas-save {
-  visibility: hidden;
+#canvas-camera {
+  z-index: -1;
+}
+
+#canvas-draw {
+  z-index: 1;
 }
 
 #image-save {
@@ -243,7 +244,18 @@ canvas {
   cursor: pointer;
 }
 
+
+#page-home,
+#page-about {
+  display: block;
+  height: 100%;
+  top: 0;
+  padding: 4%;
+  overflow-y: auto;
+}
+
 #page-share {
+  padding: 15px;
   overflow-y: auto;
 }
 
@@ -310,7 +322,7 @@ canvas {
 }
 
 #input-photo + label {
-  font-size: 1.5em;
+  font-size: 1.3em;
   background: #fff;
   color: #333;
   border-radius: 5px;
@@ -326,19 +338,24 @@ canvas {
 
 #start-camera {
   display: none;
-  margin-top: 2.5em;
+  margin-top: 1.5em;
 }
 
 #start-camera p {
-  margin-top: 0.5em;
+  margin-top: 0.4em;
 }
 
 #btn-start-camera {
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 
 .display-mode-standalone {
   display: none;
+}
+
+.footer {
+  margin-top: 2.5em;
+  font-size: 0.8em;
 }
 
 @media (display-mode: standalone), (display-mode: fullscreen) {
