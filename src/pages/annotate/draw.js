@@ -3,6 +3,7 @@ import {HEADER_HEIGHT} from '../../shared/constants';
 
 let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');
+let colourInputContainer = document.getElementById('input-colour-container'); 
 let colourInput = document.getElementById('input-colour');
 let trashButton = document.getElementById('btn-trash');
 let emojiButton = document.getElementById('btn-emoji');
@@ -180,7 +181,7 @@ function onEmojiClick(event) {
   emojiButtonImage.src = chosenEmoji.src;
 
   emojiButton.classList.add('selected');
-  colourInput.classList.remove('selected');
+  colourInputContainer.classList.remove('selected');
 
 }
 
@@ -224,7 +225,7 @@ function redraw() {
 function onColourClickOrChange() {
   ctx.strokeStyle = colourInput.value;
   chosenEmoji = null;
-  colourInput.classList.add('selected');
+  colourInputContainer.classList.add('selected');
   emojiButton.classList.remove('selected');
 }
 

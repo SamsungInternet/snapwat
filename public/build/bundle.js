@@ -121,6 +121,8 @@ var PAGES = {
   ABOUT: 'about'
 };
 
+var DEFAULT_POPUP_SHOW_TIME = 5000;
+
 var toolbars = document.getElementsByClassName('toolbar');
 var pages = document.getElementsByClassName('page');
 var prompts = document.getElementsByClassName('prompt');
@@ -138,28 +140,48 @@ function dataURItoBlob(dataURI) {
   return new Blob([ab], { type: 'image/png' });
 }
 
-function showOrHideElements(elements, pageRef) {
-  var showStyle = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'block';
-
+function hide(elements) {
   for (var i = 0; i < elements.length; i++) {
-    var el = elements[i];
-    if (el.id.endsWith('-' + pageRef)) {
-      el.style.display = showStyle;
-    } else {
-      el.style.display = 'none';
-    }
+    elements[i].style.display = 'none';
+  }
+}
+
+function updateToolbarVisibility(pageRef) {
+  hide(toolbars);
+  var toolbar = document.getElementById('toolbar-' + pageRef);
+  if (toolbar) {
+    toolbar.style.display = 'flex';
+  }
+}
+
+function updatePageVisibility(pageRef) {
+  hide(pages);
+  var page = document.getElementById('page-' + pageRef);
+  if (page) {
+    page.style.display = 'block';
+  }
+}
+
+function showPrompt(ref) {
+
+  hide(prompts);
+
+  var prompt = document.getElementById('prompt-' + ref);
+
+  if (prompt) {
+    prompt.classList.remove('fade-out');
+    prompt.style.display = 'block';
+
+    setTimeout(function () {
+      prompt.classList.add('fade-out');
+    }, DEFAULT_POPUP_SHOW_TIME);
   }
 }
 
 function showPage(pageRef) {
-  showOrHideElements(toolbars, pageRef, 'flex');
-  showOrHideElements(pages, pageRef);
-  // Show default prompt for the page if there is one, else hide any prompts
+  updateToolbarVisibility(pageRef);
+  updatePageVisibility(pageRef);
   showPrompt(pageRef);
-}
-
-function showPrompt(promptRef) {
-  showOrHideElements(prompts, promptRef);
 }
 
 function interopDefault(ex) {
@@ -2996,6 +3018,7 @@ var emojiImages = ["/images/emojione/1f31c.svg","/images/emojione/1f31d.svg","/i
 
 var canvas$2 = document.getElementById('canvas-draw');
 var ctx = ctx = canvas$2.getContext('2d');
+var colourInputContainer = document.getElementById('input-colour-container');
 var colourInput = document.getElementById('input-colour');
 var trashButton = document.getElementById('btn-trash');
 var emojiButton = document.getElementById('btn-emoji');
@@ -3159,7 +3182,7 @@ function onEmojiClick(event) {
   emojiButtonImage.src = chosenEmoji.src;
 
   emojiButton.classList.add('selected');
-  colourInput.classList.remove('selected');
+  colourInputContainer.classList.remove('selected');
 }
 
 function redrawOnNextFrame() {
@@ -3198,7 +3221,7 @@ function redraw() {
 function onColourClickOrChange() {
   ctx.strokeStyle = colourInput.value;
   chosenEmoji = null;
-  colourInput.classList.add('selected');
+  colourInputContainer.classList.add('selected');
   emojiButton.classList.remove('selected');
 }
 
@@ -9334,11 +9357,9 @@ var HomePage = {
 
 var Pages = [HomePage, AnnotatePage, AboutPage, SharePage, SnapshotPage];
 
-//import FileInputStyler from './shared/fileInputStyler';
 function initApp() {
   SWRegister();
   InputColourShim();
-  //FileInputStyler();
   init();
 }
 

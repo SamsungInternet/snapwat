@@ -13,29 +13,30 @@
     <header>
       <div class="toolbar" id="toolbar-annotate">
         <div class="left">
-          <div id="input-colour-container">
-            <input id="input-colour" type="color" class="selected"/>
+          <div id="input-colour-container" class="selected">
+            <input id="input-colour" type="color"/>
             <div id="input-colour-substitute"></div>
+            <label for="input-colour">Pencil</label>
           </div>
-          <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/></button>
+          <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/>Emojis</button>
+          <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Clear"/>Clear</button>
         </div>
-        <div class="right">
-          <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Trash"/></button>
-          <button id="btn-snapshot"><img src="images/iconic/camera-slr.svg" alt="Snapshot"/></button>
+        <div class="right">          
+          <button id="btn-snapshot"><img src="images/iconic/arrow-right.svg" alt="Proceed"/>Next</button>
         </div>
       </div>
       <div class="toolbar" id="toolbar-snapshot">
         <div class="left">
-          <button id="btn-back-snapshot" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+          <button id="btn-back-snapshot" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/>Back</button>
         </div>
         <h2>Your Snapwat</h2>
         <div class="right">
-          <button id="btn-share-twitter"><img src="images/twitter-logo.svg" alt="Tweet"></button>
+          <button id="btn-share-twitter"><img src="images/twitter-logo.svg" alt="Tweet">Tweet it</button>
         </div>
       </div>
       <div class="toolbar" id="toolbar-share">
         <div class="left">
-          <button id="btn-back-share" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/></button>
+          <button id="btn-back-share" class="btn-back"><img src="images/iconic/arrow-left.svg" alt="Back"/>Back</button>
         </div>
         <p>Tweet from @<span id="twitter-username"></span></p>
         <div class="right"></div>
