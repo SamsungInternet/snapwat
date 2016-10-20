@@ -1,4 +1,4 @@
-var CACHE_NAME = 'cache-v1.1';
+var CACHE_NAME = 'cache-v1.2';
 
 // The advice is to not cache too much on install.
 // This is the minimal amount needed to display the initial page.
