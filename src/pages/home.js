@@ -18,11 +18,13 @@ function onPhotoInputChange(e) {
 
   console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
 
-  // TODO why does it come out too small?
+  // Ugh. Hacky fix for image coming out too small. Seems like LoadImage doesn't take into account orientation while
+  // determining max dimensions? Hopefully can submit a PR. In  meantime, just size down to max dimension & allow crop.
   const options = {
-    maxWidth: cameraCanvas.width,
-    maxHeight: cameraCanvas.height,
+    maxWidth: Math.max(cameraCanvas.width, cameraCanvas.height),
+    maxHeight: Math.max(cameraCanvas.width, cameraCanvas.height),
     contain: true,
+    crop: true,
     orientation: true,
     canvas: true,
     pixelRatio: window.devicePixelRatio
