@@ -9,7 +9,7 @@ const PAGE_NAME = PAGES.HOME;
 let inputPhoto = document.getElementById('input-photo');
 let startCameraSection = document.getElementById('start-camera');
 let startCameraBtn = document.getElementById('btn-start-camera');
-let annotateContainer = document.getElementById('annotate-container');
+let annotateCameraContainer = document.getElementById('annotate-camera-container');
 let cameraCanvas = document.getElementById('canvas-camera');
 let drawCanvas = document.getElementById('canvas-draw');
 let aboutLink = document.getElementById('link-about');
@@ -34,12 +34,11 @@ function onPhotoInputChange(e) {
 
       console.log('Generated canvas width and height', result.width, result.height);
 
-      // Replace our canvas with the generated one
+      // Replace our default canvas (for video) with the generated one
       result.id = 'canvas-camera';
 
-      annotateContainer.removeChild(cameraCanvas);
-      annotateContainer.appendChild(result);
-      //ctx.drawImage(result, 0, 0, canvas.width, canvas.height);
+      annotateCameraContainer.removeChild(cameraCanvas);
+      annotateCameraContainer.appendChild(result);
 
       cameraCanvas = result;
 

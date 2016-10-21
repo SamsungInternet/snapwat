@@ -66,18 +66,20 @@
     </div>
 
     <div id="page-annotate" class="page">
-      <div id="annotate-container" class="flex-container">
+      <div class="centre" id="annotate-camera-container">
         <canvas id="canvas-camera"></canvas>
-        <canvas id="canvas-draw"></canvas>
-        <video autoplay/>
       </div>
+      <div class="centre">
+        <canvas id="canvas-draw"></canvas>
+      </div>
+      <video autoplay/>
     </div>
 
     <div id="page-snapshot" class="page">
-      <div class="flex-container">
-        <canvas id="canvas-save"></canvas>
+      <div class="centre">
         <img id="image-save"/>
       </div>
+      <canvas id="canvas-save"></canvas>
     </div>
 
     <div id="page-share" class="page">

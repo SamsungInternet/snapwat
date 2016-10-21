@@ -21,21 +21,20 @@ function setCanvasSize() {
   canvas.height = window.innerHeight - HEADER_HEIGHT;
 }
 
-function initCanvas() {
-  setCanvasSize();
-  window.addEventListener('resize', setCanvasSize, false);
-}
-
 function showUnsupported() {
   showPrompt('webrtc-unsupported');
 }
 
-function initCameraStream() {
+function initCamera() {
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     showUnsupported();
     return;
   }
+
+  setCanvasSize();
+  window.addEventListener('resize', setCanvasSize, false);
+  video.style.display = 'block';
 
   const maxWidth = canvas.clientWidth;
   const maxHeight = canvas.clientHeight;
@@ -69,6 +68,5 @@ function initCameraStream() {
 }
 
 export default function init() {
-  initCanvas();
-  initCameraStream();
+  initCamera();
 }
