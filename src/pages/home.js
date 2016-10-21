@@ -16,50 +16,50 @@ let aboutLink = document.getElementById('link-about');
 
 function onPhotoInputChange(e) {
 
-    console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
+  console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
 
-    const options = {
-        maxWidth: cameraCanvas.width,
-        maxHeight: cameraCanvas.height,
-        contain: true,
-        orientation: true,
-        canvas: true,
-        pixelRatio: window.devicePixelRatio
-    };
+  const options = {
+    maxWidth: cameraCanvas.width,
+    maxHeight: cameraCanvas.height,
+    contain: true,
+    orientation: true,
+    canvas: true,
+    pixelRatio: window.devicePixelRatio
+  };
 
-    function onImageLoad(result) {
-        if (result.type === 'error') {
-            console.error('Error loading image', result);
-        } else {
+  function onImageLoad(result) {
+    if (result.type === 'error') {
+      console.error('Error loading image', result);
+    } else {
 
-            console.log('Generated canvas width and height', result.width, result.height);
+      console.log('Generated canvas width and height', result.width, result.height);
 
-            // Replace our canvas with the generated one
-            result.id = 'canvas-camera';
+      // Replace our canvas with the generated one
+      result.id = 'canvas-camera';
 
-            annotateContainer.removeChild(cameraCanvas);
-            annotateContainer.appendChild(result);
-            //ctx.drawImage(result, 0, 0, canvas.width, canvas.height);
+      annotateContainer.removeChild(cameraCanvas);
+      annotateContainer.appendChild(result);
+      //ctx.drawImage(result, 0, 0, canvas.width, canvas.height);
 
-            cameraCanvas = result;
+      cameraCanvas = result;
 
-            // Make drawing canvas the same size
-            drawCanvas.width = parseInt(cameraCanvas.style.width);
-            drawCanvas.height = parseInt(cameraCanvas.style.height);
+      // Make drawing canvas the same size
+      drawCanvas.width = parseInt(cameraCanvas.style.width);
+      drawCanvas.height = parseInt(cameraCanvas.style.height);
 
-            AnnotatePage.show({live: false});
-        }
+      AnnotatePage.show({live: false});
     }
+  }
 
-    // A little library which handles rotating the image appropriately depending
-    // on the image's orientation (determined from the exif data) & scaling to fit
-    LoadImage(e.target.files[0], onImageLoad, options);
+  // A little library which handles rotating the image appropriately depending
+  // on the image's orientation (determined from the exif data) & scaling to fit
+  LoadImage(e.target.files[0], onImageLoad, options);
 
 }
 
 function initCanvas() {
-    cameraCanvas.width  = window.innerWidth;
-    cameraCanvas.height = window.innerHeight - HEADER_HEIGHT;
+  cameraCanvas.width = window.innerWidth;
+  cameraCanvas.height = window.innerHeight - HEADER_HEIGHT;
 }
 
 function initControls() {
@@ -71,11 +71,11 @@ function initControls() {
     startCameraSection.style.display = 'block';
   }
 
-  startCameraBtn.addEventListener('click', function() {
+  startCameraBtn.addEventListener('click', function () {
     AnnotatePage.show({live: true});
   });
 
-  aboutLink.addEventListener('click', function() {
+  aboutLink.addEventListener('click', function () {
     AboutPage.show();
   })
 
