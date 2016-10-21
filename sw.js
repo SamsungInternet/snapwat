@@ -38,7 +38,7 @@ self.addEventListener('fetch', function(event) {
   var responsePromise = fetch(event.request)
     .then(function(response) {
 
-      if (!response || response.status >= 300 || response.type !== 'basic') {
+      if (!response || !response.ok || response.type !== 'basic') {
         // Don't cache response if it's not within our domain or not 2xx status
         return response;
       }
@@ -77,7 +77,7 @@ self.addEventListener('fetch', function(event) {
  * Clear out old caches on activation
  */
 self.addEventListener('activate', function(event) {
-  
+
   var cacheWhitelist = [CACHE_NAME];
 
   event.waitUntil(

@@ -2897,12 +2897,12 @@ var require$$0$4 = Object.freeze({
 	interopDefault(adapter_core);
 
 	var video = document.querySelector('video');
-	var canvas$1 = document.getElementById('canvas-camera');
-	var context$1 = context$1 = canvas$1.getContext('2d');
+	var canvas = document.getElementById('canvas-camera');
+	var context$1 = context$1 = canvas.getContext('2d');
 
 	function copyVideoToCanvas() {
-	  var width = canvas$1.width;
-	  var height = canvas$1.height;
+	  var width = canvas.width;
+	  var height = canvas.height;
 
 	  context$1.fillRect(0, 0, width, height);
 	  context$1.drawImage(video, 0, 0, width, height);
@@ -2911,8 +2911,8 @@ var require$$0$4 = Object.freeze({
 	}
 
 	function setCanvasSize() {
-	  canvas$1.width = window.innerWidth;
-	  canvas$1.height = window.innerHeight - HEADER_HEIGHT;
+	  canvas.width = window.innerWidth;
+	  canvas.height = window.innerHeight - HEADER_HEIGHT;
 	}
 
 	function initCanvas$1() {
@@ -2931,8 +2931,8 @@ var require$$0$4 = Object.freeze({
 	    return;
 	  }
 
-	  var maxWidth = canvas$1.clientWidth;
-	  var maxHeight = canvas$1.clientHeight;
+	  var maxWidth = canvas.clientWidth;
+	  var maxHeight = canvas.clientHeight;
 
 	  var constraints = {
 	    width: { ideal: maxWidth, max: maxWidth },
@@ -2968,8 +2968,8 @@ var require$$0$4 = Object.freeze({
 	// Time to wait before treating single touch events as a separate intention
 	var RESIZING_TIME_THRESHOLD = 500;
 
-	var canvas$2 = document.getElementById('canvas-draw');
-	var ctx$1 = ctx$1 = canvas$2.getContext('2d');
+	var canvas$1 = document.getElementById('canvas-draw');
+	var ctx = ctx = canvas$1.getContext('2d');
 	var colourInputContainer = document.getElementById('input-colour-container');
 	var colourInput = document.getElementById('input-colour');
 	var trashButton = document.getElementById('btn-trash');
@@ -3018,7 +3018,7 @@ var require$$0$4 = Object.freeze({
 	  var x = coords.x - width / 2;
 	  var y = coords.y - height / 2;
 
-	  ctx$1.drawImage(chosenEmoji, x, y, width, height);
+	  ctx.drawImage(chosenEmoji, x, y, width, height);
 
 	  drawEvents.push({
 	    image: chosenEmoji,
@@ -3034,8 +3034,8 @@ var require$$0$4 = Object.freeze({
 	  var x = coords.x;
 	  var y = coords.y;
 
-	  ctx$1.beginPath();
-	  ctx$1.moveTo(x, y);
+	  ctx.beginPath();
+	  ctx.moveTo(x, y);
 
 	  isDrawing = true;
 
@@ -3050,7 +3050,7 @@ var require$$0$4 = Object.freeze({
 
 	  var touch = e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : null;
 
-	  var coords = touch ? { x: touch.pageX, y: touch.pageY - HEADER_HEIGHT } : { x: e.clientX, y: e.clientY - HEADER_HEIGHT };
+	  var coords = touch ? { x: touch.pageX - canvas$1.offsetLeft, y: touch.pageY - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - HEADER_HEIGHT };
 
 	  touchedEmojiIndex = indexOfSelectedEmoji(coords);
 
@@ -3074,7 +3074,7 @@ var require$$0$4 = Object.freeze({
 	  var touch1 = touches.length ? touches[0] : null;
 	  var touch2 = touches.length > 1 ? touches[1] : null;
 
-	  var coords1 = touch1 ? { x: touch1.pageX, y: touch1.pageY - HEADER_HEIGHT } : { x: e.clientX, y: e.clientY - HEADER_HEIGHT };
+	  var coords1 = touch1 ? { x: touch1.pageX - canvas$1.offsetLeft, y: touch1.pageY - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - HEADER_HEIGHT };
 
 	  if (touchedEmojiIndex >= 0) {
 
@@ -3121,11 +3121,11 @@ var require$$0$4 = Object.freeze({
 	    }
 	  } else if (isDrawing) {
 
-	    ctx$1.lineTo(coords1.x, coords1.y);
-	    ctx$1.stroke();
+	    ctx.lineTo(coords1.x, coords1.y);
+	    ctx.stroke();
 
 	    drawEvents.push({
-	      stokeStyle: ctx$1.strokeStyle,
+	      stokeStyle: ctx.strokeStyle,
 	      x: coords1.x,
 	      y: coords1.y
 	    });
@@ -3158,7 +3158,7 @@ var require$$0$4 = Object.freeze({
 
 	function redraw() {
 
-	  ctx$1.clearRect(0, 0, canvas$2.width, canvas$2.height);
+	  ctx.clearRect(0, 0, canvas$1.width, canvas$1.height);
 
 	  for (var i = 0; i < drawEvents.length; i++) {
 
@@ -3166,16 +3166,16 @@ var require$$0$4 = Object.freeze({
 
 	    if (evt.image) {
 	      // Emoji
-	      ctx$1.drawImage(evt.image, evt.x, evt.y, evt.width, evt.height);
+	      ctx.drawImage(evt.image, evt.x, evt.y, evt.width, evt.height);
 	    } else if (evt.begin) {
 	      // Start a line
-	      ctx$1.beginPath();
-	      ctx$1.moveTo(evt.x, evt.y);
+	      ctx.beginPath();
+	      ctx.moveTo(evt.x, evt.y);
 	    } else {
 	      // Stroke
-	      ctx$1.strokeStyle = evt.strokeStyle;
-	      ctx$1.lineTo(evt.x, evt.y);
-	      ctx$1.stroke();
+	      ctx.strokeStyle = evt.strokeStyle;
+	      ctx.lineTo(evt.x, evt.y);
+	      ctx.stroke();
 	    }
 	  }
 
@@ -3183,26 +3183,26 @@ var require$$0$4 = Object.freeze({
 	}
 
 	function onColourClickOrChange() {
-	  ctx$1.strokeStyle = colourInput.value;
+	  ctx.strokeStyle = colourInput.value;
 	  chosenEmoji = null;
 	  colourInputContainer.classList.add('selected');
 	  emojiButton.classList.remove('selected');
 	}
 
 	function initCanvas$2() {
-	  canvas$2.width = window.innerWidth;
-	  canvas$2.height = window.innerHeight - HEADER_HEIGHT;
+	  canvas$1.width = window.innerWidth;
+	  canvas$1.height = window.innerHeight - HEADER_HEIGHT;
 
-	  canvas$2.addEventListener('touchstart', onTouchStartOrMouseDown, false);
-	  canvas$2.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
-	  canvas$2.addEventListener('touchend', onTouchEndOrMouseUp, false);
+	  canvas$1.addEventListener('touchstart', onTouchStartOrMouseDown, false);
+	  canvas$1.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
+	  canvas$1.addEventListener('touchend', onTouchEndOrMouseUp, false);
 
-	  canvas$2.addEventListener('mousedown', onTouchStartOrMouseDown, false);
-	  canvas$2.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
-	  canvas$2.addEventListener('mouseup', onTouchEndOrMouseUp, false);
+	  canvas$1.addEventListener('mousedown', onTouchStartOrMouseDown, false);
+	  canvas$1.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
+	  canvas$1.addEventListener('mouseup', onTouchEndOrMouseUp, false);
 
-	  ctx$1.strokeStyle = '#000000';
-	  ctx$1.lineWidth = 3;
+	  ctx.strokeStyle = '#000000';
+	  ctx.lineWidth = 3;
 	}
 
 	function initControls$2() {
@@ -9143,22 +9143,28 @@ var require$$0$4 = Object.freeze({
 
 	var backBtn = document.getElementById('btn-back-snapshot');
 	var tweetButton = document.getElementById('btn-share-twitter');
-	var cameraCanvas = document.getElementById('canvas-camera');
 	var drawingCanvas = document.getElementById('canvas-draw');
 	var saveCanvas = document.getElementById('canvas-save');
 	var saveImage = document.getElementById('image-save');
 	var saveCtx = saveCanvas.getContext('2d');
+	var cameraCanvas$1 = void 0;
 
 	function initSave() {
 
-	  saveCanvas.width = window.innerWidth;
-	  saveCanvas.height = window.innerHeight - HEADER_HEIGHT;
+	  // May have been swapped out after initial app load
+	  cameraCanvas$1 = document.getElementById('canvas-camera');
+
+	  saveCanvas.width = cameraCanvas$1.width;
+	  saveCanvas.height = cameraCanvas$1.height;
+
+	  saveCanvas.style.width = cameraCanvas$1.style.width;
+	  saveCanvas.style.height = cameraCanvas$1.style.height;
+
+	  saveImage.width = drawingCanvas.width;
+	  saveImage.height = drawingCanvas.height;
 
 	  saveCtx.font = '16px Arial';
 	  saveCtx.fillStyle = '#fff';
-
-	  saveImage.width = window.innerWidth;
-	  saveImage.height = window.innerHeight - HEADER_HEIGHT;
 	}
 
 	function initControls$3() {
@@ -9181,7 +9187,6 @@ var require$$0$4 = Object.freeze({
 	var SnapshotPage = {
 
 	  init: function init() {
-	    initSave();
 	    initControls$3();
 	  },
 
@@ -9189,9 +9194,11 @@ var require$$0$4 = Object.freeze({
 
 	    playCameraSound();
 
+	    initSave();
+
 	    // Copy the other canvases onto a single canvas for saving
-	    saveCtx.drawImage(cameraCanvas, 0, 0);
-	    saveCtx.drawImage(drawingCanvas, 0, 0);
+	    saveCtx.drawImage(cameraCanvas$1, 0, 0, saveCanvas.width, saveCanvas.height);
+	    saveCtx.drawImage(drawingCanvas, 0, 0, saveCanvas.width, saveCanvas.height);
 
 	    // Add the URL at the bottom
 	    saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 10);
@@ -10697,40 +10704,56 @@ var require$$0$4 = Object.freeze({
 	var inputPhoto = document.getElementById('input-photo');
 	var startCameraSection = document.getElementById('start-camera');
 	var startCameraBtn = document.getElementById('btn-start-camera');
-	var canvas = document.getElementById('canvas-camera');
-	var ctx = canvas.getContext('2d');
+	var annotateContainer = document.getElementById('annotate-container');
+	var cameraCanvas = document.getElementById('canvas-camera');
+	var drawCanvas = document.getElementById('canvas-draw');
 	var aboutLink = document.getElementById('link-about');
-	var fileReader = new FileReader();
 
 	function onPhotoInputChange(e) {
 
+	  console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
+
 	  var options = {
-	    minWidth: canvas.width,
-	    minHeight: canvas.height,
-	    maxWidth: canvas.width,
-	    maxHeight: canvas.height,
+	    maxWidth: cameraCanvas.width,
+	    maxHeight: cameraCanvas.height,
 	    contain: true,
 	    orientation: true,
-	    canvas: true
+	    canvas: true,
+	    pixelRatio: window.devicePixelRatio
 	  };
 
 	  function onImageLoad(result) {
 	    if (result.type === 'error') {
 	      console.error('Error loading image', result);
 	    } else {
-	      ctx.drawImage(result, 0, 0, canvas.width, canvas.height);
+
+	      console.log('Generated canvas width and height', result.width, result.height);
+
+	      // Replace our canvas with the generated one
+	      result.id = 'canvas-camera';
+
+	      annotateContainer.removeChild(cameraCanvas);
+	      annotateContainer.appendChild(result);
+	      //ctx.drawImage(result, 0, 0, canvas.width, canvas.height);
+
+	      cameraCanvas = result;
+
+	      // Make drawing canvas the same size
+	      drawCanvas.width = parseInt(cameraCanvas.style.width);
+	      drawCanvas.height = parseInt(cameraCanvas.style.height);
+
 	      AnnotatePage.show({ live: false });
 	    }
 	  }
 
-	  // A little library which handles rotating the image appropriately depending 
+	  // A little library which handles rotating the image appropriately depending
 	  // on the image's orientation (determined from the exif data) & scaling to fit
 	  LoadImage(e.target.files[0], onImageLoad, options);
 	}
 
 	function initCanvas() {
-	  canvas.width = window.innerWidth;
-	  canvas.height = window.innerHeight - HEADER_HEIGHT;
+	  cameraCanvas.width = window.innerWidth;
+	  cameraCanvas.height = window.innerHeight - HEADER_HEIGHT;
 	}
 
 	function initControls() {
