@@ -3048,7 +3048,7 @@ var require$$0$4 = Object.freeze({
 
 	  var touch = e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : null;
 
-	  var coords = touch ? { x: touch.pageX - canvas$1.offsetLeft, y: touch.pageY - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - HEADER_HEIGHT };
+	  var coords = touch ? { x: touch.pageX - canvas$1.offsetLeft, y: touch.pageY - canvas$1.offsetTop - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - canvas$1.offsetTop - HEADER_HEIGHT };
 
 	  touchedEmojiIndex = indexOfSelectedEmoji(coords);
 
@@ -3072,7 +3072,7 @@ var require$$0$4 = Object.freeze({
 	  var touch1 = touches.length ? touches[0] : null;
 	  var touch2 = touches.length > 1 ? touches[1] : null;
 
-	  var coords1 = touch1 ? { x: touch1.pageX - canvas$1.offsetLeft, y: touch1.pageY - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - HEADER_HEIGHT };
+	  var coords1 = touch1 ? { x: touch1.pageX - canvas$1.offsetLeft, y: touch1.pageY - canvas$1.offsetTop - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - canvas$1.offsetTop - HEADER_HEIGHT };
 
 	  if (touchedEmojiIndex >= 0) {
 
@@ -3082,7 +3082,7 @@ var require$$0$4 = Object.freeze({
 
 	      // Resize emoji
 
-	      var coords2 = { x: touch2.pageX, y: touch2.pageY - HEADER_HEIGHT };
+	      var coords2 = { x: touch2.pageX - canvas$1.offsetLeft, y: touch2.pageY - canvas$1.offsetTop - HEADER_HEIGHT };
 	      var newResizeTouchDelta = { x: Math.abs(coords2.x - coords1.x),
 	        y: Math.abs(coords2.y - coords1.y) };
 
@@ -10711,6 +10711,7 @@ var require$$0$4 = Object.freeze({
 
 	  console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
 
+	  // TODO why does it come out too small?
 	  var options = {
 	    maxWidth: cameraCanvas.width,
 	    maxHeight: cameraCanvas.height,

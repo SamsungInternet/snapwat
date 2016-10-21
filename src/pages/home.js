@@ -18,6 +18,7 @@ function onPhotoInputChange(e) {
 
   console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
 
+  // TODO why does it come out too small?
   const options = {
     maxWidth: cameraCanvas.width,
     maxHeight: cameraCanvas.height,

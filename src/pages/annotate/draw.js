@@ -93,8 +93,8 @@ function onTouchStartOrMouseDown(e) {
   let touch = e.changedTouches && e.changedTouches.length ?
     e.changedTouches[0] : null;
 
-  let coords = touch ? {x: touch.pageX - canvas.offsetLeft, y: touch.pageY - HEADER_HEIGHT} :
-    {x: e.clientX - canvas.offsetLeft, y: e.clientY - HEADER_HEIGHT};
+  let coords = touch ? {x: touch.pageX - canvas.offsetLeft, y: touch.pageY - canvas.offsetTop - HEADER_HEIGHT} :
+    {x: e.clientX - canvas.offsetLeft, y: e.clientY - canvas.offsetTop - HEADER_HEIGHT};
 
   touchedEmojiIndex = indexOfSelectedEmoji(coords);
 
@@ -119,8 +119,8 @@ function onTouchMoveOrMouseMove(e) {
   let touch1 = touches.length ? touches[0] : null;
   let touch2 = touches.length > 1 ? touches[1] : null;
 
-  let coords1 = touch1 ? {x: touch1.pageX - canvas.offsetLeft, y: touch1.pageY - HEADER_HEIGHT} :
-    {x: e.clientX - canvas.offsetLeft, y: e.clientY - HEADER_HEIGHT};
+  let coords1 = touch1 ? {x: touch1.pageX - canvas.offsetLeft, y: touch1.pageY - canvas.offsetTop - HEADER_HEIGHT} :
+    {x: e.clientX - canvas.offsetLeft, y: e.clientY - canvas.offsetTop - HEADER_HEIGHT};
 
   if (touchedEmojiIndex >= 0) {
 
@@ -130,7 +130,7 @@ function onTouchMoveOrMouseMove(e) {
 
       // Resize emoji
 
-      let coords2 = {x: touch2.pageX, y: touch2.pageY - HEADER_HEIGHT};
+      let coords2 = {x: touch2.pageX - canvas.offsetLeft, y: touch2.pageY - canvas.offsetTop - HEADER_HEIGHT};
       let newResizeTouchDelta = {x: Math.abs(coords2.x - coords1.x),
         y: Math.abs(coords2.y - coords1.y)};
 
