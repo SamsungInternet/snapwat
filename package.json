@@ -6,19 +6,18 @@
     "start": "node devServer",
     "watch": "watch 'npm run build' ./src",
     "build": "node build && echo 'Build complete'",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "NODE_ENV=production npm run build && git commit -m 'Production build for deployment' public/build && git subtree push --prefix public origin gh-pages"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/poshaughnessy/snapwat.git"
+    "url": "git+https://github.com/samsunginternet/snapwat.git"
   },
-  "author": "Peter O'Shaughnessy",
+  "author": "Peter O'Shaughnessy, Samsung Internet",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/poshaughnessy/snapwat/issues"
+    "url": "https://github.com/samsunginternet/snapwat/issues"
   },
-  "homepage": "https://github.com/poshaughnessy/snapwat#readme",
+  "homepage": "https://github.com/samsunginternet/snapwat#readme",
   "devDependencies": {
     "babel-preset-es2015": "6.9.0",
     "babel-preset-es2015-rollup": "^1.1.1",
