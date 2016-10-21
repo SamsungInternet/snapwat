@@ -1,9 +1,12 @@
 import emojiImages from '\0emoji-images';
 import {HEADER_HEIGHT} from '../../shared/constants';
 
+// Time to wait before treating single touch events as a separate intention
+const RESIZING_TIME_THRESHOLD = 500;
+
 let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');
-let colourInputContainer = document.getElementById('input-colour-container'); 
+let colourInputContainer = document.getElementById('input-colour-container');
 let colourInput = document.getElementById('input-colour');
 let trashButton = document.getElementById('btn-trash');
 let emojiButton = document.getElementById('btn-emoji');
@@ -12,8 +15,10 @@ let emojiModal = document.getElementById('modal-emoji');
 let touchedEmojiIndex = -1;
 let chosenEmoji = null;
 let resizeTouchDelta = null;
+let resizingTimeout = null;
 let isDrawing = false;
 let isRedrawing = false;
+let isResizing = false;
 
 // Store drawing events (lines and emojis) for redrawing
 let drawEvents = [];
@@ -138,13 +143,23 @@ function onTouchMoveOrMouseMove(e) {
         evt.x = (coords1.x + coords2.x) / 2 - evt.width / 2;
         evt.y = (coords1.y + coords2.y) / 2 - evt.height / 2;
 
+        isResizing = true;
+
+        if (resizingTimeout) {
+          clearTimeout(resizingTimeout);
+        }
+
+        resizingTimeout = setTimeout(() => {
+          isResizing = false;
+        }, RESIZING_TIME_THRESHOLD);
+
         redrawOnNextFrame();
 
       }
 
       resizeTouchDelta = newResizeTouchDelta;
 
-    } else {
+    } else if (!isResizing) {
 
       // Update emoji position
 
