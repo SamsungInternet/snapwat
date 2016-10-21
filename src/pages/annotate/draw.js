@@ -90,12 +90,11 @@ function onDrawingMouseDown(coords) {
 
 function onTouchStartOrMouseDown(e) {
 
-
   let touch = e.changedTouches && e.changedTouches.length ?
     e.changedTouches[0] : null;
 
-  let coords = touch ? { x: touch.pageX, y: touch.pageY - HEADER_HEIGHT } :
-  {x: e.clientX, y: e.clientY - HEADER_HEIGHT};
+  let coords = touch ? {x: touch.pageX - canvas.offsetLeft, y: touch.pageY - HEADER_HEIGHT} :
+    {x: e.clientX - canvas.offsetLeft, y: e.clientY - HEADER_HEIGHT};
 
   touchedEmojiIndex = indexOfSelectedEmoji(coords);
 
@@ -120,8 +119,8 @@ function onTouchMoveOrMouseMove(e) {
   let touch1 = touches.length ? touches[0] : null;
   let touch2 = touches.length > 1 ? touches[1] : null;
 
-  let coords1 = touch1 ? {x: touch1.pageX, y: touch1.pageY - HEADER_HEIGHT} :
-    {x: e.clientX, y: e.clientY - HEADER_HEIGHT};
+  let coords1 = touch1 ? {x: touch1.pageX - canvas.offsetLeft, y: touch1.pageY - HEADER_HEIGHT} :
+    {x: e.clientX - canvas.offsetLeft, y: e.clientY - HEADER_HEIGHT};
 
   if (touchedEmojiIndex >= 0) {
 
