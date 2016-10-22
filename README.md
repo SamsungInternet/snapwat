@@ -36,23 +36,20 @@ Be sure to share your beautiful creations with the world, hashtag snapwat!
 
 So far I have tested it in:
 
-* Samsung Internet for Android (obvs, [that's where I work](https://medium.com/samsung-internet-dev/about)!)
+* Samsung Internet for Android
 * Chrome for Android
+* iOS Safari (no getUserMedia, but can use input type="file")
 * Chrome desktop
 
-Unfortunately iOS Safari does not have support for getUserMedia yet, although you can still doodle in it, if you like.
-
-If you have any problems with $your_browser, please create an issue (or even better, a PR).
+If you spot issues on other browsers, please file an issue (or even better a PR!)
 
 
 ## Known issues
 
-I released Snapwat early - I still need to fix up some basic issues such as having an input type="file" fallback and not requesting camera permission as soon as you load the page. Paul Kinlan's [Chrome Developers guide](https://developers.google.com/web/fundamentals/native-hardware/capturing-images/) captures those things and more really well.
+See the [Issues tab](https://github.com/SamsungInternet/snapwat/issues).
 
 Unfortunately the long-tap to save the image is disabled in standalone app mode in Samsung Internet, i.e. when you
 launch it from the home screen icon. So for now, I recommend using Snapwat in a regular browser view.
-
-See also the Issues tab here on Github.
 
 
 ## Tech
@@ -118,6 +115,11 @@ Any resemblance to other social apps is purely coincidental...
 ## Feedback or questions
 
 Please [tweet me](https://twitter.com/poshaughnessy) or email: peter dot oshaughnessy at gmail dot com.
+
+
+## Resources
+
+* [Chrome Developers guide on capturing images](https://developers.google.com/web/fundamentals/native-hardware/capturing-images/).
 
 
 ## Credits and Thanks
