@@ -4,13 +4,9 @@
 
 [sna**pwa**t](https://snapw.at) is a demo to showcase progressive web app capabilities.
 
-The idea of the app is to let you doodle and add emojis etc. on top of photos and videos.
-Right now you can snap selfie stills from your camera view with your lovely drawings and emojis
-on top. 
+The idea of the app is to let you doodle and add emojis etc. on top of photos or your live camera feed.
 
 <img src="docs/snapwat-snapshots.png?raw=true" alt="A snapwat" width="600px"/>
-
-Choosing a photo from your gallery should be coming soon and recording videos may come later...
 
 
 ## How to use it
