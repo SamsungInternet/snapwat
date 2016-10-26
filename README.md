@@ -81,12 +81,7 @@ To watch for changes (in a separate terminal):
 *NB. You should be able to replace `npm` with `yarn` here, but it's not working with yarn v0.15.1. 
 Sounds like it should work once [this gets released](https://github.com/yarnpkg/yarn/pull/809).
 
-To test the sharing feature locally, ensure you have a `NODE_ENV` environment variable set to
-'development'.
-
-For reference, I deploy to Github pages using:
-
-```git subtree push --prefix public origin gh-pages```
+For reference, I deploy to Github pages using: ```git subtree push --prefix public origin gh-pages```
 
 
 ## Snapwat the name
