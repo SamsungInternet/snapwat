@@ -92,10 +92,7 @@ For reference, I deploy to Github pages using:
 ## Snapwat the name
 
 Snapwat is called Snapwat because it's a snapshot with "pwa" in it - for Progressive Web App. 
-Also, it's abbreviated to SW, like Service Workers. Good eh? 
-
-It's pronounced "snap what?" to rhyme with snapshot.
-
+Also, it's abbreviated to SW, like Service Workers. Good eh?  It's pronounced "snap what?" to rhyme with snapshot. 
 Any resemblance to other social apps is purely coincidental...
 
 
@@ -107,13 +104,10 @@ Any resemblance to other social apps is purely coincidental...
 
 ## Credits and Thanks
 
-Emoji images provided free by [EmojiOne](http://emojione.com/).
-
-Icons by [Iconic](https://useiconic.com/).
-
-Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/61059/).
-
-Thanks to Rich Harris for making a [rollup cache manifest example](https://gitlab.com/Rich-Harris/rollup-cache-manifest-example) 
+* Emoji images provided free by [EmojiOne](http://emojione.com/).
+* Icons by [Iconic](https://useiconic.com/).
+* Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/61059/).
+* Thanks to Rich Harris for making a [rollup cache manifest example](https://gitlab.com/Rich-Harris/rollup-cache-manifest-example) 
 for me (and for [rollup](http://rollupjs.org/) in general!)
 
 
