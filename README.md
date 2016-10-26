@@ -16,10 +16,10 @@ Choose a colour using the colour picker in the corner and start drawing over the
 Select an emoji from the emoji menu and touch on the camera view to stamp it as a sticker.
 Tap and drag to move an emoji around. Pinch an emoji to resize it.
 
-When you have a moment that you want to snap, press the camera button. The snapwat (that's the noun for a snapwat 
+When you have a moment that you want to snap, press the 'next' arrow. The snapwat (that's the noun for a snapwat 
 snapshot!) will open up in the page. Tap and hold / right-click and choose your device's Save / Download option to save 
 the image. (Unfortunately it doesn't seem possible right now to download the generated file automatically across mobile 
-browsers - I'm planning to write a blog post about this soon).
+browsers - [more about that here](https://medium.com/samsung-internet-dev/things-i-learned-making-a-progressive-web-app-for-super-selfies-49e76d154e4f)).
 
 Or press the tweet button and share it directly via the Twitter API. It will request read/write access for your
 Twitter account, but it will only ever be used to share your snapwats with your permission. It uses 
@@ -37,22 +37,16 @@ So far I have tested it in:
 * iOS Safari (no getUserMedia, but can use input type="file")
 * Chrome desktop
 
-If you spot issues on other browsers, please file an issue (or even better a PR!)
+For known issues, see the [Issues tab](https://github.com/SamsungInternet/snapwat/issues).
 
-
-## Known issues
-
-See the [Issues tab](https://github.com/SamsungInternet/snapwat/issues).
-
-Unfortunately the long-tap to save the image is disabled in standalone app mode in Samsung Internet, i.e. when you
-launch it from the home screen icon. So for now, I recommend using Snapwat in a regular browser view.
+If you spot other problems, please file an issue (or even better a PR!)
 
 
 ## Tech
 
 This demo is intended to be as lightweight as possible. However, it would be a shame to avoid
 all modern tooling and lose out on the latest syntax and JS bundling. So, I'm using 
-[Babel](https://babeljs.io/) to transpile the ES2015 syntax and [rollup](http://rollupjs.org) 
+[Babel](https://babeljs.io/) to transpile the JavaScript and [rollup](http://rollupjs.org) 
 for module loading.
 
 The [WebRTC adapter](https://github.com/webrtc/adapter) is used to polyfill the latest 
@@ -60,7 +54,7 @@ MediaDevices promise-based API.
 
 It uses [Web Manifest](https://developer.mozilla.org/en-US/docs/Web/Manifest) to enable home screen 
 installation and a [service worker](https://developers.google.com/web/fundamentals/primers/service-worker/) 
-for offline use. Yes, you can take a snapwat on an airplane!
+for offline use. (Yes, you can take a snapwat on an airplane!)
 
 
 ## Local development
@@ -108,19 +102,15 @@ It's pronounced "snap what?" to rhyme with snapshot.
 Any resemblance to other social apps is purely coincidental...
 
 
-## Feedback or questions
+## Further reading
 
-Please [tweet me](https://twitter.com/poshaughnessy) or email: peter dot oshaughnessy at gmail dot com.
-
-
-## Resources
-
+* [Things I learned making a PWA for 'super selfies'](https://medium.com/samsung-internet-dev/things-i-learned-making-a-progressive-web-app-for-super-selfies-49e76d154e4f)
 * [Chrome Developers guide on capturing images](https://developers.google.com/web/fundamentals/native-hardware/capturing-images/).
 
 
 ## Credits and Thanks
 
-Emojis provided free by [EmojiOne](http://emojione.com/).
+Emoji images provided free by [EmojiOne](http://emojione.com/).
 
 Icons by [Iconic](https://useiconic.com/).
 
@@ -128,6 +118,12 @@ Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/6105
 
 Thanks to Rich Harris for making a [rollup cache manifest example](https://gitlab.com/Rich-Harris/rollup-cache-manifest-example) 
 for me (and for [rollup](http://rollupjs.org/) in general!)
+
+
+## Contact
+
+Please [tweet me](https://twitter.com/poshaughnessy) or email: peter dot oshaughnessy at gmail dot com.
+
 
 # Licence
 
