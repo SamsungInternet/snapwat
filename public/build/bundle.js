@@ -2961,18 +2961,18 @@ var require$$0$4 = Object.freeze({
 	  initCamera();
 	}
 
-	var emojiImages = ["/images/emojione/1f31c.svg","/images/emojione/1f31d.svg","/images/emojione/1f32a.svg","/images/emojione/1f32b.svg","/images/emojione/1f32d.svg","/images/emojione/1f32e.svg","/images/emojione/1f32f.svg","/images/emojione/1f332.svg","/images/emojione/1f333.svg","/images/emojione/1f334.svg","/images/emojione/1f335.svg","/images/emojione/1f336.svg","/images/emojione/1f337.svg","/images/emojione/1f339.svg","/images/emojione/1f33c.svg","/images/emojione/1f345.svg","/images/emojione/1f346.svg","/images/emojione/1f347.svg","/images/emojione/1f349.svg","/images/emojione/1f34a.svg","/images/emojione/1f34b.svg","/images/emojione/1f34c.svg","/images/emojione/1f34d.svg","/images/emojione/1f34e.svg","/images/emojione/1f350.svg","/images/emojione/1f352.svg","/images/emojione/1f354.svg","/images/emojione/1f355.svg","/images/emojione/1f357.svg","/images/emojione/1f35e.svg","/images/emojione/1f35f.svg","/images/emojione/1f363.svg","/images/emojione/1f364.svg","/images/emojione/1f366.svg","/images/emojione/1f367.svg","/images/emojione/1f368.svg","/images/emojione/1f369.svg","/images/emojione/1f36a.svg","/images/emojione/1f36b.svg","/images/emojione/1f36d.svg","/images/emojione/1f36f.svg","/images/emojione/1f370.svg","/images/emojione/1f373.svg","/images/emojione/1f377.svg","/images/emojione/1f378.svg","/images/emojione/1f379.svg","/images/emojione/1f37a.svg","/images/emojione/1f37b.svg","/images/emojione/1f37c.svg","/images/emojione/1f37e.svg","/images/emojione/1f37f.svg","/images/emojione/1f380.svg","/images/emojione/1f381.svg","/images/emojione/1f382.svg","/images/emojione/1f383.svg","/images/emojione/1f384.svg","/images/emojione/1f385.svg","/images/emojione/1f386.svg","/images/emojione/1f388.svg","/images/emojione/1f389.svg","/images/emojione/1f392.svg","/images/emojione/1f393.svg","/images/emojione/1f396.svg","/images/emojione/1f399.svg","/images/emojione/1f3a3.svg","/images/emojione/1f3a4.svg","/images/emojione/1f3a5.svg","/images/emojione/1f3a7.svg","/images/emojione/1f3a8.svg","/images/emojione/1f3a9.svg","/images/emojione/1f3ac.svg","/images/emojione/1f3ad.svg","/images/emojione/1f3ae.svg","/images/emojione/1f3b3.svg","/images/emojione/1f3b5.svg","/images/emojione/1f3b7.svg","/images/emojione/1f3b8.svg","/images/emojione/1f3ba.svg","/images/emojione/1f3bc.svg","/images/emojione/1f3bd.svg","/images/emojione/1f3be.svg","/images/emojione/1f3c0.svg","/images/emojione/1f3c5.svg","/images/emojione/1f3c6.svg","/images/emojione/1f3c8.svg","/images/emojione/1f3d3.svg","/images/emojione/1f3f9.svg","/images/emojione/1f400.svg","/images/emojione/1f401.svg","/images/emojione/1f402.svg","/images/emojione/1f403.svg","/images/emojione/1f404.svg","/images/emojione/1f405.svg","/images/emojione/1f406.svg","/images/emojione/1f407.svg","/images/emojione/1f408.svg","/images/emojione/1f409.svg","/images/emojione/1f40a.svg","/images/emojione/1f40b.svg","/images/emojione/1f40c.svg","/images/emojione/1f40d.svg","/images/emojione/1f40e.svg","/images/emojione/1f40f.svg","/images/emojione/1f410.svg","/images/emojione/1f411.svg","/images/emojione/1f412.svg","/images/emojione/1f413.svg","/images/emojione/1f414.svg","/images/emojione/1f415.svg","/images/emojione/1f416.svg","/images/emojione/1f417.svg","/images/emojione/1f418.svg","/images/emojione/1f419.svg","/images/emojione/1f41b.svg","/images/emojione/1f41c.svg","/images/emojione/1f41d.svg","/images/emojione/1f41e.svg","/images/emojione/1f41f.svg","/images/emojione/1f420.svg","/images/emojione/1f421.svg","/images/emojione/1f422.svg","/images/emojione/1f423.svg","/images/emojione/1f424.svg","/images/emojione/1f425.svg","/images/emojione/1f426.svg","/images/emojione/1f427.svg","/images/emojione/1f428.svg","/images/emojione/1f429.svg","/images/emojione/1f42a.svg","/images/emojione/1f42b.svg","/images/emojione/1f42d.svg","/images/emojione/1f42e.svg","/images/emojione/1f42f.svg","/images/emojione/1f430.svg","/images/emojione/1f431.svg","/images/emojione/1f432.svg","/images/emojione/1f433.svg","/images/emojione/1f434.svg","/images/emojione/1f435.svg","/images/emojione/1f436.svg","/images/emojione/1f437.svg","/images/emojione/1f438.svg","/images/emojione/1f439.svg","/images/emojione/1f43a.svg","/images/emojione/1f43b.svg","/images/emojione/1f43c.svg","/images/emojione/1f43d.svg","/images/emojione/1f43f.svg","/images/emojione/1f440.svg","/images/emojione/1f442.svg","/images/emojione/1f443.svg","/images/emojione/1f444.svg","/images/emojione/1f445.svg","/images/emojione/1f446.svg","/images/emojione/1f447.svg","/images/emojione/1f448.svg","/images/emojione/1f449.svg","/images/emojione/1f44a.svg","/images/emojione/1f44b.svg","/images/emojione/1f44c.svg","/images/emojione/1f44d.svg","/images/emojione/1f44e.svg","/images/emojione/1f44f.svg","/images/emojione/1f450.svg","/images/emojione/1f451.svg","/images/emojione/1f452.svg","/images/emojione/1f453.svg","/images/emojione/1f455.svg","/images/emojione/1f456.svg","/images/emojione/1f457.svg","/images/emojione/1f458.svg","/images/emojione/1f459.svg","/images/emojione/1f45a.svg","/images/emojione/1f45b.svg","/images/emojione/1f45c.svg","/images/emojione/1f462.svg","/images/emojione/1f466.svg","/images/emojione/1f467.svg","/images/emojione/1f468.svg","/images/emojione/1f469.svg","/images/emojione/1f46e.svg","/images/emojione/1f470.svg","/images/emojione/1f471.svg","/images/emojione/1f472.svg","/images/emojione/1f473.svg","/images/emojione/1f474.svg","/images/emojione/1f475.svg","/images/emojione/1f476.svg","/images/emojione/1f477.svg","/images/emojione/1f478.svg","/images/emojione/1f479.svg","/images/emojione/1f47d.svg","/images/emojione/1f480.svg","/images/emojione/1f482.svg","/images/emojione/1f484.svg","/images/emojione/1f489.svg","/images/emojione/1f48b.svg","/images/emojione/1f48d.svg","/images/emojione/1f48e.svg","/images/emojione/1f490.svg","/images/emojione/1f493.svg","/images/emojione/1f494.svg","/images/emojione/1f498.svg","/images/emojione/1f49a.svg","/images/emojione/1f49b.svg","/images/emojione/1f49c.svg","/images/emojione/1f4a1.svg","/images/emojione/1f4a5.svg","/images/emojione/1f4a7.svg","/images/emojione/1f4a8.svg","/images/emojione/1f4a9.svg","/images/emojione/1f4aa.svg","/images/emojione/1f4ad.svg","/images/emojione/1f4af.svg","/images/emojione/1f4b0.svg","/images/emojione/1f4b5.svg","/images/emojione/1f4b8.svg","/images/emojione/1f4cb.svg","/images/emojione/1f4cc.svg","/images/emojione/1f4ce.svg","/images/emojione/1f4cf.svg","/images/emojione/1f4db.svg","/images/emojione/1f4de.svg","/images/emojione/1f4e2.svg","/images/emojione/1f4e3.svg","/images/emojione/1f4ef.svg","/images/emojione/1f4f1.svg","/images/emojione/1f4f7.svg","/images/emojione/1f4fa.svg","/images/emojione/1f506.svg","/images/emojione/1f50e.svg","/images/emojione/1f512.svg","/images/emojione/1f514.svg","/images/emojione/1f525.svg","/images/emojione/1f526.svg","/images/emojione/1f528.svg","/images/emojione/1f576.svg","/images/emojione/1f577.svg","/images/emojione/1f578.svg","/images/emojione/1f579.svg","/images/emojione/1f58a.svg","/images/emojione/1f58b.svg","/images/emojione/1f58c.svg","/images/emojione/1f58d.svg","/images/emojione/1f590.svg","/images/emojione/1f596.svg","/images/emojione/1f5ef.svg","/images/emojione/1f600.svg","/images/emojione/1f601.svg","/images/emojione/1f602.svg","/images/emojione/1f603.svg","/images/emojione/1f604.svg","/images/emojione/1f605.svg","/images/emojione/1f606.svg","/images/emojione/1f607.svg","/images/emojione/1f608.svg","/images/emojione/1f609.svg","/images/emojione/1f60a.svg","/images/emojione/1f60b.svg","/images/emojione/1f60c.svg","/images/emojione/1f60d.svg","/images/emojione/1f60e.svg","/images/emojione/1f60f.svg","/images/emojione/1f610.svg","/images/emojione/1f611.svg","/images/emojione/1f612.svg","/images/emojione/1f613.svg","/images/emojione/1f614.svg","/images/emojione/1f615.svg","/images/emojione/1f616.svg","/images/emojione/1f617.svg","/images/emojione/1f618.svg","/images/emojione/1f619.svg","/images/emojione/1f61a.svg","/images/emojione/1f61b.svg","/images/emojione/1f61c.svg","/images/emojione/1f61d.svg","/images/emojione/1f61e.svg","/images/emojione/1f61f.svg","/images/emojione/1f620.svg","/images/emojione/1f621.svg","/images/emojione/1f622.svg","/images/emojione/1f623.svg","/images/emojione/1f624.svg","/images/emojione/1f625.svg","/images/emojione/1f626.svg","/images/emojione/1f627.svg","/images/emojione/1f628.svg","/images/emojione/1f629.svg","/images/emojione/1f62a.svg","/images/emojione/1f62b.svg","/images/emojione/1f62c.svg","/images/emojione/1f62d.svg","/images/emojione/1f62e.svg","/images/emojione/1f62f.svg","/images/emojione/1f630.svg","/images/emojione/1f631.svg","/images/emojione/1f632.svg","/images/emojione/1f633.svg","/images/emojione/1f634.svg","/images/emojione/1f635.svg","/images/emojione/1f636.svg","/images/emojione/1f637.svg","/images/emojione/1f638.svg","/images/emojione/1f639.svg","/images/emojione/1f63a.svg","/images/emojione/1f63b.svg","/images/emojione/1f63c.svg","/images/emojione/1f63d.svg","/images/emojione/1f63e.svg","/images/emojione/1f63f.svg","/images/emojione/1f640.svg","/images/emojione/1f641.svg","/images/emojione/1f642.svg","/images/emojione/1f643.svg","/images/emojione/1f644.svg","/images/emojione/1f648.svg","/images/emojione/1f649.svg","/images/emojione/1f64a.svg","/images/emojione/1f64c.svg","/images/emojione/1f64f.svg","/images/emojione/1f680.svg","/images/emojione/1f681.svg","/images/emojione/1f682.svg","/images/emojione/1f6a8.svg","/images/emojione/1f910.svg","/images/emojione/1f911.svg","/images/emojione/1f912.svg","/images/emojione/1f913.svg","/images/emojione/1f914.svg","/images/emojione/1f915.svg","/images/emojione/1f916.svg","/images/emojione/1f917.svg","/images/emojione/1f918.svg","/images/emojione/1f919.svg","/images/emojione/1f91a.svg","/images/emojione/1f91b.svg","/images/emojione/1f91c.svg","/images/emojione/1f91e.svg","/images/emojione/1f920.svg","/images/emojione/1f921.svg","/images/emojione/1f922.svg","/images/emojione/1f923.svg","/images/emojione/1f924.svg","/images/emojione/1f925.svg","/images/emojione/1f926.svg","/images/emojione/1f934.svg","/images/emojione/1f936.svg","/images/emojione/1f947.svg","/images/emojione/1f948.svg","/images/emojione/1f949.svg","/images/emojione/1f950.svg","/images/emojione/1f951.svg","/images/emojione/1f953.svg","/images/emojione/1f954.svg","/images/emojione/1f955.svg","/images/emojione/1f956.svg","/images/emojione/1f957.svg","/images/emojione/1f958.svg","/images/emojione/1f959.svg","/images/emojione/1f960.svg","/images/emojione/1f980.svg","/images/emojione/1f981.svg","/images/emojione/1f982.svg","/images/emojione/1f983.svg","/images/emojione/1f984.svg","/images/emojione/1f985.svg","/images/emojione/1f986.svg","/images/emojione/1f987.svg","/images/emojione/1f988.svg","/images/emojione/1f989.svg","/images/emojione/1f98a.svg","/images/emojione/1f98c.svg","/images/emojione/1f98d.svg","/images/emojione/1f98e.svg","/images/emojione/1f98f.svg","/images/emojione/1f990.svg","/images/emojione/1f991.svg","/images/emojione/1f9c0.svg","/images/emojione/2049.svg","/images/emojione/23f0.svg","/images/emojione/23f1.svg","/images/emojione/23f3.svg","/images/emojione/2600.svg","/images/emojione/2601.svg","/images/emojione/2602.svg","/images/emojione/2603.svg","/images/emojione/2604.svg","/images/emojione/260e.svg","/images/emojione/2614.svg","/images/emojione/2615.svg","/images/emojione/2618.svg","/images/emojione/261d.svg","/images/emojione/2620.svg","/images/emojione/2622.svg","/images/emojione/262a.svg","/images/emojione/262e.svg","/images/emojione/262f.svg","/images/emojione/2639.svg","/images/emojione/263a.svg","/images/emojione/2692.svg","/images/emojione/2693.svg","/images/emojione/2694.svg","/images/emojione/2696.svg","/images/emojione/26a0.svg","/images/emojione/26a1.svg","/images/emojione/26bd.svg","/images/emojione/26c4.svg","/images/emojione/26c5.svg","/images/emojione/26c8.svg","/images/emojione/26d1.svg","/images/emojione/26d4.svg","/images/emojione/2702.svg","/images/emojione/2708.svg","/images/emojione/270a.svg","/images/emojione/270b.svg","/images/emojione/270c.svg","/images/emojione/270d.svg","/images/emojione/270f.svg","/images/emojione/2744.svg","/images/emojione/274c.svg","/images/emojione/2753.svg","/images/emojione/2757.svg","/images/emojione/2764.svg","/images/emojione/2b50.svg"];
-
 	// Time to wait before treating single touch events as a separate intention
 	var RESIZING_TIME_THRESHOLD = 500;
+	var DEFAULT_EMOJI_SIZE = 100;
+	var DEFAULT_EMOJI_FONT = DEFAULT_EMOJI_SIZE + 'px arial';
 
 	var canvas$1 = document.getElementById('canvas-draw');
 	var ctx = ctx = canvas$1.getContext('2d');
 	var colourInputContainer = document.getElementById('input-colour-container');
 	var colourInput = document.getElementById('input-colour');
 	var trashButton = document.getElementById('btn-trash');
-	var emojiButton = document.getElementById('btn-emoji');
-	var emojiButtonImage = document.getElementById('btn-emoji-img');
+	var emojiMenuButton = document.getElementById('btn-emoji');
+	var emojiMenuButtonImage = document.getElementById('btn-emoji-img');
 	var emojiModal = document.getElementById('modal-emoji');
 	var touchedEmojiIndex = -1;
 	var chosenEmoji = null;
@@ -2994,11 +2994,20 @@ var require$$0$4 = Object.freeze({
 
 	    var evt = drawEvents[i];
 
-	    if (!evt.image) {
+	    if (typeof evt.text === 'undefined') {
 	      continue;
 	    }
 
-	    if (coords.x >= evt.x && coords.x <= evt.x + evt.width && coords.y >= evt.y && coords.y <= evt.y + evt.height) {
+	    // TODO allow for emoji to be scaled to different sizes
+	    var emojiLeft = evt.x,
+	        emojiRight = evt.x + DEFAULT_EMOJI_SIZE,
+	        emojiTop = evt.y - DEFAULT_EMOJI_SIZE,
+	        emojiBottom = evt.y;
+
+	    // DEBUGGING
+	    //ctx.strokeRect(emojiLeft, emojiTop, emojiRight-emojiLeft, emojiBottom-emojiTop);
+
+	    if (coords.x >= emojiLeft && coords.x <= emojiRight && coords.y >= emojiTop && coords.y <= emojiBottom) {
 	      return i;
 	    }
 	  }
@@ -3006,25 +3015,14 @@ var require$$0$4 = Object.freeze({
 	  return -1;
 	}
 
-	function stampEmoji(coords) {
+	function clickPosToEmojiPos(coords) {
+	  return { x: coords.x - DEFAULT_EMOJI_SIZE / 2, y: coords.y + DEFAULT_EMOJI_SIZE / 2 };
+	}
 
-	  // Increase the default SVG size
-	  var width = chosenEmoji.width * 2;
-	  var height = chosenEmoji.height * 2;
+	function drawEmoji(emoji, coords) {
 
-	  // Centre the image around where we have tapped/clicked
-	  var x = coords.x - width / 2;
-	  var y = coords.y - height / 2;
-
-	  ctx.drawImage(chosenEmoji, x, y, width, height);
-
-	  drawEvents.push({
-	    image: chosenEmoji,
-	    x: x,
-	    y: y,
-	    width: width,
-	    height: height
-	  });
+	  ctx.font = DEFAULT_EMOJI_FONT;
+	  ctx.fillText(emoji, coords.x, coords.y);
 	}
 
 	function onDrawingMouseDown(coords) {
@@ -3058,7 +3056,16 @@ var require$$0$4 = Object.freeze({
 	  }
 
 	  if (chosenEmoji) {
-	    stampEmoji(coords);
+
+	    var emojiPos = clickPosToEmojiPos(coords);
+	    drawEmoji(chosenEmoji, emojiPos);
+
+	    drawEvents.push({
+	      text: chosenEmoji,
+	      font: ctx.font,
+	      x: emojiPos.x,
+	      y: emojiPos.y
+	    });
 	  } else {
 	    onDrawingMouseDown(coords);
 	  }
@@ -3112,8 +3119,8 @@ var require$$0$4 = Object.freeze({
 
 	      // Update emoji position
 
-	      evt.x = coords1.x - evt.width / 2;
-	      evt.y = coords1.y - evt.height / 2;
+	      evt.x = coords1.x - DEFAULT_EMOJI_SIZE / 2;
+	      evt.y = coords1.y + DEFAULT_EMOJI_SIZE / 2;
 
 	      redrawOnNextFrame();
 	    }
@@ -3138,12 +3145,13 @@ var require$$0$4 = Object.freeze({
 
 	function onEmojiClick(event) {
 
-	  chosenEmoji = event.currentTarget;
+	  chosenEmoji = event.currentTarget.innerText;
 
 	  emojiModal.style.display = 'none';
-	  emojiButtonImage.src = chosenEmoji.src;
+	  // TODO display selected emoji?
+	  //emojiMenuButtonImage.src = chosenEmoji.src;
 
-	  emojiButton.classList.add('selected');
+	  emojiMenuButton.classList.add('selected');
 	  colourInputContainer.classList.remove('selected');
 	}
 
@@ -3162,9 +3170,8 @@ var require$$0$4 = Object.freeze({
 
 	    var evt = drawEvents[i];
 
-	    if (evt.image) {
-	      // Emoji
-	      ctx.drawImage(evt.image, evt.x, evt.y, evt.width, evt.height);
+	    if (typeof evt.text !== 'undefined') {
+	      drawEmoji(evt.text, { x: evt.x, y: evt.y });
 	    } else if (evt.begin) {
 	      // Start a line
 	      ctx.beginPath();
@@ -3184,7 +3191,7 @@ var require$$0$4 = Object.freeze({
 	  ctx.strokeStyle = colourInput.value;
 	  chosenEmoji = null;
 	  colourInputContainer.classList.add('selected');
-	  emojiButton.classList.remove('selected');
+	  emojiMenuButton.classList.remove('selected');
 	}
 
 	function initCanvas$1() {
@@ -3209,13 +3216,13 @@ var require$$0$4 = Object.freeze({
 	  colourInput.addEventListener('click', onColourClickOrChange);
 
 	  // Add click handlers to emojis so you can select one
-	  var emojis = document.querySelectorAll('#modal-emoji img');
+	  var emojis = document.querySelectorAll('#modal-emoji button');
 	  for (var i = 0; i < emojis.length; i++) {
 	    var emoji = emojis[i];
 	    emoji.addEventListener('click', onEmojiClick);
 	  }
 
-	  emojiButton.addEventListener('click', function () {
+	  emojiMenuButton.addEventListener('click', function () {
 	    // Toggle emoji selector modal dialog
 	    if (emojiModal.style.display !== 'block') {
 	      emojiModal.style.display = 'block';
@@ -3231,21 +3238,8 @@ var require$$0$4 = Object.freeze({
 	  });
 	}
 
-	function initEmojis() {
-
-	  var html = '';
-
-	  for (var i = 0; i < emojiImages.length; i++) {
-	    var path = emojiImages[i];
-	    html += '<img src="' + path + '" alt="Emoji"/>';
-	  }
-
-	  emojiModal.innerHTML = html;
-	}
-
 	function init$2() {
 	  initCanvas$1();
-	  initEmojis();
 	  initControls$2();
 	}
 
@@ -10711,13 +10705,10 @@ var require$$0$4 = Object.freeze({
 
 	  console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
 
-	  // Ugh. Hacky fix for image coming out too small. Seems like LoadImage doesn't take into account orientation while
-	  // determining max dimensions? Hopefully can submit a PR. In  meantime, just size down to max dimension & allow crop.
 	  var options = {
-	    maxWidth: Math.max(cameraCanvas.width, cameraCanvas.height),
-	    maxHeight: Math.max(cameraCanvas.width, cameraCanvas.height),
+	    maxWidth: cameraCanvas.width,
+	    maxHeight: cameraCanvas.height,
 	    contain: true,
-	    crop: true,
 	    orientation: true,
 	    canvas: true,
 	    pixelRatio: window.devicePixelRatio
