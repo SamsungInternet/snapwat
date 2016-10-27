@@ -90,6 +90,8 @@ function onDrawingMouseDown(coords) {
 
 function onTouchStartOrMouseDown(e) {
 
+  e.preventDefault();
+
   let touch = e.changedTouches && e.changedTouches.length ?
     e.changedTouches[0] : null;
 
@@ -191,7 +193,7 @@ function onTouchMoveOrMouseMove(e) {
   }
 }
 
-function onTouchEndOrMouseUp() {
+function onTouchEndOrMouseUp(e) {
   isDrawing = false;
   touchedEmojiIndex = -1;
   resizeTouchDelta = null;

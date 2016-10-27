@@ -3095,6 +3095,8 @@ function onDrawingMouseDown(coords) {
 
 function onTouchStartOrMouseDown(e) {
 
+  e.preventDefault();
+
   var touch = e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : null;
 
   var coords = touch ? { x: touch.pageX - canvas$1.offsetLeft, y: touch.pageY - canvas$1.offsetTop - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - canvas$1.offsetTop - HEADER_HEIGHT };
@@ -3188,7 +3190,7 @@ function onTouchMoveOrMouseMove(e) {
   }
 }
 
-function onTouchEndOrMouseUp() {
+function onTouchEndOrMouseUp(e) {
   isDrawing = false;
   touchedEmojiIndex = -1;
   resizeTouchDelta = null;
