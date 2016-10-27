@@ -30,6 +30,8 @@ function initControls() {
 
   shareSubmitButton.addEventListener('click', () => {
 
+    showPrompt('tweeting');
+
     let blob = dataURItoBlob(imageDataURI);
 
     hello('twitter')
