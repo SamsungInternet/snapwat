@@ -9153,8 +9153,6 @@ function initControls$4() {
 
   shareSubmitButton.addEventListener('click', function () {
 
-    showPrompt('tweeting');
-
     var blob = dataURItoBlob(imageDataURI);
 
     hello$1('twitter').api('me/share', 'POST', {
@@ -9169,6 +9167,7 @@ function initControls$4() {
     });
 
     AnnotatePage.show();
+    showPrompt('tweeting');
   });
 
   backBtn$1.addEventListener('click', function () {
