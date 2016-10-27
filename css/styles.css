@@ -275,11 +275,11 @@ video {
   overflow-y: auto;
 }
 
-#modal-emoji img {
+#modal-emoji button {
+  font-size: 1.5em;
   padding: 8px 0 8px 10px;
-  width: 40px;
-  height: 40px;
   cursor: pointer;
+  background: none;
 }
 
 #page-home {
