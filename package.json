@@ -31,7 +31,7 @@
     "watch": "^0.19.1"
   },
   "dependencies": {
-    "blueimp-load-image": "^2.7.0",
+    "poshaughnessy-blueimp-load-image": "2.8.1",
     "hellojs": "^1.13.4",
     "webrtc-adapter": "^2.0.2"
   }
