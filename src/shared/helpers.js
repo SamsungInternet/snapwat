@@ -17,17 +17,6 @@ export function dataURItoBlob(dataURI) {
   return new Blob([ab], {type: 'image/png'});
 }
 
-function hideExceptMatchingId(elements, id, showStyle = 'block') {
-  for (let i=0; i < elements.length; i++) {
-    let el = elements[i];
-    if (el.id === id) {
-      el.style.display = showStyle;
-    } else {
-      el.style.display = 'none';
-    }
-  }
-}
-
 function hide(elements) {
   for (let i=0; i < elements.length; i++) {
     elements[i].style.display = 'none';
@@ -47,13 +36,13 @@ function updatePageVisibility(pageRef) {
   let page = document.getElementById(`page-${pageRef}`);
   if (page) {
     page.style.display = 'block';
-  }  
+  }
 }
 
 export function showPrompt(ref) {
-  
+
   hide(prompts);
-  
+
   let prompt = document.getElementById(`prompt-${ref}`);
 
   if (prompt) {
@@ -62,7 +51,7 @@ export function showPrompt(ref) {
 
     setTimeout(() => {
       prompt.classList.add('fade-out');
-    }, DEFAULT_POPUP_SHOW_TIME); 
+    }, DEFAULT_POPUP_SHOW_TIME);
   }
 
 }

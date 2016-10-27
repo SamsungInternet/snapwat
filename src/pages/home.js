@@ -5,6 +5,8 @@ import AboutPage from './about';
 // Using fork temporarily - see: https://github.com/blueimp/JavaScript-Load-Image/pull/83
 import LoadImage from 'poshaughnessy-blueimp-load-image';
 
+console.log('LoadImage', LoadImage);
+
 const PAGE_NAME = PAGES.HOME;
 
 let inputPhoto = document.getElementById('input-photo');
@@ -19,16 +21,12 @@ function onPhotoInputChange(e) {
 
   console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
 
-  // Ugh. Hacky fix for image coming out too small. Seems like LoadImage doesn't take into account orientation while
-  // determining max dimensions? Hopefully can submit a PR. In  meantime, just size down to max dimension & allow crop.
   const options = {
     maxWidth: cameraCanvas.width,
     maxHeight: cameraCanvas.height,
     contain: true,
-    crop: true,
     orientation: true,
-    canvas: true,
-    pixelRatio: window.devicePixelRatio
+    canvas: true
   };
 
   function onImageLoad(result) {
@@ -46,9 +44,12 @@ function onPhotoInputChange(e) {
 
       cameraCanvas = result;
 
+      const newWidth = cameraCanvas.style.width ? parseInt(cameraCanvas.style.width) : cameraCanvas.width;
+      const newHeight = cameraCanvas.style.height ? parseInt(cameraCanvas.style.height) : cameraCanvas.height;
+
       // Make drawing canvas the same size
-      drawCanvas.width = parseInt(cameraCanvas.style.width);
-      drawCanvas.height = parseInt(cameraCanvas.style.height);
+      drawCanvas.width = newWidth;
+      drawCanvas.height = newHeight;
 
       AnnotatePage.show({live: false});
     }

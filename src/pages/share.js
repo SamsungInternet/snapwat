@@ -46,6 +46,7 @@ function initControls() {
       });
 
     AnnotatePage.show();
+    showPrompt('tweeting');
 
   });
 

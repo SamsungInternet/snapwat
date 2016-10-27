@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- TODO: Bad practice to disable zoom - need to find a way to fix drawing without this! -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="theme-color" content="#987fff">
     <title>snapwat</title>
     <link rel="manifest" href="manifest.json">
@@ -103,6 +102,9 @@
     <div class="prompt" id="prompt-snapshot">
       <p>Tap-and-hold or right click the image to save it.</p>
     </div>
+    <div class="prompt" id="prompt-tweeting">
+      <p>Posting tweet...</p>
+    </div>
     <div class="prompt" id="prompt-tweet-ok">
       <p>Successfully tweeted.</p>
     </div>
@@ -114,7 +116,146 @@
     </div>
 
     <div id="modal-emoji" class="modal">
-      <!-- Emoji images populated by JavaScript -->
+      <div>
+        <button>😀</button>
+        <button>😬</button>
+        <button>😁</button>
+        <button>😂</button>
+        <button>😃</button>
+        <button>😄</button>
+        <button>😅</button>
+        <button>😆</button>
+        <button>😇</button>
+        <button>😉</button>
+        <button>😊</button>
+        <button>🙂</button>
+        <button>🙃</button>
+        <button>😋</button>
+        <button>😌</button>
+        <button>😍</button>
+        <button>😘</button>
+        <button>😗</button>
+        <button>😙</button>
+        <button>😚</button>
+        <button>😜</button>
+        <button>😝</button>
+        <button>😛</button>
+        <button>🤑</button>
+        <button>🤓</button>
+        <button>😎</button>
+        <button>🤗</button>
+        <button>😏</button>
+        <button>😶</button>
+        <button>😐</button>
+        <button>😑</button>
+        <button>😒</button>
+        <button>🙄</button>
+        <button>🤔</button>
+        <button>😳</button>
+        <button>😞</button>
+        <button>😟</button>
+        <button>😠</button>
+        <button>😡</button>
+        <button>😔</button>
+        <button>😕</button>
+        <button>🙁</button>
+        <button>😣</button>
+        <button>😖</button>
+        <button>😫</button>
+        <button>😩</button>
+        <button>😤</button>
+        <button>😮</button>
+        <button>😱</button>
+        <button>😨</button>
+        <button>😰</button>
+        <button>😯</button>
+        <button>😦</button>
+        <button>😧</button>
+        <button>😢</button>
+        <button>😥</button>
+        <button>😪</button>
+        <button>😓</button>
+        <button>😭</button>
+        <button>😵</button>
+        <button>😲</button>
+        <button>🤐</button>
+        <button>😷</button>
+        <button>🤒</button>
+        <button>🤕</button>
+        <button>😴</button>
+        <button>💤</button>
+        <button>💩</button>
+        <button>😈</button>
+        <button>👿</button>
+        <button>👹</button>
+        <button>👺</button>
+        <button>💀</button>
+        <button>👻</button>
+        <button>👽</button>
+        <button>🤖</button>
+        <button>😺</button>
+        <button>😸</button>
+        <button>😹</button>
+        <button>😻</button>
+        <button>😼</button>
+        <button>😽</button>
+        <button>🙀</button>
+        <button>😿</button>
+        <button>😾</button>
+        <button>🙌</button>
+        <button>👏</button>
+        <button>👋</button>
+        <button>👍</button>
+        <button>👊</button>
+        <button>✊</button>
+        <button>👌</button>
+        <button>✋</button>
+        <button>💪</button>
+        <button>🙏</button>
+        <button>👆</button>
+        <button>👇</button>
+        <button>👈</button>
+        <button>👉</button>
+        <button>🖕</button>
+        <button>🤘</button>
+        <button>🖖</button>
+        <button>💅</button>
+        <button>👄</button>
+        <button>👅</button>
+        <button>👂</button>
+        <button>👃</button>
+        <button>👁</button>
+        <button>👀</button>
+        <button>👚</button>
+        <button>👕</button>
+        <button>👖</button>
+        <button>👔</button>
+        <button>👗</button>
+        <button>👙</button>
+        <button>👘</button>
+        <button>💄</button>
+        <button>💋</button>
+        <button>👣</button>
+        <button>👠</button>
+        <button>👡</button>
+        <button>👢</button>
+        <button>👞</button>
+        <button>👟</button>
+        <button>👒</button>
+        <button>🎩</button>
+        <button>⛑</button>
+        <button>🎓</button>
+        <button>👑</button>
+        <button>🎒</button>
+        <button>👝</button>
+        <button>👛</button>
+        <button>👜</button>
+        <button>💼</button>
+        <button>👓</button>
+        <button>🕶</button>
+        <button>💍</button>
+        <button>🌂</button>
+      </div>
     </div>
 
     <script src="build/bundle.js"></script>

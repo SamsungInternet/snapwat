@@ -269,17 +269,24 @@ video {
   left: 2.5%;
   padding: 15px;
   box-sizing: border-box;
-  background: #7f4fff;
+  background: #987fff;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow-y: auto;
 }
 
-#modal-emoji img {
-  padding: 8px 0 8px 10px;
-  width: 40px;
-  height: 40px;
+#modal-emoji {
+  /* For scrolling performance */
+  will-change: transform;
+  -webkit-overflow-scrolling: touch;
+}
+
+#modal-emoji button {
+  font-size: 2em;
+  padding: 4px;
   cursor: pointer;
+  background: none;
+  border: 0;
 }
 
 #page-home {
