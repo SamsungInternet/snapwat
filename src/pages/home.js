@@ -5,6 +5,8 @@ import AboutPage from './about';
 // Using fork temporarily - see: https://github.com/blueimp/JavaScript-Load-Image/pull/83
 import LoadImage from 'poshaughnessy-blueimp-load-image';
 
+console.log('LoadImage', LoadImage);
+
 const PAGE_NAME = PAGES.HOME;
 
 let inputPhoto = document.getElementById('input-photo');
@@ -43,9 +45,12 @@ function onPhotoInputChange(e) {
 
       cameraCanvas = result;
 
+      const newWidth = cameraCanvas.style.width ? parseInt(cameraCanvas.style.width) : cameraCanvas.width;
+      const newHeight = cameraCanvas.style.height ? parseInt(cameraCanvas.style.height) : cameraCanvas.height;
+
       // Make drawing canvas the same size
-      drawCanvas.width = parseInt(cameraCanvas.style.width);
-      drawCanvas.height = parseInt(cameraCanvas.style.height);
+      drawCanvas.width = newWidth;
+      drawCanvas.height = newHeight;
 
       AnnotatePage.show({live: false});
     }
