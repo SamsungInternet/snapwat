@@ -2,7 +2,8 @@ import {PAGES, HEADER_HEIGHT} from '../shared/constants';
 import {showPage, } from '../shared/helpers';
 import AnnotatePage from './annotate';
 import AboutPage from './about';
-import LoadImage from 'blueimp-load-image';
+// Using fork temporarily - see: https://github.com/blueimp/JavaScript-Load-Image/pull/83
+import LoadImage from 'poshaughnessy-blueimp-load-image';
 
 const PAGE_NAME = PAGES.HOME;
 
