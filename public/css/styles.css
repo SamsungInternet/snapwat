@@ -244,6 +244,7 @@ video {
 #canvas-camera {
   z-index: -1;
   pointer-events: none;
+  object-fit: contain;
 }
 
 #canvas-draw {
