@@ -2952,18 +2952,21 @@ var canvas = document.getElementById('canvas-camera');
 var context$1 = context$1 = canvas.getContext('2d');
 
 function copyVideoToCanvas() {
-  var width = canvas.width;
-  var height = canvas.height;
+
+  /**
+   * Should hopefully be same as our canvas size, if our constraints were obeyed.
+   * But fixes video being potentially stretched (e.g. Samsung Internet in standalone mode).
+   */
+  var width = video.videoWidth;
+  var height = video.videoHeight;
+
+  canvas.width = width;
+  canvas.height = height;
 
   context$1.fillRect(0, 0, width, height);
   context$1.drawImage(video, 0, 0, width, height);
 
   requestAnimationFrame(copyVideoToCanvas);
-}
-
-function setCanvasSize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight - HEADER_HEIGHT;
 }
 
 function showUnsupported() {
@@ -2977,8 +2980,6 @@ function initCamera() {
     return;
   }
 
-  setCanvasSize();
-  window.addEventListener('resize', setCanvasSize, false);
   video.style.display = 'block';
 
   var maxWidth = canvas.clientWidth;
