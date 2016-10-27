@@ -11,21 +11,18 @@ The idea of the app is to let you doodle and add emojis etc. on top of photos or
 
 ## How to use it
 
-Choose a colour using the colour picker in the corner and start drawing over the camera view.
-
-Select an emoji from the emoji menu and touch on the camera view to stamp it as a sticker.
-Tap and drag to move an emoji around. Pinch an emoji to resize it.
-
-When you have a moment that you want to snap, press the 'next' arrow. The snapwat (that's the noun for a snapwat 
-snapshot!) will open up in the page. Tap and hold / right-click and choose your device's Save / Download option to save 
+* First, choose whether to use/take a photo, or switch on your camera (recommended if your browser has support).
+* Select a pencil colour and drawing over the camera view.
+* Select an emoji from the emoji menu and touch on the camera view to stamp it as a sticker. Tap and drag to move an 
+emoji around. Pinch an emoji to resize it.
+* When you're ready, press the 'next' arrow. The snapwat will be displayed. 
+* Tap and hold / right-click and choose your device's Save / Download option to save 
 the image. (Unfortunately it doesn't seem possible right now to download the generated file automatically across mobile 
 browsers - [more about that here](https://medium.com/samsung-internet-dev/things-i-learned-making-a-progressive-web-app-for-super-selfies-49e76d154e4f)).
-
-Or press the tweet button and share it directly via the Twitter API. It will request read/write access for your
+* Or press the tweet button and share it directly via the Twitter API. (It will request read/write access for your
 Twitter account, but it will only ever be used to share your snapwats with your permission. It uses 
-[hello.js](https://adodson.com/hello.js/) with their [default auth proxy](https://auth-server.herokuapp.com/). 
-
-Be sure to share your beautiful creations with the world, hashtag snapwat! 
+[hello.js](https://adodson.com/hello.js/) with their [default auth proxy](https://auth-server.herokuapp.com/)). 
+* Be sure to share your beautiful creations with the world, hashtag snapwat! 
 
 
 ## Browser Support
@@ -84,21 +81,13 @@ To watch for changes (in a separate terminal):
 *NB. You should be able to replace `npm` with `yarn` here, but it's not working with yarn v0.15.1. 
 Sounds like it should work once [this gets released](https://github.com/yarnpkg/yarn/pull/809).
 
-To test the sharing feature locally, ensure you have a `NODE_ENV` environment variable set to
-'development'.
-
-For reference, I deploy to Github pages using:
-
-```git subtree push --prefix public origin gh-pages```
+For reference, I deploy to Github pages using: ```git subtree push --prefix public origin gh-pages```
 
 
 ## Snapwat the name
 
 Snapwat is called Snapwat because it's a snapshot with "pwa" in it - for Progressive Web App. 
-Also, it's abbreviated to SW, like Service Workers. Good eh? 
-
-It's pronounced "snap what?" to rhyme with snapshot.
-
+Also, it's abbreviated to SW, like Service Workers. Good eh?  It's pronounced "snap what?" to rhyme with snapshot. 
 Any resemblance to other social apps is purely coincidental...
 
 
@@ -110,13 +99,10 @@ Any resemblance to other social apps is purely coincidental...
 
 ## Credits and Thanks
 
-Emoji images provided free by [EmojiOne](http://emojione.com/).
-
-Icons by [Iconic](https://useiconic.com/).
-
-Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/61059/).
-
-Thanks to Rich Harris for making a [rollup cache manifest example](https://gitlab.com/Rich-Harris/rollup-cache-manifest-example) 
+* Emoji images provided free by [EmojiOne](http://emojione.com/).
+* Icons by [Iconic](https://useiconic.com/).
+* Camera shutter sound by [xef6](https://www.freesound.org/people/xef6/sounds/61059/).
+* Thanks to Rich Harris for making a [rollup cache manifest example](https://gitlab.com/Rich-Harris/rollup-cache-manifest-example) 
 for me (and for [rollup](http://rollupjs.org/) in general!)
 
 
