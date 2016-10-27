@@ -10776,8 +10776,7 @@ function onPhotoInputChange(e) {
     maxHeight: cameraCanvas.height,
     contain: true,
     orientation: true,
-    canvas: true,
-    pixelRatio: window.devicePixelRatio
+    canvas: true
   };
 
   function onImageLoad(result) {
