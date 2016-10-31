@@ -2,8 +2,8 @@ import {HEADER_HEIGHT} from '../../shared/constants';
 
 // Time to wait before treating single touch events as a separate intention
 const RESIZING_TIME_THRESHOLD = 500;
-const DEFAULT_EMOJI_SIZE = 100;
-const DEFAULT_EMOJI_FONT = DEFAULT_EMOJI_SIZE + 'px arial';
+const DEFAULT_EMOJI_SIZE = 120;
+const DEFAULT_EMOJI_FONT = 'arial';
 
 let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');
@@ -15,7 +15,7 @@ let emojiMenuButtonImage = document.getElementById('btn-emoji-img');
 let emojiModal = document.getElementById('modal-emoji');
 let touchedEmojiIndex = -1;
 let chosenEmoji = null;
-let resizeTouchDelta = null;
+let origResizeTouchDelta = null;
 let resizingTimeout = null;
 let isDrawing = false;
 let isRedrawing = false;
@@ -37,11 +37,11 @@ function indexOfSelectedEmoji(coords) {
       continue;
     }
 
-    // TODO allow for emoji to be scaled to different sizes
-    const emojiLeft = evt.x,
-      emojiRight = evt.x + DEFAULT_EMOJI_SIZE,
-      emojiTop = evt.y - DEFAULT_EMOJI_SIZE,
-      emojiBottom = evt.y;
+    // Presume it's centred around event x and y - handled by drawEmoji function
+    const emojiLeft = evt.x - (DEFAULT_EMOJI_SIZE * evt.scale) / 2,
+      emojiRight = evt.x + (DEFAULT_EMOJI_SIZE * evt.scale) / 2,
+      emojiTop = evt.y - (DEFAULT_EMOJI_SIZE * evt.scale) / 2,
+      emojiBottom = evt.y + (DEFAULT_EMOJI_SIZE * evt.scale) / 2;
 
     // DEBUGGING
     //ctx.strokeRect(emojiLeft, emojiTop, emojiRight-emojiLeft, emojiBottom-emojiTop);
@@ -59,14 +59,19 @@ function indexOfSelectedEmoji(coords) {
 
 }
 
-function clickPosToEmojiPos(coords) {
-  return {x: coords.x - DEFAULT_EMOJI_SIZE / 2, y: coords.y + DEFAULT_EMOJI_SIZE / 2};
-}
+function drawEmoji(emoji, coords, scale = 1) {
 
-function drawEmoji(emoji, coords) {
+  console.log('Draw emoji', coords, scale);
 
-  ctx.font = DEFAULT_EMOJI_FONT;
+  ctx.font = Math.round(scale * DEFAULT_EMOJI_SIZE) + 'px ' + DEFAULT_EMOJI_FONT;
+
+  console.log('Font', ctx.font);
+
+  // ctx.scale(scaleX, scaleY);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
   ctx.fillText(emoji, coords.x, coords.y);
+  // ctx.scale(1/scaleX, 1/scaleY);
 
 }
 
@@ -107,15 +112,18 @@ function onTouchStartOrMouseDown(e) {
 
   if (chosenEmoji) {
 
-    const emojiPos = clickPosToEmojiPos(coords);
-    drawEmoji(chosenEmoji, emojiPos);
+    // Add new emoji
 
     drawEvents.push({
       text: chosenEmoji,
       font: ctx.font,
-      x: emojiPos.x,
-      y: emojiPos.y
+      x: coords.x,
+      y: coords.y,
+      scale: 1
     });
+
+    //const emojiPos = clickPosToEmojiPos(coords);
+    drawEmoji(chosenEmoji, coords);
 
   } else {
     onDrawingMouseDown(coords);
@@ -146,13 +154,19 @@ function onTouchMoveOrMouseMove(e) {
       let newResizeTouchDelta = {x: Math.abs(coords2.x - coords1.x),
         y: Math.abs(coords2.y - coords1.y)};
 
-      if (resizeTouchDelta) {
+      if (!origResizeTouchDelta) {
 
-        evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
-        evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
+        origResizeTouchDelta = newResizeTouchDelta;
 
-        evt.x = (coords1.x + coords2.x) / 2 - evt.width / 2;
-        evt.y = (coords1.y + coords2.y) / 2 - evt.height / 2;
+        console.log('origResizeTouchDelta', origResizeTouchDelta);
+
+      } else {
+
+        // Seems to disappear when font size gets too big?! Limit to 1.75x for now.
+        evt.scale = Math.min(1.75, newResizeTouchDelta.x / origResizeTouchDelta.x);
+
+        console.log('newResizeTouchDelta', newResizeTouchDelta);
+        console.log('scale', evt.scale);
 
         isResizing = true;
 
@@ -168,14 +182,13 @@ function onTouchMoveOrMouseMove(e) {
 
       }
 
-      resizeTouchDelta = newResizeTouchDelta;
-
     } else if (!isResizing) {
 
-      // Update emoji position
+      console.log('Move emoji - not resizing', coords1);
 
-      evt.x = coords1.x - DEFAULT_EMOJI_SIZE / 2;
-      evt.y = coords1.y + DEFAULT_EMOJI_SIZE / 2;
+      // Single touch - moving the emoji - update its position
+      evt.x = coords1.x;
+      evt.y = coords1.y;
 
       redrawOnNextFrame();
     }
@@ -196,7 +209,7 @@ function onTouchMoveOrMouseMove(e) {
 function onTouchEndOrMouseUp(e) {
   isDrawing = false;
   touchedEmojiIndex = -1;
-  resizeTouchDelta = null;
+  origResizeTouchDelta = null;
 }
 
 function onEmojiClick(event) {
@@ -228,7 +241,7 @@ function redraw() {
     let evt = drawEvents[i];
 
     if (typeof evt.text !== 'undefined') {
-      drawEmoji(evt.text, {x: evt.x, y: evt.y});
+      drawEmoji(evt.text, {x: evt.x, y: evt.y}, evt.scale);
 
     } else if (evt.begin) {
       // Start a line
