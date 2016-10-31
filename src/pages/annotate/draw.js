@@ -61,17 +61,10 @@ function indexOfSelectedEmoji(coords) {
 
 function drawEmoji(emoji, coords, scale = 1) {
 
-  console.log('Draw emoji', coords, scale);
-
   ctx.font = Math.round(scale * DEFAULT_EMOJI_SIZE) + 'px ' + DEFAULT_EMOJI_FONT;
-
-  console.log('Font', ctx.font);
-
-  // ctx.scale(scaleX, scaleY);
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(emoji, coords.x, coords.y);
-  // ctx.scale(1/scaleX, 1/scaleY);
 
 }
 
@@ -122,7 +115,6 @@ function onTouchStartOrMouseDown(e) {
       scale: 1
     });
 
-    //const emojiPos = clickPosToEmojiPos(coords);
     drawEmoji(chosenEmoji, coords);
 
   } else {
@@ -158,15 +150,10 @@ function onTouchMoveOrMouseMove(e) {
 
         origResizeTouchDelta = newResizeTouchDelta;
 
-        console.log('origResizeTouchDelta', origResizeTouchDelta);
-
       } else {
 
         // Seems to disappear when font size gets too big?! Limit to 1.75x for now.
         evt.scale = Math.min(1.75, newResizeTouchDelta.x / origResizeTouchDelta.x);
-
-        console.log('newResizeTouchDelta', newResizeTouchDelta);
-        console.log('scale', evt.scale);
 
         isResizing = true;
 
@@ -183,8 +170,6 @@ function onTouchMoveOrMouseMove(e) {
       }
 
     } else if (!isResizing) {
-
-      console.log('Move emoji - not resizing', coords1);
 
       // Single touch - moving the emoji - update its position
       evt.x = coords1.x;
