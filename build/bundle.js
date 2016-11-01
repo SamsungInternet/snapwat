@@ -3201,7 +3201,8 @@ function onEmojiClick(event) {
 
   chosenEmoji = event.currentTarget.innerText;
 
-  emojiModal.style.display = 'none';
+  emojiModal.classList.remove('show');
+
   // TODO display selected emoji?
   //emojiMenuButtonImage.src = chosenEmoji.src;
 
@@ -3278,10 +3279,10 @@ function initControls$2() {
 
   emojiMenuButton.addEventListener('click', function () {
     // Toggle emoji selector modal dialog
-    if (emojiModal.style.display !== 'block') {
-      emojiModal.style.display = 'block';
+    if (emojiModal.classList.contains('show')) {
+      emojiModal.classList.remove('show');
     } else {
-      emojiModal.style.display = 'none';
+      emojiModal.classList.add('show');
     }
   });
 
