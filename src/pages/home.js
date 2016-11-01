@@ -1,5 +1,5 @@
 import {PAGES, HEADER_HEIGHT} from '../shared/constants';
-import {showPage, } from '../shared/helpers';
+import {showPage} from '../shared/helpers';
 import AnnotatePage from './annotate';
 import AboutPage from './about';
 // Using fork temporarily - see: https://github.com/blueimp/JavaScript-Load-Image/pull/83
