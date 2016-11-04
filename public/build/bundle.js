@@ -9216,10 +9216,11 @@ var require$$0$4 = Object.freeze({
 	    showPage(PAGE_NAME$2);
 
 	    // TEMP trying again to save automatically
-	    var link = document.createElement('a');
-	    //link.download = 'My Snapwat';
-	    link.href = '/download-image';
-	    link.click();
+	    // let link = document.createElement('a');
+	    // link.href = '/download-image';
+	    // link.click();
+
+	    fetch('/download-image');
 	  }
 
 	};

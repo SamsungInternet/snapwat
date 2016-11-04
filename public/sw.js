@@ -29,6 +29,23 @@ self.addEventListener('install', function(event) {
   event.waitUntil(onInstall(event));
 });
 
+/*
+function dataURIToBlob(uri) {
+  var data = uri.split(',')[1];
+  var bytes = typeof atob === 'undefined' ? window.atob(data) : atob(data);
+  var buf = new ArrayBuffer(bytes.length);
+  var arr = new Uint8Array(buf);
+  for (var i = 0; i < bytes.length; i++) {
+    arr[i] = bytes.charCodeAt(i);
+  }
+
+  if (!hasArrayBufferView) arr = buf;
+  var blob = new Blob([arr], { type: mime(uri) });
+  blob.slice = blob.slice || blob.webkitSlice;
+  return blob;
+}
+*/
+
 /**
  * Cache other resources, e.g. the rest of the emojis, on fetch.
  */
@@ -36,22 +53,27 @@ self.addEventListener('fetch', function(event) {
 
   console.log(event.request.url);
 
+  // TEMP attempting to force 'download'
   if (event.request.url.endsWith('/download-image')) {
 
-    var responseBody = new Blob();
+    return event.respondWith(
+      // TEMP for now, cloning a response from another image
+      fetch('/images/favicon.png').then(function(response){
+        var init = {
+          status:     response.status,
+          statusText: response.statusText,
+          headers:    {'Content-Disposition': 'attachment; filename=test.png'}
+        };
 
-    var responseConfig = {
-      status: 200,
-      statusText: 'OK',
-      headers: {
-        'Content-Disposition': 'inline; filename=mySnapwat.png',
-        'Content-Type': 'image/png'
-      }
-    };
+        response.headers.forEach(function(v,k){
+          init.headers[k] = v;
+        });
 
-    var downloadImageResponse = new Response(responseBody, responseConfig);
-
-    return event.respondWith(downloadImageResponse);
+        return response.blob().then(function(body){
+          return new Response(body, init);
+        });
+      })
+    );
   }
 
   // If we can fetch latest version, then do so
