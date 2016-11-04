@@ -34,6 +34,26 @@ self.addEventListener('install', function(event) {
  */
 self.addEventListener('fetch', function(event) {
 
+  console.log(event.request.url);
+
+  if (event.request.url.endsWith('/download-image')) {
+
+    var responseBody = new Blob();
+
+    var responseConfig = {
+      status: 200,
+      statusText: 'OK',
+      headers: {
+        'Content-Disposition': 'inline; filename=mySnapwat.png',
+        'Content-Type': 'image/png'
+      }
+    };
+
+    var downloadImageResponse = new Response(responseBody, responseConfig);
+
+    return event.respondWith(downloadImageResponse);
+  }
+
   // If we can fetch latest version, then do so
   var responsePromise = fetch(event.request)
     .then(function(response) {

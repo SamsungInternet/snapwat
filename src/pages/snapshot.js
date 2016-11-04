@@ -82,6 +82,12 @@ export default {
 
     showPage(PAGE_NAME);
 
+    // TEMP trying again to save automatically
+    let link = document.createElement('a');
+    //link.download = 'My Snapwat';
+    link.href = '/download-image';
+    link.click();
+
   }
 
 };
