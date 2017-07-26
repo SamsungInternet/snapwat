@@ -194,6 +194,8 @@ function showPage(pageRef) {
   showPrompt(pageRef);
 }
 
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {}
+
 function interopDefault(ex) {
 	return ex && typeof ex === 'object' && 'default' in ex ? ex['default'] : ex;
 }
@@ -9338,7 +9340,7 @@ var loadImage = createCommonjsModule(function (module) {
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  */
 
 /* global define, URL, webkitURL, FileReader */
@@ -9358,37 +9360,44 @@ var loadImage = createCommonjsModule(function (module) {
     img.onload = function (event) {
       return loadImage.onload(img, event, file, callback, options)
     }
-    if (loadImage.isInstanceOf('Blob', file) ||
-      // Files are also Blob instances, but some browsers
-      // (Firefox 3.6) support the File API but not Blobs:
-      loadImage.isInstanceOf('File', file)) {
-      url = img._objectURL = loadImage.createObjectURL(file)
-    } else if (typeof file === 'string') {
-      url = file
-      if (options && options.crossOrigin) {
-        img.crossOrigin = options.crossOrigin
-      }
-    } else {
-      return false
-    }
-    if (url) {
-      img.src = url
+    if (typeof file === 'string') {
+      loadImage.fetchBlob(file, function (blob) {
+        if (blob) {
+          file = blob
+          url = loadImage.createObjectURL(file)
+        } else {
+          url = file
+          if (options && options.crossOrigin) {
+            img.crossOrigin = options.crossOrigin
+          }
+        }
+        img.src = url
+      }, options)
       return img
-    }
-    return loadImage.readFile(file, function (e) {
-      var target = e.target
-      if (target && target.result) {
-        img.src = target.result
-      } else if (callback) {
-        callback(e)
+    } else if (loadImage.isInstanceOf('Blob', file) ||
+        // Files are also Blob instances, but some browsers
+        // (Firefox 3.6) support the File API but not Blobs:
+        loadImage.isInstanceOf('File', file)) {
+      url = img._objectURL = loadImage.createObjectURL(file)
+      if (url) {
+        img.src = url
+        return img
       }
-    })
+      return loadImage.readFile(file, function (e) {
+        var target = e.target
+        if (target && target.result) {
+          img.src = target.result
+        } else if (callback) {
+          callback(e)
+        }
+      })
+    }
   }
   // The check for URL.revokeObjectURL fixes an issue with Opera 12,
   // which provides URL.createObjectURL but doesn't properly implement it:
-  var urlAPI = (window.createObjectURL && window) ||
-                (window.URL && URL.revokeObjectURL && URL) ||
-                (window.webkitURL && webkitURL)
+  var urlAPI = ($.createObjectURL && $) ||
+                ($.URL && URL.revokeObjectURL && URL) ||
+                ($.webkitURL && webkitURL)
 
   function revokeHelper (img, options) {
     if (img._objectURL && !(options && options.noRevoke)) {
@@ -9397,13 +9406,20 @@ var loadImage = createCommonjsModule(function (module) {
     }
   }
 
+  // If the callback given to this function returns a blob, it is used as image
+  // source instead of the original url and overrides the file argument used in
+  // the onload and onerror event callbacks:
+  loadImage.fetchBlob = function (url, callback, options) {
+    callback()
+  }
+
   loadImage.isInstanceOf = function (type, obj) {
     // Cross-frame instanceof check
     return Object.prototype.toString.call(obj) === '[object ' + type + ']'
   }
 
   loadImage.transform = function (img, options, callback, file, data) {
-    callback(loadImage.scale(img, options, data), data)
+    callback(img, data)
   }
 
   loadImage.onerror = function (img, event, file, callback, options) {
@@ -9418,6 +9434,90 @@ var loadImage = createCommonjsModule(function (module) {
     if (callback) {
       loadImage.transform(img, options, callback, file, {})
     }
+  }
+
+  loadImage.createObjectURL = function (file) {
+    return urlAPI ? urlAPI.createObjectURL(file) : false
+  }
+
+  loadImage.revokeObjectURL = function (url) {
+    return urlAPI ? urlAPI.revokeObjectURL(url) : false
+  }
+
+  // Loads a given File object via FileReader interface,
+  // invokes the callback with the event object (load or error).
+  // The result can be read via event.target.result:
+  loadImage.readFile = function (file, callback, method) {
+    if ($.FileReader) {
+      var fileReader = new FileReader()
+      fileReader.onload = fileReader.onerror = callback
+      method = method || 'readAsDataURL'
+      if (fileReader[method]) {
+        fileReader[method](file)
+        return fileReader
+      }
+    }
+    return false
+  }
+
+  if (typeof define === 'function' && define.amd) {
+    define(function () {
+      return loadImage
+    })
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = loadImage
+  } else {
+    $.loadImage = loadImage
+  }
+}(typeof window !== 'undefined' && window || commonjsGlobal))
+});
+
+var loadImage$1 = interopDefault(loadImage);
+
+
+var require$$2$2 = Object.freeze({
+  default: loadImage$1
+});
+
+var loadImageScale = createCommonjsModule(function (module) {
+/*
+ * JavaScript Load Image Scaling
+ * https://github.com/blueimp/JavaScript-Load-Image
+ *
+ * Copyright 2011, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ */
+
+/* global define */
+
+;(function (factory) {
+  'use strict'
+  if (typeof define === 'function' && define.amd) {
+    // Register as an anonymous AMD module:
+    define(['./load-image'], factory)
+  } else if (typeof module === 'object' && module.exports) {
+    factory(interopDefault(require$$2$2))
+  } else {
+    // Browser globals:
+    factory(window.loadImage)
+  }
+}(function (loadImage) {
+  'use strict'
+
+  var originalTransform = loadImage.transform
+
+  loadImage.transform = function (img, options, callback, file, data) {
+    originalTransform.call(
+      loadImage,
+      loadImage.scale(img, options, data),
+      options,
+      callback,
+      file,
+      data
+    )
   }
 
   // Transform image coordinates, allows to override e.g.
@@ -9617,6 +9717,8 @@ var loadImage = createCommonjsModule(function (module) {
             canvas.width,
             canvas.height
           )
+          sourceX = 0
+          sourceY = 0
           sourceWidth = canvas.width
           sourceHeight = canvas.height
           img = document.createElement('canvas')
@@ -9659,48 +9761,14 @@ var loadImage = createCommonjsModule(function (module) {
     img.height = destHeight
     return img
   }
-
-  loadImage.createObjectURL = function (file) {
-    return urlAPI ? urlAPI.createObjectURL(file) : false
-  }
-
-  loadImage.revokeObjectURL = function (url) {
-    return urlAPI ? urlAPI.revokeObjectURL(url) : false
-  }
-
-  // Loads a given File object via FileReader interface,
-  // invokes the callback with the event object (load or error).
-  // The result can be read via event.target.result:
-  loadImage.readFile = function (file, callback, method) {
-    if (window.FileReader) {
-      var fileReader = new FileReader()
-      fileReader.onload = fileReader.onerror = callback
-      method = method || 'readAsDataURL'
-      if (fileReader[method]) {
-        fileReader[method](file)
-        return fileReader
-      }
-    }
-    return false
-  }
-
-  if (typeof define === 'function' && define.amd) {
-    define(function () {
-      return loadImage
-    })
-  } else if (typeof module === 'object' && module.exports) {
-    module.exports = loadImage
-  } else {
-    $.loadImage = loadImage
-  }
-}(window))
+}))
 });
 
-var loadImage$1 = interopDefault(loadImage);
+var loadImageScale$1 = interopDefault(loadImageScale);
 
 
-var require$$0$5 = Object.freeze({
-  default: loadImage$1
+var require$$1$1 = Object.freeze({
+  default: loadImageScale$1
 });
 
 var loadImageMeta = createCommonjsModule(function (module) {
@@ -9716,7 +9784,7 @@ var loadImageMeta = createCommonjsModule(function (module) {
  * Achim Stöhr.
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  */
 
 /* global define, Blob */
@@ -9727,7 +9795,7 @@ var loadImageMeta = createCommonjsModule(function (module) {
     // Register as an anonymous AMD module:
     define(['./load-image'], factory)
   } else if (typeof module === 'object' && module.exports) {
-    factory(interopDefault(require$$0$5))
+    factory(interopDefault(require$$2$2))
   } else {
     // Browser globals:
     factory(window.loadImage)
@@ -9735,7 +9803,7 @@ var loadImageMeta = createCommonjsModule(function (module) {
 }(function (loadImage) {
   'use strict'
 
-  var hasblobSlice = window.Blob && (Blob.prototype.slice ||
+  var hasblobSlice = typeof Blob !== 'undefined' && (Blob.prototype.slice ||
   Blob.prototype.webkitSlice || Blob.prototype.mozSlice)
 
   loadImage.blobSlice = hasblobSlice && function () {
@@ -9761,7 +9829,7 @@ var loadImageMeta = createCommonjsModule(function (module) {
     var that = this
     // 256 KiB should contain all EXIF/ICC/IPTC segments:
     var maxMetaDataSize = options.maxMetaDataSize || 262144
-    var noMetaData = !(window.DataView && file && file.size >= 12 &&
+    var noMetaData = !(typeof DataView !== 'undefined' && file && file.size >= 12 &&
                       file.type === 'image/jpeg' && loadImage.blobSlice)
     if (noMetaData || !loadImage.readFile(
         loadImage.blobSlice.call(file, 0, maxMetaDataSize),
@@ -9849,12 +9917,12 @@ var loadImageMeta = createCommonjsModule(function (module) {
 
   // Determines if meta data should be loaded automatically:
   loadImage.hasMetaOption = function (options) {
-    return options.meta
+    return options && options.meta
   }
 
   var originalTransform = loadImage.transform
   loadImage.transform = function (img, options, callback, file, data) {
-    if (loadImage.hasMetaOption(options || {})) {
+    if (loadImage.hasMetaOption(options)) {
       loadImage.parseMetaData(file, function (data) {
         originalTransform.call(loadImage, img, options, callback, file, data)
       }, options, data)
@@ -9868,9 +9936,56 @@ var loadImageMeta = createCommonjsModule(function (module) {
 var loadImageMeta$1 = interopDefault(loadImageMeta);
 
 
-var require$$0$7 = Object.freeze({
+var require$$0$5 = Object.freeze({
   default: loadImageMeta$1
 });
+
+var loadImageFetch = createCommonjsModule(function (module) {
+/*
+ * JavaScript Load Image Fetch
+ * https://github.com/blueimp/JavaScript-Load-Image
+ *
+ * Copyright 2017, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ */
+
+/* global define, fetch, Request */
+
+;(function (factory) {
+  'use strict'
+  if (typeof define === 'function' && define.amd) {
+    // Register as an anonymous AMD module:
+    define(['./load-image', './load-image-meta'], factory)
+  } else if (typeof module === 'object' && module.exports) {
+    factory(interopDefault(require$$2$2), interopDefault(require$$0$5))
+  } else {
+    // Browser globals:
+    factory(window.loadImage)
+  }
+}(function (loadImage) {
+  'use strict'
+
+  if (typeof fetch !== 'undefined' && typeof Request !== 'undefined') {
+    loadImage.fetchBlob = function (url, callback, options) {
+      if (loadImage.hasMetaOption(options)) {
+        return fetch(new Request(url, options)).then(function (response) {
+          return response.blob()
+        }).then(callback).catch(function (err) {
+          console.log(err)
+          callback()
+        })
+      } else {
+        callback()
+      }
+    }
+  }
+}))
+});
+
+interopDefault(loadImageFetch);
 
 var loadImageExif = createCommonjsModule(function (module) {
 /*
@@ -9881,7 +9996,7 @@ var loadImageExif = createCommonjsModule(function (module) {
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  */
 
 /* global define */
@@ -9892,7 +10007,7 @@ var loadImageExif = createCommonjsModule(function (module) {
     // Register as an anonymous AMD module:
     define(['./load-image', './load-image-meta'], factory)
   } else if (typeof module === 'object' && module.exports) {
-    factory(interopDefault(require$$0$5), interopDefault(require$$0$7))
+    factory(interopDefault(require$$2$2), interopDefault(require$$0$5))
   } else {
     // Browser globals:
     factory(window.loadImage)
@@ -10194,7 +10309,7 @@ var loadImageExifMap = createCommonjsModule(function (module) {
  * https://github.com/jseidelin/exif-js
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  */
 
 /* global define */
@@ -10205,7 +10320,7 @@ var loadImageExifMap = createCommonjsModule(function (module) {
     // Register as an anonymous AMD module:
     define(['./load-image', './load-image-exif'], factory)
   } else if (typeof module === 'object' && module.exports) {
-    factory(interopDefault(require$$0$5), interopDefault(require$$0$6))
+    factory(interopDefault(require$$2$2), interopDefault(require$$0$6))
   } else {
     // Browser globals:
     factory(window.loadImage)
@@ -10583,7 +10698,7 @@ var loadImageOrientation = createCommonjsModule(function (module) {
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
+ * https://opensource.org/licenses/MIT
  */
 
 /* global define */
@@ -10592,9 +10707,13 @@ var loadImageOrientation = createCommonjsModule(function (module) {
   'use strict'
   if (typeof define === 'function' && define.amd) {
     // Register as an anonymous AMD module:
-    define(['./load-image'], factory)
+    define(['./load-image', './load-image-scale', './load-image-meta'], factory)
   } else if (typeof module === 'object' && module.exports) {
-    factory(interopDefault(require$$0$5))
+    factory(
+      interopDefault(require$$2$2),
+      interopDefault(require$$1$1),
+      interopDefault(require$$0$5)
+    )
   } else {
     // Browser globals:
     factory(window.loadImage)
@@ -10615,7 +10734,7 @@ var loadImageOrientation = createCommonjsModule(function (module) {
 
   // Determines if meta data should be loaded automatically:
   loadImage.hasMetaOption = function (options) {
-    return options.orientation === true ||
+    return options && options.orientation === true ||
       originalHasMetaOption.call(loadImage, options)
   }
 
@@ -10761,12 +10880,11 @@ var loadImageOrientation = createCommonjsModule(function (module) {
 interopDefault(loadImageOrientation);
 
 var index = createCommonjsModule(function (module) {
-module.exports = interopDefault(require$$0$5)
+module.exports = interopDefault(require$$2$2)
 });
 
 var LoadImage = interopDefault(index);
 
-// Using fork temporarily - see: https://github.com/blueimp/JavaScript-Load-Image/pull/83
 console.log('LoadImage', LoadImage);
 
 var PAGE_NAME = PAGES.HOME;
@@ -10788,7 +10906,8 @@ function onPhotoInputChange(e) {
     maxHeight: cameraCanvas.height,
     contain: true,
     orientation: true,
-    canvas: true
+    canvas: true,
+    pixelRatio: devicePixelRatio
   };
 
   function onImageLoad(result) {

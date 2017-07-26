@@ -2,8 +2,7 @@ import {PAGES, HEADER_HEIGHT} from '../shared/constants';
 import {showPage} from '../shared/helpers';
 import AnnotatePage from './annotate';
 import AboutPage from './about';
-// Using fork temporarily - see: https://github.com/blueimp/JavaScript-Load-Image/pull/83
-import LoadImage from 'poshaughnessy-blueimp-load-image';
+import LoadImage from 'blueimp-load-image';
 
 console.log('LoadImage', LoadImage);
 
@@ -26,7 +25,8 @@ function onPhotoInputChange(e) {
     maxHeight: cameraCanvas.height,
     contain: true,
     orientation: true,
-    canvas: true
+    canvas: true,
+    pixelRatio: devicePixelRatio
   };
 
   function onImageLoad(result) {
