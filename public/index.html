@@ -16,11 +16,7 @@
       <div class="toolbar" id="toolbar-annotate">
         <div class="left">
           <button id="btn-tools"><img src="images/iconic/pencil.svg" alt="Tools"/>Tools</button>
-          <div id="input-colour-container" class="selected">
-            <input id="input-colour" type="color"/>
-            <div id="input-colour-substitute"></div>
-            <label for="input-colour">Colour</label>
-          </div>
+          <button id="btn-options"><img src="images/iconic/wrench.svg" alt="Options"/>Options</button>
           <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Clear"/>Clear</button>
         </div>
         <div class="right">
@@ -118,6 +114,14 @@
       <button id="btn-pencil" class="selected"><img src="images/iconic/pencil.svg" alt="Pencil"/>Pencil</button>
       <button id="btn-brush"><img src="images/iconic/brush.svg" alt="Brush"/>Brush</button>
       <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/>Emojis</button>
+    </div>
+
+    <div id="modal-options" class="modal">
+      <div id="input-colour-container" class="selected">
+        <input id="input-colour" type="color"/>
+        <div id="input-colour-substitute"></div>
+        <label for="input-colour">Colour</label>
+      </div>
     </div>
 
     <div id="modal-emoji" class="modal">

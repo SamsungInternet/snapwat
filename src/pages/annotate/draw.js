@@ -7,9 +7,7 @@ const DEFAULT_EMOJI_FONT = 'arial';
 
 let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');
-let colourInputContainer = document.getElementById('input-colour-container');
-let colourInput = document.getElementById('input-colour');
-let trashButton = document.getElementById('btn-trash');
+
 let toolsMenuButton = document.getElementById('btn-tools');
 let toolsMenuButtonImage = document.getElementById('btn-tools-img');
 let toolsModal = document.getElementById('modal-tools');
@@ -18,6 +16,12 @@ let brushButton = document.getElementById('btn-brush');
 let emojiMenuButton = document.getElementById('btn-emoji');
 let emojiMenuButtonImage = document.getElementById('btn-emoji-img');
 let emojiModal = document.getElementById('modal-emoji');
+let optionsMenuButton = document.getElementById('btn-options');
+let optionsModal = document.getElementById('modal-options');
+let colourInputContainer = document.getElementById('input-colour-container');
+let colourInput = document.getElementById('input-colour');
+let trashButton = document.getElementById('btn-trash');
+
 let touchedEmojiIndex = -1;
 let chosenEmoji = null;
 let origResizeTouchDelta = null;
@@ -294,6 +298,8 @@ function initControls() {
 
   toolsMenuButton.addEventListener('click', () => {
     toolsModal.classList.toggle('show');
+    emojiModal.classList.remove('show');
+    optionsModal.classList.remove('show');
   });
 
   // Add click handlers to emojis so you can select one
@@ -305,7 +311,7 @@ function initControls() {
 
   emojiMenuButton.addEventListener('click', () => {
     emojiModal.classList.toggle('show');
-    toolsModal.classList.toggle('show');    
+    toolsModal.classList.toggle('show');   
   });
 
   pencilButton.addEventListener('click', () => {
@@ -320,6 +326,12 @@ function initControls() {
     chosenEmoji = null;
     toolsModal.classList.remove('show');
     highlightSelectedTool(brushButton);
+  });
+
+  optionsMenuButton.addEventListener('click', () => {
+    optionsModal.classList.toggle('show');
+    toolsModal.classList.remove('show');
+    emojiModal.classList.remove('show');
   });
 
   trashButton.addEventListener('click', () => {
