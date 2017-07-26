@@ -3032,9 +3032,7 @@ var DEFAULT_EMOJI_FONT = 'arial';
 
 var canvas$1 = document.getElementById('canvas-draw');
 var ctx = ctx = canvas$1.getContext('2d');
-var colourInputContainer = document.getElementById('input-colour-container');
-var colourInput = document.getElementById('input-colour');
-var trashButton = document.getElementById('btn-trash');
+
 var toolsMenuButton = document.getElementById('btn-tools');
 var toolsMenuButtonImage = document.getElementById('btn-tools-img');
 var toolsModal = document.getElementById('modal-tools');
@@ -3043,6 +3041,12 @@ var brushButton = document.getElementById('btn-brush');
 var emojiMenuButton = document.getElementById('btn-emoji');
 var emojiMenuButtonImage = document.getElementById('btn-emoji-img');
 var emojiModal = document.getElementById('modal-emoji');
+var optionsMenuButton = document.getElementById('btn-options');
+var optionsModal = document.getElementById('modal-options');
+var colourInputContainer = document.getElementById('input-colour-container');
+var colourInput = document.getElementById('input-colour');
+var trashButton = document.getElementById('btn-trash');
+
 var touchedEmojiIndex = -1;
 var chosenEmoji = null;
 var origResizeTouchDelta = null;
@@ -3300,6 +3304,8 @@ function initControls$2() {
 
   toolsMenuButton.addEventListener('click', function () {
     toolsModal.classList.toggle('show');
+    emojiModal.classList.remove('show');
+    optionsModal.classList.remove('show');
   });
 
   // Add click handlers to emojis so you can select one
@@ -3326,6 +3332,12 @@ function initControls$2() {
     chosenEmoji = null;
     toolsModal.classList.remove('show');
     highlightSelectedTool(brushButton);
+  });
+
+  optionsMenuButton.addEventListener('click', function () {
+    optionsModal.classList.toggle('show');
+    toolsModal.classList.remove('show');
+    emojiModal.classList.remove('show');
   });
 
   trashButton.addEventListener('click', function () {
