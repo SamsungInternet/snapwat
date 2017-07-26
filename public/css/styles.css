@@ -8,8 +8,8 @@ body {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  background-color: #ccc;
-  color: #fff;
+  background-color: #c7baff;
+  color: #333;
   height: 100%;
   overflow: hidden;
   text-align: center;
@@ -18,7 +18,7 @@ body {
 header {
   background: #987fff;
   height: 72px;
-  color: #fff;
+  color: #333;
 }
 
 header label,
@@ -72,7 +72,7 @@ header .centre-to-right h3 {
 }
 
 header a {
-  color: #fff;
+  color: #444;
   text-decoration: none;
 }
 
@@ -91,12 +91,12 @@ header h3 {
 h1 {
   display: inline-block;
   font-size: 3em;
-  color: #fff;
+  color: #7a63d9;
   margin: 0 0 0.25em 0;
   text-align: left;
   font-weight: normal;
   padding-left: 1.3em;
-  background: url(../images/snapwat-icon-white.svg) left 0.25em no-repeat;
+  background: url(../images/snapwat-icon-purple.svg) left 0.25em no-repeat;
   background-size: 1em 1em;
 }
 
@@ -133,7 +133,8 @@ h2 {
   top: 72px;
   left: 0;
   overflow: hidden;
-  background: #987fff;
+  background: #c7baff;
+  background: linear-gradient(#e6e0ff, #c7baff);
 }
 
 header button {
@@ -201,16 +202,16 @@ header button img {
 
 .page a,
 .page a:hover {
-  color: #fff;
+  color: #555;
 }
 
 .page button {
   cursor: pointer;
   border-radius: 5px;
   border: 0;
-  background: #fff;
-  color: #333;
-  padding: 10px;
+  background: #987fff;
+  color: #fff;
+  padding: 10px 15px;
 }
 
 strong {
@@ -378,12 +379,12 @@ video {
 
 #input-photo + label {
   font-size: 1.3em;
-  background: #fff;
-  color: #333;
+  background: #987fff;
+  color: #fff;
   border-radius: 5px;
   display: inline-block;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 15px;
 }
 
 #input-photo:focus + label {
