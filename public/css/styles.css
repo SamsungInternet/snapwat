@@ -24,14 +24,22 @@ header {
 header label,
 header button {
   font-size: 0.9em;
+  color: #fff;
+}
+
+header button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 8px 8px 4px 8px;
+  border: 2px solid transparent;
 }
 
 header button img {
   display: block;
-}
-
-header button {
-  color: #fff;
+  width: 38px;
+  height: 28px;
+  margin: 0 auto 5px auto;
 }
 
 header .left,
@@ -137,32 +145,23 @@ h2 {
   background: linear-gradient(#e6e0ff, #c7baff);
 }
 
-header button {
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
-
 header input,
 header button {
   outline: none;
   line-height: 1em;
 }
 
-#input-colour-container.selected,
-header button.selected {
-  border: 2px dashed #10f9e6;
-}
-
 #input-colour-container {
   border: 2px solid transparent;
   padding: 8px 8px 4px 8px;
   margin-left: 15px;
+  width: 40px;
 }
 
 #input-colour {
   display: none;
-  width: 32px;
+  width: 40px;
+  height: 24px;
   cursor: pointer;
 }
 
@@ -177,11 +176,6 @@ header button.selected {
   margin-top: 1px;
 }
 
-header button {
-  padding: 8px 8px 4px 8px;
-  border: 2px solid transparent;
-}
-
 header .left button {
   margin-left: 20px;
 }
@@ -192,12 +186,6 @@ header .left button.btn-back {
 
 header .right button {
   margin-right: 10px;
-}
-
-header button img {
-  width: 38px;
-  height: 28px;
-  margin: 0 auto 5px auto;
 }
 
 .page a,
@@ -262,18 +250,13 @@ video {
   pointer-events: none;
   z-index: 10;
   position: absolute;
-  width: 95%;
-  height: 85%;
-  height: -webkit-calc(100% - 90px);
-  height: -moz-calc(100% - 90px);
-  height: -o-calc(100% - 90px);
-  height: -ms-calc(100% - 90px);
-  height: calc(100% - 90px);
+  width: 95%;  
   top: 72px;
   left: 2.5%;
   padding: 15px;
   box-sizing: border-box;
   background: #987fff;
+  color: #fff;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow-y: auto;
@@ -284,10 +267,47 @@ video {
   pointer-events: all;
 }
 
+#modal-tools {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+
+#modal-tools button {
+  border: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.1em;
+  margin-right: 10px;
+}
+
+#modal-tools button.selected {
+  border: 2px dashed #10f9e6;
+}
+
+#modal-tools button img {
+  display: block;
+  height: 30px;
+  margin: 0 auto 5px auto;
+}
+
 #modal-emoji {
   /* For scrolling performance */
   will-change: transform;
   -webkit-overflow-scrolling: touch;
+  height: 85%;
+  height: -webkit-calc(100% - 90px);
+  height: -moz-calc(100% - 90px);
+  height: -o-calc(100% - 90px);
+  height: -ms-calc(100% - 90px);
+  height: calc(100% - 90px);
 }
 
 #modal-emoji button {

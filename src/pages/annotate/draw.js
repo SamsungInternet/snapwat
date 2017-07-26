@@ -10,6 +10,11 @@ let ctx = ctx = canvas.getContext('2d');
 let colourInputContainer = document.getElementById('input-colour-container');
 let colourInput = document.getElementById('input-colour');
 let trashButton = document.getElementById('btn-trash');
+let toolsMenuButton = document.getElementById('btn-tools');
+let toolsMenuButtonImage = document.getElementById('btn-tools-img');
+let toolsModal = document.getElementById('modal-tools');
+let pencilButton = document.getElementById('btn-pencil');
+let brushButton = document.getElementById('btn-brush');
 let emojiMenuButton = document.getElementById('btn-emoji');
 let emojiMenuButtonImage = document.getElementById('btn-emoji-img');
 let emojiModal = document.getElementById('modal-emoji');
@@ -118,6 +123,7 @@ function onTouchStartOrMouseDown(e) {
     drawEmoji(chosenEmoji, coords);
 
   } else {
+    // TODO check mode - pencil or brush
     onDrawingMouseDown(coords);
   }
 
@@ -197,17 +203,28 @@ function onTouchEndOrMouseUp(e) {
   origResizeTouchDelta = null;
 }
 
+function highlightSelectedTool(selectedButton) {
+  var toolButtons = toolsModal.getElementsByTagName('button');
+  for (var i=0; i < toolButtons.length; i++) {
+    var button = toolButtons[i];
+    if (button === selectedButton) {
+      button.classList.add('selected');
+    } else {
+      button.classList.remove('selected');
+    }
+  }
+}
+
 function onEmojiClick(event) {
 
   chosenEmoji = event.currentTarget.innerText;
 
   emojiModal.classList.remove('show');
 
-  // TODO display selected emoji?
-  //emojiMenuButtonImage.src = chosenEmoji.src;
+  // NB. It would be nice to update the emoji to show the selected one,
+  // but the emojis are actual characters now, so might be tricky styling-wise
 
-  emojiMenuButton.classList.add('selected');
-  colourInputContainer.classList.remove('selected');
+  highlightSelectedTool(emojiMenuButton);
 
 }
 
@@ -275,6 +292,10 @@ function initControls() {
   colourInput.addEventListener('input', onColourClickOrChange);
   colourInput.addEventListener('click', onColourClickOrChange);
 
+  toolsMenuButton.addEventListener('click', () => {
+    toolsModal.classList.toggle('show');
+  });
+
   // Add click handlers to emojis so you can select one
   let emojis = document.querySelectorAll('#modal-emoji button');
   for (let i=0; i < emojis.length; i++) {
@@ -283,13 +304,22 @@ function initControls() {
   }
 
   emojiMenuButton.addEventListener('click', () => {
-    // Toggle emoji selector modal dialog
-    if (emojiModal.classList.contains('show')) {
-      emojiModal.classList.remove('show');
-    } else {
-      emojiModal.classList.add('show');
-    }
+    emojiModal.classList.toggle('show');
+    toolsModal.classList.toggle('show');    
+  });
 
+  pencilButton.addEventListener('click', () => {
+    // TODO set mode - pencil
+    chosenEmoji = null;
+    toolsModal.classList.remove('show');
+    highlightSelectedTool(pencilButton);
+  });
+
+  brushButton.addEventListener('click', () => {
+    // TODO set mode - brush
+    chosenEmoji = null;
+    toolsModal.classList.remove('show');
+    highlightSelectedTool(brushButton);
   });
 
   trashButton.addEventListener('click', () => {
