@@ -208,7 +208,7 @@ function onTouchMoveOrMouseMove(e) {
     ctx.stroke();
 
     drawEvents.push({
-      stokeStyle: ctx.strokeStyle,
+      strokeStyle: ctx.strokeStyle,
       lineWidth: ctx.lineWidth,
       tool: chosenTool,
       x: coords1.x,
@@ -278,7 +278,6 @@ function redraw() {
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
       ctx.shadowBlur = ctx.tool === TOOL_BRUSH ? evt.lineWidth * 2 : 0;
-      console.log('shadowBlur', ctx.shadowBlur);
       ctx.shadowColor = evt.strokeStyle;
       ctx.lineTo(evt.x, evt.y);
       ctx.stroke();
@@ -324,7 +323,6 @@ function updateCanvasContext() {
   ctx.strokeStyle = colourInput.value;
   ctx.lineWidth = sizeInput.value;
   ctx.shadowBlur = chosenTool === TOOL_BRUSH ? 2 : 0;
-  console.log('shadowBlur', ctx.shadowBlur);
   ctx.shadowColor = colourInput.value;
 }
 
