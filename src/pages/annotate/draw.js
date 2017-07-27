@@ -4,6 +4,7 @@ import {HEADER_HEIGHT} from '../../shared/constants';
 const RESIZING_TIME_THRESHOLD = 500;
 const DEFAULT_EMOJI_SIZE = 120;
 const DEFAULT_EMOJI_FONT = 'arial';
+const DEFAULT_LINE_WIDTH = 2;
 
 let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');
@@ -268,6 +269,8 @@ function redraw() {
       // Stroke
       ctx.strokeStyle = evt.strokeStyle;
       ctx.lineWidth = evt.lineWidth;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
       ctx.lineTo(evt.x, evt.y);
       ctx.stroke();
     }
@@ -304,7 +307,9 @@ function initCanvas() {
   canvas.addEventListener('mouseup', onTouchEndOrMouseUp, false);
 
   ctx.strokeStyle = '#000000';
-  ctx.lineWidth = 3;
+  ctx.lineWidth = DEFAULT_LINE_WIDTH;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
 }
 
 function initControls() {
@@ -351,6 +356,8 @@ function initControls() {
   colourInput.addEventListener('click', onColourClickOrChange);
 
   sizeInput.addEventListener('change', onSizeChange);
+  sizeInput.value = DEFAULT_LINE_WIDTH;
+  sizeOutput.innerHTML = DEFAULT_LINE_WIDTH;
 
   trashButton.addEventListener('click', () => {
     // Could do with a confirmation prompt!
