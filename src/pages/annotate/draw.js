@@ -129,7 +129,6 @@ function onTouchStartOrMouseDown(e) {
 
   if (touchedEmojiIndex > -1) {
     // Selected an existing emoji - fall through
-    redrawOnNextFrame();
     return;
   }
 
@@ -186,6 +185,9 @@ function onTouchMoveOrMouseMove(e) {
         evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
 
         // Redraw to update position
+        // XXX Is it better to have better performance if lots of draw events, or better to
+        // show everything while you're resizing an emoji? Need to introduce concept of layers??
+        //redrawOnNextFrame(touchedEmojiIndex);
         redrawOnNextFrame();
 
       }
@@ -193,8 +195,6 @@ function onTouchMoveOrMouseMove(e) {
       resizeTouchDelta = newResizeTouchDelta;
 
     } else if (!isResizing) {
-
-      console.log('single');
 
       if (moveTouchDelta) {
 
@@ -209,6 +209,9 @@ function onTouchMoveOrMouseMove(e) {
       }
 
       // Redraw to show emoji is selected
+      // XXX Is it better to have better performance if lots of draw events, or better to
+      // show everything while you're moving an emoji? Need to introduce concept of layers??
+      //redrawOnNextFrame(touchedEmojiIndex);
       redrawOnNextFrame();
     }
 
@@ -224,6 +227,7 @@ function onTouchMoveOrMouseMove(e) {
       x: coords1.x,
       y: coords1.y
     });
+
   }
 }
 
@@ -261,45 +265,62 @@ function onEmojiClick(event) {
 
 }
 
-function redrawOnNextFrame() {
+function redrawOnNextFrame(drawEventIndex) {
   if (!isRedrawing) {
     isRedrawing = true;
-    requestAnimationFrame(redraw);
+    requestAnimationFrame(redraw.bind(this, drawEventIndex));
   }
 }
 
-function redraw() {
+function redraw(drawEventIndex) {
+
+  console.log('start redraw', performance.now());
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  for (let i=0; i < drawEvents.length; i++) {
+  if (drawEventIndex) {
 
-    let evt = drawEvents[i];
+    let evt = drawEvents[drawEventIndex];
+    if (evt) {
+      redrawEvent(drawEventIndex, evt);
+    }
 
-    if (typeof evt.image !== 'undefined') {
-      console.log('draw emoji at', evt.x, evt.y);
-      drawEmoji(evt.image, {x: evt.x, y: evt.y}, evt.width, evt.height, i === touchedEmojiIndex);
+  } else {
 
-    } else if (evt.begin) {
-      // Start a line
-      ctx.beginPath();
-      ctx.moveTo(evt.x, evt.y);
-
-    } else {
-      // Stroke
-      ctx.strokeStyle = evt.strokeStyle;
-      ctx.lineWidth = evt.lineWidth;
-      ctx.lineJoin = 'round';
-      ctx.lineCap = 'round';
-      ctx.shadowBlur = ctx.tool === TOOL_BRUSH ? evt.lineWidth * 2 : 0;
-      ctx.shadowColor = evt.strokeStyle;
-      ctx.lineTo(evt.x, evt.y);
-      ctx.stroke();
+    for (let i=0; i < drawEvents.length; i++) {
+      let evt = drawEvents[i];
+      redrawEvent(i, evt);
     }
 
   }
 
+  console.log('finish redraw', performance.now());
+
   isRedrawing = false;
+
+}
+
+function redrawEvent(eventIndex, event) {
+
+  if (typeof event.image !== 'undefined') {
+    drawEmoji(event.image, {x: event.x, y: event.y}, event.width, event.height, eventIndex === touchedEmojiIndex);
+
+  } else if (event.begin) {
+    // Start a line
+    ctx.beginPath();
+    ctx.moveTo(event.x, event.y);
+
+  } else {
+    // Stroke
+    ctx.strokeStyle = event.strokeStyle;
+    ctx.lineWidth = event.lineWidth;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.shadowBlur = event.tool === TOOL_BRUSH ? 2 : 0;
+    ctx.shadowColor = event.strokeStyle;
+    ctx.lineTo(event.x, event.y);
+    ctx.stroke();
+  }
 
 }
 
