@@ -326,11 +326,9 @@ video {
   height: calc(100% - 90px);
 }
 
-#modal-emoji button {
-  font-size: 2em;
+#modal-emoji img {
   padding: 4px;
   cursor: pointer;
-  background: none;
   border: 0;
 }
 

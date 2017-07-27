@@ -1,7 +1,7 @@
+import emojiImages from '\0emoji-images';
 import {HEADER_HEIGHT} from '../../shared/constants';
 
 // Time to wait before treating single touch events as a separate intention
-const RESIZING_TIME_THRESHOLD = 500;
 const DEFAULT_COLOUR = '#000000';
 const DEFAULT_EMOJI_SIZE = 120;
 const DEFAULT_EMOJI_FONT = 'arial';
@@ -31,8 +31,7 @@ let trashButton = document.getElementById('btn-trash');
 
 let touchedEmojiIndex = -1;
 let chosenEmoji = null;
-let origResizeTouchDelta = null;
-let resizingTimeout = null;
+let resizeTouchDelta = null;
 let isDrawing = false;
 let isRedrawing = false;
 let isResizing = false;
@@ -49,23 +48,14 @@ function indexOfSelectedEmoji(coords) {
 
     let evt = drawEvents[i];
 
-    if (typeof evt.text === 'undefined') {
+    if (!evt.image) {
       continue;
     }
 
-    // Presume it's centred around event x and y - handled by drawEmoji function
-    const emojiLeft = evt.x - (DEFAULT_EMOJI_SIZE * evt.scale) / 2,
-      emojiRight = evt.x + (DEFAULT_EMOJI_SIZE * evt.scale) / 2,
-      emojiTop = evt.y - (DEFAULT_EMOJI_SIZE * evt.scale) / 2,
-      emojiBottom = evt.y + (DEFAULT_EMOJI_SIZE * evt.scale) / 2;
-
-    // DEBUGGING
-    //ctx.strokeRect(emojiLeft, emojiTop, emojiRight-emojiLeft, emojiBottom-emojiTop);
-
-    if (coords.x >= emojiLeft &&
-        coords.x <= emojiRight &&
-        coords.y >= emojiTop &&
-        coords.y <= emojiBottom) {
+    if (coords.x >= evt.x - (evt.width / 2) &&
+        coords.x <= evt.x + (evt.width / 2) &&
+        coords.y >= evt.y - (evt.height / 2) &&
+        coords.y <= evt.y + (evt.height / 2)) {
       return i;
     }
 
@@ -75,12 +65,15 @@ function indexOfSelectedEmoji(coords) {
 
 }
 
-function drawEmoji(emoji, coords, scale = 1) {
+function drawEmoji(emoji, coords, width, height) {
 
-  ctx.font = Math.round(scale * DEFAULT_EMOJI_SIZE) + 'px ' + DEFAULT_EMOJI_FONT;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(emoji, coords.x, coords.y);
+  var drawCoords = coords;
+
+  // Centre the image around where we have tapped/clicked
+  const x = drawCoords.x - width / 2;
+  const y = drawCoords.y - height / 2;
+
+  ctx.drawImage(chosenEmoji, x, y, width, height);
 
 }
 
@@ -130,16 +123,19 @@ function onTouchStartOrMouseDown(e) {
   if (chosenTool === TOOL_EMOJI) {
 
     // Add new emoji
+    // Increase default SVG size
+    const width = chosenEmoji.width * 2;
+    const height = chosenEmoji.height * 2;
 
     drawEvents.push({
-      text: chosenEmoji,
-      font: ctx.font,
+      image: chosenEmoji,
       x: coords.x,
       y: coords.y,
-      scale: 1
+      width: width,
+      height: height
     });
 
-    drawEmoji(chosenEmoji, coords);
+    drawEmoji(chosenEmoji, coords, width, height);
 
   } else {
     onDrawingMouseDown(coords);
@@ -165,35 +161,26 @@ function onTouchMoveOrMouseMove(e) {
     if (touch2) {
 
       // Resize emoji
+      isResizing = true;
 
       let coords2 = {x: touch2.pageX - canvas.offsetLeft, y: touch2.pageY - canvas.offsetTop - HEADER_HEIGHT};
       let newResizeTouchDelta = {x: Math.abs(coords2.x - coords1.x),
         y: Math.abs(coords2.y - coords1.y)};
 
-      if (!origResizeTouchDelta) {
+      if (resizeTouchDelta) {
 
-        origResizeTouchDelta = newResizeTouchDelta;
-
-      } else {
-
-        // Seems to disappear when font size gets too big?! Limit to 1.75x for now.
-        evt.scale = Math.min(1.75, newResizeTouchDelta.x / origResizeTouchDelta.x);
-
-        isResizing = true;
-
-        if (resizingTimeout) {
-          clearTimeout(resizingTimeout);
-        }
-
-        resizingTimeout = setTimeout(() => {
-          isResizing = false;
-        }, RESIZING_TIME_THRESHOLD);
+        evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
+        evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
 
         redrawOnNextFrame();
 
       }
 
+      resizeTouchDelta = newResizeTouchDelta;
+
     } else if (!isResizing) {
+
+      console.log('single');
 
       // Single touch - moving the emoji - update its position
       evt.x = coords1.x;
@@ -219,8 +206,9 @@ function onTouchMoveOrMouseMove(e) {
 
 function onTouchEndOrMouseUp(e) {
   isDrawing = false;
+  isResizing = false;
   touchedEmojiIndex = -1;
-  origResizeTouchDelta = null;
+  resizeTouchDelta = null;
 }
 
 function highlightSelectedTool(selectedButton) {
@@ -238,7 +226,7 @@ function highlightSelectedTool(selectedButton) {
 function onEmojiClick(event) {
 
   chosenTool = TOOL_EMOJI;
-  chosenEmoji = event.currentTarget.innerText;
+  chosenEmoji = event.currentTarget;
 
   emojiModal.classList.remove('show');
 
@@ -263,8 +251,9 @@ function redraw() {
 
     let evt = drawEvents[i];
 
-    if (typeof evt.text !== 'undefined') {
-      drawEmoji(evt.text, {x: evt.x, y: evt.y}, evt.scale);
+    if (typeof evt.image !== 'undefined') {
+      console.log('draw emoji at', evt.x, evt.y);
+      drawEmoji(evt.image, {x: evt.x, y: evt.y}, evt.width, evt.height);
 
     } else if (evt.begin) {
       // Start a line
@@ -326,6 +315,19 @@ function updateCanvasContext() {
   ctx.shadowColor = colourInput.value;
 }
 
+function initEmojis() {
+
+  let html = '';
+
+  for (let i=0; i < emojiImages.length; i++) {
+    const path = emojiImages[i];
+    html += `<img src="${path}" alt="Emoji"/>`;
+  }
+
+  emojiModal.innerHTML = html;
+
+}
+
 function initControls() {
 
   toolsMenuButton.addEventListener('click', () => {
@@ -335,7 +337,7 @@ function initControls() {
   });
 
   // Add click handlers to emojis so you can select one
-  let emojis = document.querySelectorAll('#modal-emoji button');
+  let emojis = document.querySelectorAll('#modal-emoji img');
   for (let i=0; i < emojis.length; i++) {
     let emoji = emojis[i];
     emoji.addEventListener('click', onEmojiClick);
@@ -383,5 +385,6 @@ function initControls() {
 
 export default function init() {
   initCanvas();
+  initEmojis();
   initControls();
 }
