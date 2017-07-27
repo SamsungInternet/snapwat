@@ -1895,6 +1895,7 @@ var trashButton = document.getElementById('btn-trash');
 var touchedEmojiIndex = -1;
 var chosenEmoji = null;
 var resizeTouchDelta = null;
+var moveTouchDelta = null;
 var isDrawing = false;
 var isRedrawing = false;
 var isResizing = false;
@@ -2035,6 +2036,7 @@ function onTouchMoveOrMouseMove(e) {
         evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
         evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
 
+        // Redraw to update position
         redrawOnNextFrame();
       }
 
@@ -2043,10 +2045,17 @@ function onTouchMoveOrMouseMove(e) {
 
       console.log('single');
 
-      // Single touch - moving the emoji - update its position
-      evt.x = coords1.x;
-      evt.y = coords1.y;
+      if (moveTouchDelta) {
 
+        // Single touch - moving the emoji - update its position
+        evt.x = coords1.x - moveTouchDelta.x;
+        evt.y = coords1.y - moveTouchDelta.y;
+      } else {
+
+        moveTouchDelta = { x: coords1.x - evt.x, y: coords1.y - evt.y };
+      }
+
+      // Redraw to show emoji is selected
       redrawOnNextFrame();
     }
   } else if (isDrawing) {
@@ -2069,6 +2078,7 @@ function onTouchEndOrMouseUp(e) {
   isResizing = false;
   touchedEmojiIndex = -1;
   resizeTouchDelta = null;
+  moveTouchDelta = null;
   redrawOnNextFrame();
 }
 
