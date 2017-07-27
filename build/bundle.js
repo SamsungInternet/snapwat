@@ -1864,11 +1864,10 @@ function init$1() {
   initCamera();
 }
 
+var emojiImages = ["/images/emojione/1f31c.svg","/images/emojione/1f31d.svg","/images/emojione/1f32d.svg","/images/emojione/1f32e.svg","/images/emojione/1f335.svg","/images/emojione/1f34c.svg","/images/emojione/1f354.svg","/images/emojione/1f355.svg","/images/emojione/1f357.svg","/images/emojione/1f35f.svg","/images/emojione/1f369.svg","/images/emojione/1f36a.svg","/images/emojione/1f370.svg","/images/emojione/1f377.svg","/images/emojione/1f378.svg","/images/emojione/1f379.svg","/images/emojione/1f37a.svg","/images/emojione/1f37b.svg","/images/emojione/1f37c.svg","/images/emojione/1f37e.svg","/images/emojione/1f381.svg","/images/emojione/1f382.svg","/images/emojione/1f383.svg","/images/emojione/1f384.svg","/images/emojione/1f388.svg","/images/emojione/1f389.svg","/images/emojione/1f3a4.svg","/images/emojione/1f3a5.svg","/images/emojione/1f3a9.svg","/images/emojione/1f3b7.svg","/images/emojione/1f3b8.svg","/images/emojione/1f3ba.svg","/images/emojione/1f3bc.svg","/images/emojione/1f3c5.svg","/images/emojione/1f3c6.svg","/images/emojione/1f420.svg","/images/emojione/1f426.svg","/images/emojione/1f42a.svg","/images/emojione/1f42d.svg","/images/emojione/1f42e.svg","/images/emojione/1f42f.svg","/images/emojione/1f430.svg","/images/emojione/1f434.svg","/images/emojione/1f435.svg","/images/emojione/1f436.svg","/images/emojione/1f437.svg","/images/emojione/1f43a.svg","/images/emojione/1f43b.svg","/images/emojione/1f43c.svg","/images/emojione/1f43d.svg","/images/emojione/1f440.svg","/images/emojione/1f443.svg","/images/emojione/1f444.svg","/images/emojione/1f445.svg","/images/emojione/1f446.svg","/images/emojione/1f447.svg","/images/emojione/1f448.svg","/images/emojione/1f449.svg","/images/emojione/1f44a.svg","/images/emojione/1f44b.svg","/images/emojione/1f44c.svg","/images/emojione/1f44d.svg","/images/emojione/1f44e.svg","/images/emojione/1f44f.svg","/images/emojione/1f450.svg","/images/emojione/1f451.svg","/images/emojione/1f452.svg","/images/emojione/1f455.svg","/images/emojione/1f456.svg","/images/emojione/1f457.svg","/images/emojione/1f458.svg","/images/emojione/1f45b.svg","/images/emojione/1f45c.svg","/images/emojione/1f46e.svg","/images/emojione/1f47d.svg","/images/emojione/1f484.svg","/images/emojione/1f48b.svg","/images/emojione/1f490.svg","/images/emojione/1f4a1.svg","/images/emojione/1f4a5.svg","/images/emojione/1f4a9.svg","/images/emojione/1f4aa.svg","/images/emojione/1f4af.svg","/images/emojione/1f4b0.svg","/images/emojione/1f4b8.svg","/images/emojione/1f525.svg","/images/emojione/1f577.svg","/images/emojione/1f600.svg","/images/emojione/1f602.svg","/images/emojione/1f605.svg","/images/emojione/1f607.svg","/images/emojione/1f608.svg","/images/emojione/1f609.svg","/images/emojione/1f60a.svg","/images/emojione/1f60b.svg","/images/emojione/1f60c.svg","/images/emojione/1f60d.svg","/images/emojione/1f60e.svg","/images/emojione/1f60f.svg","/images/emojione/1f618.svg","/images/emojione/1f61a.svg","/images/emojione/1f61b.svg","/images/emojione/1f61c.svg","/images/emojione/1f61d.svg","/images/emojione/1f61e.svg","/images/emojione/1f61f.svg","/images/emojione/1f621.svg","/images/emojione/1f628.svg","/images/emojione/1f62a.svg","/images/emojione/1f62b.svg","/images/emojione/1f62c.svg","/images/emojione/1f62d.svg","/images/emojione/1f62e.svg","/images/emojione/1f62f.svg","/images/emojione/1f631.svg","/images/emojione/1f632.svg","/images/emojione/1f635.svg","/images/emojione/1f637.svg","/images/emojione/1f638.svg","/images/emojione/1f639.svg","/images/emojione/1f63a.svg","/images/emojione/1f63b.svg","/images/emojione/1f63c.svg","/images/emojione/1f63e.svg","/images/emojione/1f63f.svg","/images/emojione/1f640.svg","/images/emojione/1f641.svg","/images/emojione/1f642.svg","/images/emojione/1f644.svg","/images/emojione/1f64c.svg","/images/emojione/1f64f.svg","/images/emojione/1f680.svg","/images/emojione/1f681.svg","/images/emojione/1f911.svg","/images/emojione/1f912.svg","/images/emojione/1f913.svg","/images/emojione/1f915.svg","/images/emojione/1f916.svg","/images/emojione/1f918.svg","/images/emojione/1f91e.svg","/images/emojione/1f920.svg","/images/emojione/1f921.svg","/images/emojione/1f922.svg","/images/emojione/1f924.svg","/images/emojione/1f981.svg","/images/emojione/1f984.svg","/images/emojione/1f98a.svg","/images/emojione/1f98d.svg","/images/emojione/1f9c0.svg","/images/emojione/2600.svg","/images/emojione/2602.svg","/images/emojione/2615.svg","/images/emojione/2618.svg","/images/emojione/261d.svg","/images/emojione/2620.svg","/images/emojione/2622.svg","/images/emojione/262a.svg","/images/emojione/262e.svg","/images/emojione/262f.svg","/images/emojione/263a.svg","/images/emojione/26a0.svg","/images/emojione/26c4.svg","/images/emojione/26c8.svg","/images/emojione/270a.svg","/images/emojione/270b.svg","/images/emojione/270c.svg","/images/emojione/2744.svg","/images/emojione/2764.svg","/images/emojione/2b50.svg"];
+
 // Time to wait before treating single touch events as a separate intention
-var RESIZING_TIME_THRESHOLD = 500;
 var DEFAULT_COLOUR = '#000000';
-var DEFAULT_EMOJI_SIZE = 120;
-var DEFAULT_EMOJI_FONT = 'arial';
 var DEFAULT_LINE_WIDTH = 2;
 
 var TOOL_PENCIL = 0;
@@ -1895,8 +1894,7 @@ var trashButton = document.getElementById('btn-trash');
 
 var touchedEmojiIndex = -1;
 var chosenEmoji = null;
-var origResizeTouchDelta = null;
-var resizingTimeout = null;
+var resizeTouchDelta = null;
 var isDrawing = false;
 var isRedrawing = false;
 var isResizing = false;
@@ -1913,20 +1911,11 @@ function indexOfSelectedEmoji(coords) {
 
     var evt = drawEvents[i];
 
-    if (typeof evt.text === 'undefined') {
+    if (!evt.image) {
       continue;
     }
 
-    // Presume it's centred around event x and y - handled by drawEmoji function
-    var emojiLeft = evt.x - DEFAULT_EMOJI_SIZE * evt.scale / 2,
-        emojiRight = evt.x + DEFAULT_EMOJI_SIZE * evt.scale / 2,
-        emojiTop = evt.y - DEFAULT_EMOJI_SIZE * evt.scale / 2,
-        emojiBottom = evt.y + DEFAULT_EMOJI_SIZE * evt.scale / 2;
-
-    // DEBUGGING
-    //ctx.strokeRect(emojiLeft, emojiTop, emojiRight-emojiLeft, emojiBottom-emojiTop);
-
-    if (coords.x >= emojiLeft && coords.x <= emojiRight && coords.y >= emojiTop && coords.y <= emojiBottom) {
+    if (coords.x >= evt.x - evt.width / 2 && coords.x <= evt.x + evt.width / 2 && coords.y >= evt.y - evt.height / 2 && coords.y <= evt.y + evt.height / 2) {
       return i;
     }
   }
@@ -1934,14 +1923,15 @@ function indexOfSelectedEmoji(coords) {
   return -1;
 }
 
-function drawEmoji(emoji, coords) {
-  var scale = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+function drawEmoji(emoji, coords, width, height) {
 
+  var drawCoords = coords;
 
-  ctx.font = Math.round(scale * DEFAULT_EMOJI_SIZE) + 'px ' + DEFAULT_EMOJI_FONT;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(emoji, coords.x, coords.y);
+  // Centre the image around where we have tapped/clicked
+  var x = drawCoords.x - width / 2;
+  var y = drawCoords.y - height / 2;
+
+  ctx.drawImage(chosenEmoji, x, y, width, height);
 }
 
 function onDrawingMouseDown(coords) {
@@ -1987,16 +1977,19 @@ function onTouchStartOrMouseDown(e) {
   if (chosenTool === TOOL_EMOJI) {
 
     // Add new emoji
+    // Increase default SVG size
+    var width = chosenEmoji.width * 2;
+    var height = chosenEmoji.height * 2;
 
     drawEvents.push({
-      text: chosenEmoji,
-      font: ctx.font,
+      image: chosenEmoji,
       x: coords.x,
       y: coords.y,
-      scale: 1
+      width: width,
+      height: height
     });
 
-    drawEmoji(chosenEmoji, coords);
+    drawEmoji(chosenEmoji, coords, width, height);
   } else {
     onDrawingMouseDown(coords);
   }
@@ -2019,32 +2012,24 @@ function onTouchMoveOrMouseMove(e) {
     if (touch2) {
 
       // Resize emoji
+      isResizing = true;
 
       var coords2 = { x: touch2.pageX - canvas$1.offsetLeft, y: touch2.pageY - canvas$1.offsetTop - HEADER_HEIGHT };
       var newResizeTouchDelta = { x: Math.abs(coords2.x - coords1.x),
         y: Math.abs(coords2.y - coords1.y) };
 
-      if (!origResizeTouchDelta) {
+      if (resizeTouchDelta) {
 
-        origResizeTouchDelta = newResizeTouchDelta;
-      } else {
-
-        // Seems to disappear when font size gets too big?! Limit to 1.75x for now.
-        evt.scale = Math.min(1.75, newResizeTouchDelta.x / origResizeTouchDelta.x);
-
-        isResizing = true;
-
-        if (resizingTimeout) {
-          clearTimeout(resizingTimeout);
-        }
-
-        resizingTimeout = setTimeout(function () {
-          isResizing = false;
-        }, RESIZING_TIME_THRESHOLD);
+        evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
+        evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
 
         redrawOnNextFrame();
       }
+
+      resizeTouchDelta = newResizeTouchDelta;
     } else if (!isResizing) {
+
+      console.log('single');
 
       // Single touch - moving the emoji - update its position
       evt.x = coords1.x;
@@ -2069,8 +2054,9 @@ function onTouchMoveOrMouseMove(e) {
 
 function onTouchEndOrMouseUp(e) {
   isDrawing = false;
+  isResizing = false;
   touchedEmojiIndex = -1;
-  origResizeTouchDelta = null;
+  resizeTouchDelta = null;
 }
 
 function highlightSelectedTool(selectedButton) {
@@ -2088,7 +2074,7 @@ function highlightSelectedTool(selectedButton) {
 function onEmojiClick(event) {
 
   chosenTool = TOOL_EMOJI;
-  chosenEmoji = event.currentTarget.innerText;
+  chosenEmoji = event.currentTarget;
 
   emojiModal.classList.remove('show');
 
@@ -2112,8 +2098,9 @@ function redraw() {
 
     var evt = drawEvents[i];
 
-    if (typeof evt.text !== 'undefined') {
-      drawEmoji(evt.text, { x: evt.x, y: evt.y }, evt.scale);
+    if (typeof evt.image !== 'undefined') {
+      console.log('draw emoji at', evt.x, evt.y);
+      drawEmoji(evt.image, { x: evt.x, y: evt.y }, evt.width, evt.height);
     } else if (evt.begin) {
       // Start a line
       ctx.beginPath();
@@ -2171,6 +2158,18 @@ function updateCanvasContext() {
   ctx.shadowColor = colourInput.value;
 }
 
+function initEmojis() {
+
+  var html = '';
+
+  for (var i = 0; i < emojiImages.length; i++) {
+    var path = emojiImages[i];
+    html += '<img src="' + path + '" alt="Emoji"/>';
+  }
+
+  emojiModal.innerHTML = html;
+}
+
 function initControls$2() {
 
   toolsMenuButton.addEventListener('click', function () {
@@ -2180,7 +2179,7 @@ function initControls$2() {
   });
 
   // Add click handlers to emojis so you can select one
-  var emojis = document.querySelectorAll('#modal-emoji button');
+  var emojis = document.querySelectorAll('#modal-emoji img');
   for (var i = 0; i < emojis.length; i++) {
     var emoji = emojis[i];
     emoji.addEventListener('click', onEmojiClick);
@@ -2227,6 +2226,7 @@ function initControls$2() {
 
 function init$2() {
   initCanvas$1();
+  initEmojis();
   initControls$2();
 }
 
