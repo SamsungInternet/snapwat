@@ -19,6 +19,7 @@ let optionsModal = document.getElementById('modal-options');
 let colourInputContainer = document.getElementById('input-colour-container');
 let colourInput = document.getElementById('input-colour');
 let sizeInput = document.getElementById('input-size');
+let sizeOutput = document.getElementById('size-output');
 let trashButton = document.getElementById('btn-trash');
 
 let touchedEmojiIndex = -1;
@@ -285,7 +286,9 @@ function onColourClickOrChange() {
 }
 
 function onSizeChange(event) {
-  ctx.lineWidth = event.target.value;
+  var size = event.target.value
+  ctx.lineWidth = size;
+  sizeOutput.innerHTML = size;
 }
 
 function initCanvas() {
