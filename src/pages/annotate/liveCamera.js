@@ -1,4 +1,3 @@
-import webrtcAdapter from 'webrtc-adapter';
 import {HEADER_HEIGHT} from '../../shared/constants';
 import {showPrompt} from '../../shared/helpers';
 
@@ -56,7 +55,13 @@ function initCamera() {
         console.log('Stream inactive');
       };
 
-      video.srcObject = stream;
+      // Older browsers may not have srcObject
+      if ('srcObject' in video) {
+        video.srcObject = stream;
+      } else {
+        // Avoid using this in new browsers, as it is going away.
+        video.src = window.URL.createObjectURL(stream);
+      }
 
       requestAnimationFrame(copyVideoToCanvas);
 

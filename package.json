@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "blueimp-load-image": "^2.13.1",
-    "hellojs": "^1.13.4",
-    "webrtc-adapter": "^2.0.2"
+    "hellojs": "^1.13.4"
   }
 }

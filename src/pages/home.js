@@ -1,8 +1,8 @@
+import LoadImage from 'blueimp-load-image';
 import {PAGES, HEADER_HEIGHT} from '../shared/constants';
 import {showPage} from '../shared/helpers';
 import AnnotatePage from './annotate';
 import AboutPage from './about';
-import LoadImage from 'blueimp-load-image';
 
 console.log('LoadImage', LoadImage);
 
