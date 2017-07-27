@@ -9,17 +9,16 @@ let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');
 
 let toolsMenuButton = document.getElementById('btn-tools');
-let toolsMenuButtonImage = document.getElementById('btn-tools-img');
 let toolsModal = document.getElementById('modal-tools');
 let pencilButton = document.getElementById('btn-pencil');
 let brushButton = document.getElementById('btn-brush');
 let emojiMenuButton = document.getElementById('btn-emoji');
-let emojiMenuButtonImage = document.getElementById('btn-emoji-img');
 let emojiModal = document.getElementById('modal-emoji');
 let optionsMenuButton = document.getElementById('btn-options');
 let optionsModal = document.getElementById('modal-options');
 let colourInputContainer = document.getElementById('input-colour-container');
 let colourInput = document.getElementById('input-colour');
+let sizeInput = document.getElementById('input-size');
 let trashButton = document.getElementById('btn-trash');
 
 let touchedEmojiIndex = -1;
@@ -95,9 +94,17 @@ function onDrawingMouseDown(coords) {
 
 }
 
+function closeModals() {
+  optionsModal.classList.remove('show');
+  toolsModal.classList.remove('show');
+  emojiModal.classList.remove('show');
+}
+
 function onTouchStartOrMouseDown(e) {
 
   e.preventDefault();
+
+  closeModals();
 
   let touch = e.changedTouches && e.changedTouches.length ?
     e.changedTouches[0] : null;
@@ -195,6 +202,7 @@ function onTouchMoveOrMouseMove(e) {
 
     drawEvents.push({
       stokeStyle: ctx.strokeStyle,
+      lineWidth: ctx.lineWidth,
       x: coords1.x,
       y: coords1.y
     });
@@ -258,6 +266,7 @@ function redraw() {
     } else {
       // Stroke
       ctx.strokeStyle = evt.strokeStyle;
+      ctx.lineWidth = evt.lineWidth;
       ctx.lineTo(evt.x, evt.y);
       ctx.stroke();
     }
@@ -273,6 +282,10 @@ function onColourClickOrChange() {
   chosenEmoji = null;
   colourInputContainer.classList.add('selected');
   emojiMenuButton.classList.remove('selected');
+}
+
+function onSizeChange(event) {
+  ctx.lineWidth = event.target.value;
 }
 
 function initCanvas() {
@@ -293,9 +306,6 @@ function initCanvas() {
 
 function initControls() {
 
-  colourInput.addEventListener('input', onColourClickOrChange);
-  colourInput.addEventListener('click', onColourClickOrChange);
-
   toolsMenuButton.addEventListener('click', () => {
     toolsModal.classList.toggle('show');
     emojiModal.classList.remove('show');
@@ -311,7 +321,7 @@ function initControls() {
 
   emojiMenuButton.addEventListener('click', () => {
     emojiModal.classList.toggle('show');
-    toolsModal.classList.toggle('show');   
+    toolsModal.classList.toggle('show');
   });
 
   pencilButton.addEventListener('click', () => {
@@ -333,6 +343,11 @@ function initControls() {
     toolsModal.classList.remove('show');
     emojiModal.classList.remove('show');
   });
+
+  colourInput.addEventListener('input', onColourClickOrChange);
+  colourInput.addEventListener('click', onColourClickOrChange);
+
+  sizeInput.addEventListener('change', onSizeChange);
 
   trashButton.addEventListener('click', () => {
     // Could do with a confirmation prompt!

@@ -1754,17 +1754,16 @@
 	var ctx = ctx = canvas$1.getContext('2d');
 
 	var toolsMenuButton = document.getElementById('btn-tools');
-	var toolsMenuButtonImage = document.getElementById('btn-tools-img');
 	var toolsModal = document.getElementById('modal-tools');
 	var pencilButton = document.getElementById('btn-pencil');
 	var brushButton = document.getElementById('btn-brush');
 	var emojiMenuButton = document.getElementById('btn-emoji');
-	var emojiMenuButtonImage = document.getElementById('btn-emoji-img');
 	var emojiModal = document.getElementById('modal-emoji');
 	var optionsMenuButton = document.getElementById('btn-options');
 	var optionsModal = document.getElementById('modal-options');
 	var colourInputContainer = document.getElementById('input-colour-container');
 	var colourInput = document.getElementById('input-colour');
+	var sizeInput = document.getElementById('input-size');
 	var trashButton = document.getElementById('btn-trash');
 
 	var touchedEmojiIndex = -1;
@@ -1835,9 +1834,17 @@
 	  });
 	}
 
+	function closeModals() {
+	  optionsModal.classList.remove('show');
+	  toolsModal.classList.remove('show');
+	  emojiModal.classList.remove('show');
+	}
+
 	function onTouchStartOrMouseDown(e) {
 
 	  e.preventDefault();
+
+	  closeModals();
 
 	  var touch = e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : null;
 
@@ -1926,6 +1933,7 @@
 
 	    drawEvents.push({
 	      stokeStyle: ctx.strokeStyle,
+	      lineWidth: ctx.lineWidth,
 	      x: coords1.x,
 	      y: coords1.y
 	    });
@@ -1986,6 +1994,7 @@
 	    } else {
 	      // Stroke
 	      ctx.strokeStyle = evt.strokeStyle;
+	      ctx.lineWidth = evt.lineWidth;
 	      ctx.lineTo(evt.x, evt.y);
 	      ctx.stroke();
 	    }
@@ -1999,6 +2008,10 @@
 	  chosenEmoji = null;
 	  colourInputContainer.classList.add('selected');
 	  emojiMenuButton.classList.remove('selected');
+	}
+
+	function onSizeChange(event) {
+	  ctx.lineWidth = event.target.value;
 	}
 
 	function initCanvas$1() {
@@ -2018,9 +2031,6 @@
 	}
 
 	function initControls$2() {
-
-	  colourInput.addEventListener('input', onColourClickOrChange);
-	  colourInput.addEventListener('click', onColourClickOrChange);
 
 	  toolsMenuButton.addEventListener('click', function () {
 	    toolsModal.classList.toggle('show');
@@ -2059,6 +2069,11 @@
 	    toolsModal.classList.remove('show');
 	    emojiModal.classList.remove('show');
 	  });
+
+	  colourInput.addEventListener('input', onColourClickOrChange);
+	  colourInput.addEventListener('click', onColourClickOrChange);
+
+	  sizeInput.addEventListener('change', onSizeChange);
 
 	  trashButton.addEventListener('click', function () {
 	    // Could do with a confirmation prompt!
