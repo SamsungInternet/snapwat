@@ -155,6 +155,7 @@ header button {
   border: 2px solid transparent;
   padding: 8px 8px 4px 8px;
   margin-left: 15px;
+  margin-right: 15px;
   width: 40px;
 }
 
@@ -174,6 +175,10 @@ header button {
 
 #input-colour-container label {
   margin-top: 1px;
+}
+
+#input-size-container {
+  width: 60px;
 }
 
 header .left button {
@@ -251,7 +256,7 @@ video {
   pointer-events: none;
   z-index: 10;
   position: absolute;
-  width: 95%;  
+  width: 95%;
   top: 72px;
   left: 2.5%;
   padding: 15px;
@@ -268,7 +273,8 @@ video {
   pointer-events: all;
 }
 
-#modal-tools {
+#modal-tools,
+#modal-options {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -297,6 +303,15 @@ video {
   display: block;
   height: 30px;
   margin: 0 auto 5px auto;
+}
+
+#modal-options input {
+  margin-right: 10px;
+}
+
+#input-size {
+  margin-top: 11px;
+  height: 20px;
 }
 
 #modal-emoji {
