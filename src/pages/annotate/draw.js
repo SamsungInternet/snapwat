@@ -2,13 +2,19 @@ import {HEADER_HEIGHT} from '../../shared/constants';
 
 // Time to wait before treating single touch events as a separate intention
 const RESIZING_TIME_THRESHOLD = 500;
+const DEFAULT_COLOUR = '#000000';
 const DEFAULT_EMOJI_SIZE = 120;
 const DEFAULT_EMOJI_FONT = 'arial';
 const DEFAULT_LINE_WIDTH = 2;
 
+const TOOL_PENCIL = 0;
+const TOOL_BRUSH = 1;
+const TOOL_EMOJI = 2;
+
 let canvas = document.getElementById('canvas-draw');
 let ctx = ctx = canvas.getContext('2d');
 
+let chosenTool = TOOL_PENCIL;
 let toolsMenuButton = document.getElementById('btn-tools');
 let toolsModal = document.getElementById('modal-tools');
 let pencilButton = document.getElementById('btn-pencil');
@@ -121,7 +127,7 @@ function onTouchStartOrMouseDown(e) {
     return;
   }
 
-  if (chosenEmoji) {
+  if (chosenTool === TOOL_EMOJI) {
 
     // Add new emoji
 
@@ -136,7 +142,6 @@ function onTouchStartOrMouseDown(e) {
     drawEmoji(chosenEmoji, coords);
 
   } else {
-    // TODO check mode - pencil or brush
     onDrawingMouseDown(coords);
   }
 
@@ -205,6 +210,7 @@ function onTouchMoveOrMouseMove(e) {
     drawEvents.push({
       stokeStyle: ctx.strokeStyle,
       lineWidth: ctx.lineWidth,
+      tool: chosenTool,
       x: coords1.x,
       y: coords1.y
     });
@@ -231,13 +237,13 @@ function highlightSelectedTool(selectedButton) {
 
 function onEmojiClick(event) {
 
+  chosenTool = TOOL_EMOJI;
   chosenEmoji = event.currentTarget.innerText;
 
   emojiModal.classList.remove('show');
 
   // NB. It would be nice to update the emoji to show the selected one,
   // but the emojis are actual characters now, so might be tricky styling-wise
-
   highlightSelectedTool(emojiMenuButton);
 
 }
@@ -271,6 +277,9 @@ function redraw() {
       ctx.lineWidth = evt.lineWidth;
       ctx.lineJoin = 'round';
       ctx.lineCap = 'round';
+      ctx.shadowBlur = ctx.tool === TOOL_BRUSH ? evt.lineWidth * 2 : 0;
+      console.log('shadowBlur', ctx.shadowBlur);
+      ctx.shadowColor = evt.strokeStyle;
       ctx.lineTo(evt.x, evt.y);
       ctx.stroke();
     }
@@ -282,16 +291,14 @@ function redraw() {
 }
 
 function onColourClickOrChange() {
-  ctx.strokeStyle = colourInput.value;
-  chosenEmoji = null;
+  updateCanvasContext();
   colourInputContainer.classList.add('selected');
   emojiMenuButton.classList.remove('selected');
 }
 
 function onSizeChange(event) {
-  var size = event.target.value
-  ctx.lineWidth = size;
-  sizeOutput.innerHTML = size;
+  updateCanvasContext();
+  sizeOutput.innerHTML = event.target.value;
 }
 
 function initCanvas() {
@@ -306,10 +313,19 @@ function initCanvas() {
   canvas.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
   canvas.addEventListener('mouseup', onTouchEndOrMouseUp, false);
 
-  ctx.strokeStyle = '#000000';
+  ctx.strokeStyle = DEFAULT_COLOUR;
   ctx.lineWidth = DEFAULT_LINE_WIDTH;
   ctx.lineJoin = 'round';
   ctx.lineCap = 'round';
+  ctx.shadowColor = DEFAULT_COLOUR;
+}
+
+function updateCanvasContext() {
+  ctx.strokeStyle = colourInput.value;
+  ctx.lineWidth = sizeInput.value;
+  ctx.shadowBlur = chosenTool === TOOL_BRUSH ? 2 : 0;
+  console.log('shadowBlur', ctx.shadowBlur);
+  ctx.shadowColor = colourInput.value;
 }
 
 function initControls() {
@@ -333,15 +349,15 @@ function initControls() {
   });
 
   pencilButton.addEventListener('click', () => {
-    // TODO set mode - pencil
-    chosenEmoji = null;
+    chosenTool = TOOL_PENCIL;
+    updateCanvasContext();
     toolsModal.classList.remove('show');
     highlightSelectedTool(pencilButton);
   });
 
   brushButton.addEventListener('click', () => {
-    // TODO set mode - brush
-    chosenEmoji = null;
+    chosenTool = TOOL_BRUSH;
+    updateCanvasContext();
     toolsModal.classList.remove('show');
     highlightSelectedTool(brushButton);
   });
