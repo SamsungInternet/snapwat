@@ -1,28 +1,28 @@
 # snapwat?
 
-**Disclaimer: Snapwat is a product of a learning process for me (I'm [sharing that](https://medium.com/samsung-internet-dev/things-i-learned-making-a-progressive-web-app-for-super-selfies-49e76d154e4f#.3m59s4t4n) as I go) and it's a work in progress. It shouldn't be seen as a best practice guide (yet)!**
-
-[sna**pwa**t](https://snapw.at) is a demo to showcase progressive web app capabilities.
-
-The idea of the app is to let you doodle and add emojis etc. on top of photos or your live camera feed.
+[sna**pwa**t](https://snapw.at) is a demo to showcase Progressive Web App capabilities.
+The app lets you doodle and add emojis on top of photos or your live camera feed, then
+save and/or share your creation!
 
 <img src="docs/snapwat-snapshots.png?raw=true" alt="A snapwat" width="600px"/>
 
+*Disclaimer*: Snapwat is a product of a learning process for me (I'm [sharing that](https://medium.com/samsung-internet-dev/things-i-learned-making-a-progressive-web-app-for-super-selfies-49e76d154e4f#.3m59s4t4n) as I go) and it's a work in progress. It shouldn't be seen as a best practice guide (yet)! For a best practices guide for getUserMedia, see: [developers.google.com/web/fundamentals/native-hardware/capturing-images/](https://developers.google.com/web/fundamentals/native-hardware/capturing-images/)
 
 ## How to use it
 
-* First, choose whether to use/take a photo, or switch on your camera (recommended if your browser has support).
-* Select a pencil colour and drawing over the camera view.
-* Select an emoji from the emoji menu and touch on the camera view to stamp it as a sticker. Tap and drag to move an 
-emoji around. Pinch an emoji to resize it.
+* First, choose whether to use/take a photo, or switch on your camera.
+* You can tap 'Tools' to switch between the pencil (default), brush and emoji stamp.
+* Tap 'Options' to set the pencil/brush colour and size. Draw over the photo/camera view as you wish.
+* For emojis, select one from the emoji menu and touch on the photo/camera view to stamp it as a sticker. 
+* Tap and drag an emoji to move it around. Pinch an emoji to resize it.
 * When you're ready, press the 'next' arrow. The snapwat will be displayed. 
 * Tap and hold / right-click and choose your device's Save / Download option to save 
 the image. (Unfortunately it doesn't seem possible right now to download the generated file automatically across mobile 
 browsers - [more about that here](https://medium.com/samsung-internet-dev/things-i-learned-making-a-progressive-web-app-for-super-selfies-49e76d154e4f)).
-* Or press the tweet button and share it directly via the Twitter API. (It will request read/write access for your
+* Or press the 'Tweet' button and share it directly via the Twitter API. (It will request read/write access for your
 Twitter account, but it will only ever be used to share your snapwats with your permission. It uses 
 [hello.js](https://adodson.com/hello.js/) with their [default auth proxy](https://auth-server.herokuapp.com/)). 
-* Be sure to share your beautiful creations with the world, hashtag snapwat! 
+* Be sure to share your beautiful creations with the world, *hashtag snapwat*! 
 
 
 ## Browser Support
@@ -31,7 +31,7 @@ So far I have tested it in:
 
 * Samsung Internet for Android
 * Chrome for Android
-* iOS Safari (no getUserMedia, but can use input type="file")
+* iOS Safari (until v11 introduces `getUserMedia` support, you can use `input type="file"`)
 * Chrome desktop
 
 For known issues, see the [Issues tab](https://github.com/SamsungInternet/snapwat/issues).
