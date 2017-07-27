@@ -65,15 +65,26 @@ function indexOfSelectedEmoji(coords) {
 
 }
 
-function drawEmoji(emoji, coords, width, height) {
+function drawEmoji(emoji, coords, width, height, isSelected) {
 
-  var drawCoords = coords;
-
-  // Centre the image around where we have tapped/clicked
-  const x = drawCoords.x - width / 2;
-  const y = drawCoords.y - height / 2;
+  // Centre the image around tap/click coords
+  const x = coords.x - width / 2;
+  const y = coords.y - height / 2;
 
   ctx.drawImage(chosenEmoji, x, y, width, height);
+
+  if (isSelected) {
+    // Highlight with a border
+    const prevStrokeStyle = ctx.strokeStyle;
+    const prevLineWidth = ctx.lineWidth;
+    ctx.strokeStyle = '#10f9e6';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([5, 2]);
+    ctx.strokeRect(x-2, y-2, width+4, height+4);
+    ctx.strokeStyle = prevStrokeStyle;
+    ctx.lineWidth = prevLineWidth;
+    ctx.setLineDash([]);
+  }
 
 }
 
@@ -117,6 +128,7 @@ function onTouchStartOrMouseDown(e) {
 
   if (touchedEmojiIndex > -1) {
     // Selected an existing emoji - fall through
+    redrawOnNextFrame();
     return;
   }
 
@@ -135,7 +147,7 @@ function onTouchStartOrMouseDown(e) {
       height: height
     });
 
-    drawEmoji(chosenEmoji, coords, width, height);
+    redrawOnNextFrame();
 
   } else {
     onDrawingMouseDown(coords);
@@ -209,6 +221,7 @@ function onTouchEndOrMouseUp(e) {
   isResizing = false;
   touchedEmojiIndex = -1;
   resizeTouchDelta = null;
+  redrawOnNextFrame();
 }
 
 function highlightSelectedTool(selectedButton) {
@@ -253,7 +266,7 @@ function redraw() {
 
     if (typeof evt.image !== 'undefined') {
       console.log('draw emoji at', evt.x, evt.y);
-      drawEmoji(evt.image, {x: evt.x, y: evt.y}, evt.width, evt.height);
+      drawEmoji(evt.image, {x: evt.x, y: evt.y}, evt.width, evt.height, i === touchedEmojiIndex);
 
     } else if (evt.begin) {
       // Start a line
