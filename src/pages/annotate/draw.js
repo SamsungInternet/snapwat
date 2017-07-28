@@ -11,8 +11,10 @@ const TOOL_PENCIL = 0;
 const TOOL_BRUSH = 1;
 const TOOL_EMOJI = 2;
 
-let canvas = document.getElementById('canvas-draw');
-let ctx = ctx = canvas.getContext('2d');
+let canvasDraw = document.getElementById('canvas-draw');
+let canvasEmoji = document.getElementById('canvas-emoji');
+let ctxDraw = canvasDraw.getContext('2d');
+let ctxEmoji = canvasEmoji.getContext('2d');
 
 let chosenTool = TOOL_PENCIL;
 let toolsMenuButton = document.getElementById('btn-tools');
@@ -37,26 +39,22 @@ let isDrawing = false;
 let isRedrawing = false;
 let isResizing = false;
 
-// Store drawing events (lines and emojis) for redrawing
-let drawEvents = [];
+// Store emoji details so we can redraw them when moved/resized
+let stampedEmojis = [];
 
 /**
- * Returns index of touched emoji in the drawEvents, or -1 if none touched.
+ * Returns index of touched emoji in the stampedEmojis, or -1 if none touched.
  */
 function indexOfSelectedEmoji(coords) {
 
-  for (let i=0; i < drawEvents.length; i++) {
+  for (let i=0; i < stampedEmojis.length; i++) {
 
-    let evt = drawEvents[i];
+    let emoji = stampedEmojis[i];
 
-    if (!evt.image) {
-      continue;
-    }
-
-    if (coords.x >= evt.x - (evt.width / 2) &&
-        coords.x <= evt.x + (evt.width / 2) &&
-        coords.y >= evt.y - (evt.height / 2) &&
-        coords.y <= evt.y + (evt.height / 2)) {
+    if (coords.x >= emoji.x - (emoji.width / 2) &&
+        coords.x <= emoji.x + (emoji.width / 2) &&
+        coords.y >= emoji.y - (emoji.height / 2) &&
+        coords.y <= emoji.y + (emoji.height / 2)) {
       return i;
     }
 
@@ -72,19 +70,19 @@ function drawEmoji(emoji, coords, width, height, isSelected) {
   const x = coords.x - width / 2;
   const y = coords.y - height / 2;
 
-  ctx.drawImage(chosenEmoji, x, y, width, height);
+  ctxEmoji.drawImage(emoji, x, y, width, height);
 
   if (isSelected) {
     // Highlight with a border
-    const prevStrokeStyle = ctx.strokeStyle;
-    const prevLineWidth = ctx.lineWidth;
-    ctx.strokeStyle = '#10f9e6';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([5, 2]);
-    ctx.strokeRect(x-2, y-2, width+4, height+4);
-    ctx.strokeStyle = prevStrokeStyle;
-    ctx.lineWidth = prevLineWidth;
-    ctx.setLineDash([]);
+    const prevStrokeStyle = ctxEmoji.strokeStyle;
+    const prevLineWidth = ctxEmoji.lineWidth;
+    ctxEmoji.strokeStyle = '#10f9e6';
+    ctxEmoji.lineWidth = 2;
+    ctxEmoji.setLineDash([5, 2]);
+    ctxEmoji.strokeRect(x-2, y-2, width+4, height+4);
+    ctxEmoji.strokeStyle = prevStrokeStyle;
+    ctxEmoji.lineWidth = prevLineWidth;
+    ctxEmoji.setLineDash([]);
   }
 
 }
@@ -94,16 +92,10 @@ function onDrawingMouseDown(coords) {
   const x = coords.x;
   const y = coords.y;
 
-  ctx.beginPath();
-  ctx.moveTo(x, y);
+  ctxDraw.beginPath();
+  ctxDraw.moveTo(x, y);
 
   isDrawing = true;
-
-  drawEvents.push({
-    begin: true,
-    x: x,
-    y: y
-  });
 
 }
 
@@ -122,8 +114,8 @@ function onTouchStartOrMouseDown(e) {
   let touch = e.changedTouches && e.changedTouches.length ?
     e.changedTouches[0] : null;
 
-  let coords = touch ? {x: touch.pageX - canvas.offsetLeft, y: touch.pageY - canvas.offsetTop - HEADER_HEIGHT} :
-    {x: e.clientX - canvas.offsetLeft, y: e.clientY - canvas.offsetTop - HEADER_HEIGHT};
+  let coords = touch ? {x: touch.pageX - canvasEmoji.offsetLeft, y: touch.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT} :
+    {x: e.clientX - canvasEmoji.offsetLeft, y: e.clientY - canvasEmoji.offsetTop - HEADER_HEIGHT};
 
   touchedEmojiIndex = indexOfSelectedEmoji(coords);
 
@@ -136,10 +128,10 @@ function onTouchStartOrMouseDown(e) {
 
     // Add new emoji
     // Increase default SVG size
-    const width = chosenEmoji.width * 2;
-    const height = chosenEmoji.height * 2;
+    const width = chosenEmoji.width * 2.5;
+    const height = chosenEmoji.height * 2.5;
 
-    drawEvents.push({
+    stampedEmojis.push({
       image: chosenEmoji,
       x: coords.x,
       y: coords.y,
@@ -147,7 +139,7 @@ function onTouchStartOrMouseDown(e) {
       height: height
     });
 
-    redrawOnNextFrame();
+    redrawEmojisOnNextFrame();
 
   } else {
     onDrawingMouseDown(coords);
@@ -163,32 +155,28 @@ function onTouchMoveOrMouseMove(e) {
   let touch1 = touches.length ? touches[0] : null;
   let touch2 = touches.length > 1 ? touches[1] : null;
 
-  let coords1 = touch1 ? {x: touch1.pageX - canvas.offsetLeft, y: touch1.pageY - canvas.offsetTop - HEADER_HEIGHT} :
-    {x: e.clientX - canvas.offsetLeft, y: e.clientY - canvas.offsetTop - HEADER_HEIGHT};
+  let coords1 = touch1 ? {x: touch1.pageX - canvasEmoji.offsetLeft, y: touch1.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT} :
+    {x: e.clientX - canvasEmoji.offsetLeft, y: e.clientY - canvasEmoji.offsetTop - HEADER_HEIGHT};
 
   if (touchedEmojiIndex >= 0) {
 
-    let evt = drawEvents[touchedEmojiIndex];
+    let emoji = stampedEmojis[touchedEmojiIndex];
 
     if (touch2) {
 
       // Resize emoji
       isResizing = true;
 
-      let coords2 = {x: touch2.pageX - canvas.offsetLeft, y: touch2.pageY - canvas.offsetTop - HEADER_HEIGHT};
+      let coords2 = {x: touch2.pageX - canvasEmoji.offsetLeft, y: touch2.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT};
       let newResizeTouchDelta = {x: Math.abs(coords2.x - coords1.x),
         y: Math.abs(coords2.y - coords1.y)};
 
       if (resizeTouchDelta) {
 
-        evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
-        evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
+        emoji.width += newResizeTouchDelta.x - resizeTouchDelta.x;
+        emoji.height += newResizeTouchDelta.y - resizeTouchDelta.y;
 
-        // Redraw to update position
-        // XXX Is it better to have better performance if lots of draw events, or better to
-        // show everything while you're resizing an emoji? Need to introduce concept of layers??
-        //redrawOnNextFrame(touchedEmojiIndex);
-        redrawOnNextFrame();
+        redrawEmojisOnNextFrame();
 
       }
 
@@ -199,34 +187,23 @@ function onTouchMoveOrMouseMove(e) {
       if (moveTouchDelta) {
 
         // Single touch - moving the emoji - update its position
-        evt.x = coords1.x - moveTouchDelta.x;
-        evt.y = coords1.y - moveTouchDelta.y;
+        emoji.x = coords1.x - moveTouchDelta.x;
+        emoji.y = coords1.y - moveTouchDelta.y;
+
+        redrawEmojisOnNextFrame();
 
       } else {
 
-        moveTouchDelta = {x: coords1.x - evt.x, y: coords1.y - evt.y};
+        moveTouchDelta = {x: coords1.x - emoji.x, y: coords1.y - emoji.y};
 
       }
 
-      // Redraw to show emoji is selected
-      // XXX Is it better to have better performance if lots of draw events, or better to
-      // show everything while you're moving an emoji? Need to introduce concept of layers??
-      //redrawOnNextFrame(touchedEmojiIndex);
-      redrawOnNextFrame();
     }
 
   } else if (isDrawing) {
 
-    ctx.lineTo(coords1.x, coords1.y);
-    ctx.stroke();
-
-    drawEvents.push({
-      strokeStyle: ctx.strokeStyle,
-      lineWidth: ctx.lineWidth,
-      tool: chosenTool,
-      x: coords1.x,
-      y: coords1.y
-    });
+    ctxDraw.lineTo(coords1.x, coords1.y);
+    ctxDraw.stroke();
 
   }
 }
@@ -237,7 +214,6 @@ function onTouchEndOrMouseUp(e) {
   touchedEmojiIndex = -1;
   resizeTouchDelta = null;
   moveTouchDelta = null;
-  redrawOnNextFrame();
 }
 
 function highlightSelectedTool(selectedButton) {
@@ -252,46 +228,33 @@ function highlightSelectedTool(selectedButton) {
   }
 }
 
-function onEmojiClick(event) {
+function onNewEmojiClick(event) {
 
   chosenTool = TOOL_EMOJI;
   chosenEmoji = event.currentTarget;
 
   emojiModal.classList.remove('show');
 
-  // NB. It would be nice to update the emoji to show the selected one,
-  // but the emojis are actual characters now, so might be tricky styling-wise
   highlightSelectedTool(emojiMenuButton);
 
 }
 
-function redrawOnNextFrame(drawEventIndex) {
+function redrawEmojisOnNextFrame() {
   if (!isRedrawing) {
     isRedrawing = true;
-    requestAnimationFrame(redraw.bind(this, drawEventIndex));
+    requestAnimationFrame(redrawEmojis);
   }
 }
 
-function redraw(drawEventIndex) {
+function redrawEmojis() {
 
   console.log('start redraw', performance.now());
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctxEmoji.clearRect(0, 0, canvasEmoji.width, canvasEmoji.height);
 
-  if (drawEventIndex) {
-
-    let evt = drawEvents[drawEventIndex];
-    if (evt) {
-      redrawEvent(drawEventIndex, evt);
-    }
-
-  } else {
-
-    for (let i=0; i < drawEvents.length; i++) {
-      let evt = drawEvents[i];
-      redrawEvent(i, evt);
-    }
-
+  for (let i=0; i < stampedEmojis.length; i++) {
+    let emoji = stampedEmojis[i];
+    drawEmoji(emoji.image, {x: emoji.x, y: emoji.y}, emoji.width, emoji.height, i === touchedEmojiIndex);
   }
 
   console.log('finish redraw', performance.now());
@@ -300,65 +263,64 @@ function redraw(drawEventIndex) {
 
 }
 
-function redrawEvent(eventIndex, event) {
+function clearDrawing() {
+  ctxDraw.clearRect(0, 0, canvasDraw.width, canvasDraw.height);
+}
 
-  if (typeof event.image !== 'undefined') {
-    drawEmoji(event.image, {x: event.x, y: event.y}, event.width, event.height, eventIndex === touchedEmojiIndex);
+function clearEmojis() {
+  stampedEmojis = [];
+  redrawEmojis();
+}
 
-  } else if (event.begin) {
-    // Start a line
-    ctx.beginPath();
-    ctx.moveTo(event.x, event.y);
-
-  } else {
-    // Stroke
-    ctx.strokeStyle = event.strokeStyle;
-    ctx.lineWidth = event.lineWidth;
-    ctx.lineJoin = 'round';
-    ctx.lineCap = 'round';
-    ctx.shadowBlur = event.tool === TOOL_BRUSH ? 2 : 0;
-    ctx.shadowColor = event.strokeStyle;
-    ctx.lineTo(event.x, event.y);
-    ctx.stroke();
-  }
-
+function clearCanvases() {
+  clearDrawing();
+  clearEmojis();
 }
 
 function onColourClickOrChange() {
-  updateCanvasContext();
+  updateCanvasDrawContext();
   colourInputContainer.classList.add('selected');
   emojiMenuButton.classList.remove('selected');
 }
 
 function onSizeChange(event) {
-  updateCanvasContext();
+  updateCanvasDrawContext();
   sizeOutput.innerHTML = event.target.value;
 }
 
-function initCanvas() {
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight - HEADER_HEIGHT;
+function initCanvases() {
 
-  canvas.addEventListener('touchstart', onTouchStartOrMouseDown, false);
-  canvas.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
-  canvas.addEventListener('touchend', onTouchEndOrMouseUp, false);
+  /*
+  const width = window.innerWidth;
+  const height = window.innerHeight - HEADER_HEIGHT;
+  
+  canvasDraw.width = width; 
+  canvasDraw.height = height;
+  canvasEmoji.width = width;
+  canvasEmoji.height = height;
+  */
 
-  canvas.addEventListener('mousedown', onTouchStartOrMouseDown, false);
-  canvas.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
-  canvas.addEventListener('mouseup', onTouchEndOrMouseUp, false);
+  // Emoji canvas is on top so will receive the interaction events
+  canvasEmoji.addEventListener('touchstart', onTouchStartOrMouseDown, false);
+  canvasEmoji.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
+  canvasEmoji.addEventListener('touchend', onTouchEndOrMouseUp, false);
 
-  ctx.strokeStyle = DEFAULT_COLOUR;
-  ctx.lineWidth = DEFAULT_LINE_WIDTH;
-  ctx.lineJoin = 'round';
-  ctx.lineCap = 'round';
-  ctx.shadowColor = DEFAULT_COLOUR;
+  canvasEmoji.addEventListener('mousedown', onTouchStartOrMouseDown, false);
+  canvasEmoji.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
+  canvasEmoji.addEventListener('mouseup', onTouchEndOrMouseUp, false);
+
+  ctxDraw.strokeStyle = DEFAULT_COLOUR;
+  ctxDraw.lineWidth = DEFAULT_LINE_WIDTH;
+  ctxDraw.lineJoin = 'round';
+  ctxDraw.lineCap = 'round';
+  ctxDraw.shadowColor = DEFAULT_COLOUR;
 }
 
-function updateCanvasContext() {
-  ctx.strokeStyle = colourInput.value;
-  ctx.lineWidth = sizeInput.value;
-  ctx.shadowBlur = chosenTool === TOOL_BRUSH ? 2 : 0;
-  ctx.shadowColor = colourInput.value;
+function updateCanvasDrawContext() {
+  ctxDraw.strokeStyle = colourInput.value;
+  ctxDraw.lineWidth = sizeInput.value;
+  ctxDraw.shadowBlur = chosenTool === TOOL_BRUSH ? 2 : 0;
+  ctxDraw.shadowColor = colourInput.value;
 }
 
 function initEmojis() {
@@ -383,10 +345,10 @@ function initControls() {
   });
 
   // Add click handlers to emojis so you can select one
-  let emojis = document.querySelectorAll('#modal-emoji img');
-  for (let i=0; i < emojis.length; i++) {
-    let emoji = emojis[i];
-    emoji.addEventListener('click', onEmojiClick);
+  let availableEmojis = document.querySelectorAll('#modal-emoji img');
+  for (let i=0; i < availableEmojis.length; i++) {
+    let emoji = availableEmojis[i];
+    emoji.addEventListener('click', onNewEmojiClick);
   }
 
   emojiMenuButton.addEventListener('click', () => {
@@ -396,14 +358,14 @@ function initControls() {
 
   pencilButton.addEventListener('click', () => {
     chosenTool = TOOL_PENCIL;
-    updateCanvasContext();
+    updateCanvasDrawContext();
     toolsModal.classList.remove('show');
     highlightSelectedTool(pencilButton);
   });
 
   brushButton.addEventListener('click', () => {
     chosenTool = TOOL_BRUSH;
-    updateCanvasContext();
+    updateCanvasDrawContext();
     toolsModal.classList.remove('show');
     highlightSelectedTool(brushButton);
   });
@@ -422,15 +384,24 @@ function initControls() {
   sizeOutput.innerHTML = DEFAULT_LINE_WIDTH;
 
   trashButton.addEventListener('click', () => {
-    // Could do with a confirmation prompt!
-    drawEvents = [];
-    redraw();
+    // TODO introduce confirmation prompt!
+    clearCanvases();
   })
 
 }
 
-export default function init() {
-  initCanvas();
-  initEmojis();
-  initControls();
-}
+export default {
+
+  init: function () {
+    initCanvases();
+    initEmojis();
+    initControls();
+  },
+
+  snapshot: function () {
+    // Remove highlights ready to snapshot the canvas
+    touchedEmojiIndex = -1;
+    redrawEmojis();
+  }
+
+};

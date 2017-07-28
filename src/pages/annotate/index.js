@@ -11,6 +11,7 @@ let snapshotBtn = document.getElementById('btn-snapshot');
 function initControls() {
 
   snapshotBtn.addEventListener('click', () => {
+    Draw.snapshot();
     SnapshotPage.show();
   });
 
@@ -19,7 +20,7 @@ function initControls() {
 export default {
 
   init: function () {
-    Draw();
+    Draw.init();
     initControls();
   },
 

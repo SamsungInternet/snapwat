@@ -1874,8 +1874,10 @@ var TOOL_PENCIL = 0;
 var TOOL_BRUSH = 1;
 var TOOL_EMOJI = 2;
 
-var canvas$1 = document.getElementById('canvas-draw');
-var ctx = ctx = canvas$1.getContext('2d');
+var canvasDraw = document.getElementById('canvas-draw');
+var canvasEmoji = document.getElementById('canvas-emoji');
+var ctxDraw = canvasDraw.getContext('2d');
+var ctxEmoji = canvasEmoji.getContext('2d');
 
 var chosenTool = TOOL_PENCIL;
 var toolsMenuButton = document.getElementById('btn-tools');
@@ -1900,23 +1902,19 @@ var isDrawing = false;
 var isRedrawing = false;
 var isResizing = false;
 
-// Store drawing events (lines and emojis) for redrawing
-var drawEvents = [];
+// Store emoji details so we can redraw them when moved/resized
+var stampedEmojis = [];
 
 /**
- * Returns index of touched emoji in the drawEvents, or -1 if none touched.
+ * Returns index of touched emoji in the stampedEmojis, or -1 if none touched.
  */
 function indexOfSelectedEmoji(coords) {
 
-  for (var i = 0; i < drawEvents.length; i++) {
+  for (var i = 0; i < stampedEmojis.length; i++) {
 
-    var evt = drawEvents[i];
+    var emoji = stampedEmojis[i];
 
-    if (!evt.image) {
-      continue;
-    }
-
-    if (coords.x >= evt.x - evt.width / 2 && coords.x <= evt.x + evt.width / 2 && coords.y >= evt.y - evt.height / 2 && coords.y <= evt.y + evt.height / 2) {
+    if (coords.x >= emoji.x - emoji.width / 2 && coords.x <= emoji.x + emoji.width / 2 && coords.y >= emoji.y - emoji.height / 2 && coords.y <= emoji.y + emoji.height / 2) {
       return i;
     }
   }
@@ -1930,19 +1928,19 @@ function drawEmoji(emoji, coords, width, height, isSelected) {
   var x = coords.x - width / 2;
   var y = coords.y - height / 2;
 
-  ctx.drawImage(chosenEmoji, x, y, width, height);
+  ctxEmoji.drawImage(emoji, x, y, width, height);
 
   if (isSelected) {
     // Highlight with a border
-    var prevStrokeStyle = ctx.strokeStyle;
-    var prevLineWidth = ctx.lineWidth;
-    ctx.strokeStyle = '#10f9e6';
-    ctx.lineWidth = 2;
-    ctx.setLineDash([5, 2]);
-    ctx.strokeRect(x - 2, y - 2, width + 4, height + 4);
-    ctx.strokeStyle = prevStrokeStyle;
-    ctx.lineWidth = prevLineWidth;
-    ctx.setLineDash([]);
+    var prevStrokeStyle = ctxEmoji.strokeStyle;
+    var prevLineWidth = ctxEmoji.lineWidth;
+    ctxEmoji.strokeStyle = '#10f9e6';
+    ctxEmoji.lineWidth = 2;
+    ctxEmoji.setLineDash([5, 2]);
+    ctxEmoji.strokeRect(x - 2, y - 2, width + 4, height + 4);
+    ctxEmoji.strokeStyle = prevStrokeStyle;
+    ctxEmoji.lineWidth = prevLineWidth;
+    ctxEmoji.setLineDash([]);
   }
 }
 
@@ -1951,16 +1949,10 @@ function onDrawingMouseDown(coords) {
   var x = coords.x;
   var y = coords.y;
 
-  ctx.beginPath();
-  ctx.moveTo(x, y);
+  ctxDraw.beginPath();
+  ctxDraw.moveTo(x, y);
 
   isDrawing = true;
-
-  drawEvents.push({
-    begin: true,
-    x: x,
-    y: y
-  });
 }
 
 function closeModals() {
@@ -1977,7 +1969,7 @@ function onTouchStartOrMouseDown(e) {
 
   var touch = e.changedTouches && e.changedTouches.length ? e.changedTouches[0] : null;
 
-  var coords = touch ? { x: touch.pageX - canvas$1.offsetLeft, y: touch.pageY - canvas$1.offsetTop - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - canvas$1.offsetTop - HEADER_HEIGHT };
+  var coords = touch ? { x: touch.pageX - canvasEmoji.offsetLeft, y: touch.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT } : { x: e.clientX - canvasEmoji.offsetLeft, y: e.clientY - canvasEmoji.offsetTop - HEADER_HEIGHT };
 
   touchedEmojiIndex = indexOfSelectedEmoji(coords);
 
@@ -1990,10 +1982,10 @@ function onTouchStartOrMouseDown(e) {
 
     // Add new emoji
     // Increase default SVG size
-    var width = chosenEmoji.width * 2;
-    var height = chosenEmoji.height * 2;
+    var width = chosenEmoji.width * 2.5;
+    var height = chosenEmoji.height * 2.5;
 
-    drawEvents.push({
+    stampedEmojis.push({
       image: chosenEmoji,
       x: coords.x,
       y: coords.y,
@@ -2001,7 +1993,7 @@ function onTouchStartOrMouseDown(e) {
       height: height
     });
 
-    redrawOnNextFrame();
+    redrawEmojisOnNextFrame();
   } else {
     onDrawingMouseDown(coords);
   }
@@ -2015,31 +2007,27 @@ function onTouchMoveOrMouseMove(e) {
   var touch1 = touches.length ? touches[0] : null;
   var touch2 = touches.length > 1 ? touches[1] : null;
 
-  var coords1 = touch1 ? { x: touch1.pageX - canvas$1.offsetLeft, y: touch1.pageY - canvas$1.offsetTop - HEADER_HEIGHT } : { x: e.clientX - canvas$1.offsetLeft, y: e.clientY - canvas$1.offsetTop - HEADER_HEIGHT };
+  var coords1 = touch1 ? { x: touch1.pageX - canvasEmoji.offsetLeft, y: touch1.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT } : { x: e.clientX - canvasEmoji.offsetLeft, y: e.clientY - canvasEmoji.offsetTop - HEADER_HEIGHT };
 
   if (touchedEmojiIndex >= 0) {
 
-    var evt = drawEvents[touchedEmojiIndex];
+    var emoji = stampedEmojis[touchedEmojiIndex];
 
     if (touch2) {
 
       // Resize emoji
       isResizing = true;
 
-      var coords2 = { x: touch2.pageX - canvas$1.offsetLeft, y: touch2.pageY - canvas$1.offsetTop - HEADER_HEIGHT };
+      var coords2 = { x: touch2.pageX - canvasEmoji.offsetLeft, y: touch2.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT };
       var newResizeTouchDelta = { x: Math.abs(coords2.x - coords1.x),
         y: Math.abs(coords2.y - coords1.y) };
 
       if (resizeTouchDelta) {
 
-        evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
-        evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
+        emoji.width += newResizeTouchDelta.x - resizeTouchDelta.x;
+        emoji.height += newResizeTouchDelta.y - resizeTouchDelta.y;
 
-        // Redraw to update position
-        // XXX Is it better to have better performance if lots of draw events, or better to
-        // show everything while you're resizing an emoji? Need to introduce concept of layers??
-        //redrawOnNextFrame(touchedEmojiIndex);
-        redrawOnNextFrame();
+        redrawEmojisOnNextFrame();
       }
 
       resizeTouchDelta = newResizeTouchDelta;
@@ -2048,31 +2036,19 @@ function onTouchMoveOrMouseMove(e) {
       if (moveTouchDelta) {
 
         // Single touch - moving the emoji - update its position
-        evt.x = coords1.x - moveTouchDelta.x;
-        evt.y = coords1.y - moveTouchDelta.y;
+        emoji.x = coords1.x - moveTouchDelta.x;
+        emoji.y = coords1.y - moveTouchDelta.y;
+
+        redrawEmojisOnNextFrame();
       } else {
 
-        moveTouchDelta = { x: coords1.x - evt.x, y: coords1.y - evt.y };
+        moveTouchDelta = { x: coords1.x - emoji.x, y: coords1.y - emoji.y };
       }
-
-      // Redraw to show emoji is selected
-      // XXX Is it better to have better performance if lots of draw events, or better to
-      // show everything while you're moving an emoji? Need to introduce concept of layers??
-      //redrawOnNextFrame(touchedEmojiIndex);
-      redrawOnNextFrame();
     }
   } else if (isDrawing) {
 
-    ctx.lineTo(coords1.x, coords1.y);
-    ctx.stroke();
-
-    drawEvents.push({
-      strokeStyle: ctx.strokeStyle,
-      lineWidth: ctx.lineWidth,
-      tool: chosenTool,
-      x: coords1.x,
-      y: coords1.y
-    });
+    ctxDraw.lineTo(coords1.x, coords1.y);
+    ctxDraw.stroke();
   }
 }
 
@@ -2082,7 +2058,6 @@ function onTouchEndOrMouseUp(e) {
   touchedEmojiIndex = -1;
   resizeTouchDelta = null;
   moveTouchDelta = null;
-  redrawOnNextFrame();
 }
 
 function highlightSelectedTool(selectedButton) {
@@ -2097,43 +2072,32 @@ function highlightSelectedTool(selectedButton) {
   }
 }
 
-function onEmojiClick(event) {
+function onNewEmojiClick(event) {
 
   chosenTool = TOOL_EMOJI;
   chosenEmoji = event.currentTarget;
 
   emojiModal.classList.remove('show');
 
-  // NB. It would be nice to update the emoji to show the selected one,
-  // but the emojis are actual characters now, so might be tricky styling-wise
   highlightSelectedTool(emojiMenuButton);
 }
 
-function redrawOnNextFrame(drawEventIndex) {
+function redrawEmojisOnNextFrame() {
   if (!isRedrawing) {
     isRedrawing = true;
-    requestAnimationFrame(redraw.bind(this, drawEventIndex));
+    requestAnimationFrame(redrawEmojis);
   }
 }
 
-function redraw(drawEventIndex) {
+function redrawEmojis() {
 
   console.log('start redraw', performance.now());
 
-  ctx.clearRect(0, 0, canvas$1.width, canvas$1.height);
+  ctxEmoji.clearRect(0, 0, canvasEmoji.width, canvasEmoji.height);
 
-  if (drawEventIndex) {
-
-    var evt = drawEvents[drawEventIndex];
-    if (evt) {
-      redrawEvent(drawEventIndex, evt);
-    }
-  } else {
-
-    for (var i = 0; i < drawEvents.length; i++) {
-      var _evt = drawEvents[i];
-      redrawEvent(i, _evt);
-    }
+  for (var i = 0; i < stampedEmojis.length; i++) {
+    var emoji = stampedEmojis[i];
+    drawEmoji(emoji.image, { x: emoji.x, y: emoji.y }, emoji.width, emoji.height, i === touchedEmojiIndex);
   }
 
   console.log('finish redraw', performance.now());
@@ -2141,62 +2105,64 @@ function redraw(drawEventIndex) {
   isRedrawing = false;
 }
 
-function redrawEvent(eventIndex, event) {
+function clearDrawing() {
+  ctxDraw.clearRect(0, 0, canvasDraw.width, canvasDraw.height);
+}
 
-  if (typeof event.image !== 'undefined') {
-    drawEmoji(event.image, { x: event.x, y: event.y }, event.width, event.height, eventIndex === touchedEmojiIndex);
-  } else if (event.begin) {
-    // Start a line
-    ctx.beginPath();
-    ctx.moveTo(event.x, event.y);
-  } else {
-    // Stroke
-    ctx.strokeStyle = event.strokeStyle;
-    ctx.lineWidth = event.lineWidth;
-    ctx.lineJoin = 'round';
-    ctx.lineCap = 'round';
-    ctx.shadowBlur = event.tool === TOOL_BRUSH ? 2 : 0;
-    ctx.shadowColor = event.strokeStyle;
-    ctx.lineTo(event.x, event.y);
-    ctx.stroke();
-  }
+function clearEmojis() {
+  stampedEmojis = [];
+  redrawEmojis();
+}
+
+function clearCanvases() {
+  clearDrawing();
+  clearEmojis();
 }
 
 function onColourClickOrChange() {
-  updateCanvasContext();
+  updateCanvasDrawContext();
   colourInputContainer.classList.add('selected');
   emojiMenuButton.classList.remove('selected');
 }
 
 function onSizeChange(event) {
-  updateCanvasContext();
+  updateCanvasDrawContext();
   sizeOutput.innerHTML = event.target.value;
 }
 
-function initCanvas$1() {
-  canvas$1.width = window.innerWidth;
-  canvas$1.height = window.innerHeight - HEADER_HEIGHT;
+function initCanvases() {
 
-  canvas$1.addEventListener('touchstart', onTouchStartOrMouseDown, false);
-  canvas$1.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
-  canvas$1.addEventListener('touchend', onTouchEndOrMouseUp, false);
+  /*
+  const width = window.innerWidth;
+  const height = window.innerHeight - HEADER_HEIGHT;
+  
+  canvasDraw.width = width; 
+  canvasDraw.height = height;
+  canvasEmoji.width = width;
+  canvasEmoji.height = height;
+  */
 
-  canvas$1.addEventListener('mousedown', onTouchStartOrMouseDown, false);
-  canvas$1.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
-  canvas$1.addEventListener('mouseup', onTouchEndOrMouseUp, false);
+  // Emoji canvas is on top so will receive the interaction events
+  canvasEmoji.addEventListener('touchstart', onTouchStartOrMouseDown, false);
+  canvasEmoji.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
+  canvasEmoji.addEventListener('touchend', onTouchEndOrMouseUp, false);
 
-  ctx.strokeStyle = DEFAULT_COLOUR;
-  ctx.lineWidth = DEFAULT_LINE_WIDTH;
-  ctx.lineJoin = 'round';
-  ctx.lineCap = 'round';
-  ctx.shadowColor = DEFAULT_COLOUR;
+  canvasEmoji.addEventListener('mousedown', onTouchStartOrMouseDown, false);
+  canvasEmoji.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
+  canvasEmoji.addEventListener('mouseup', onTouchEndOrMouseUp, false);
+
+  ctxDraw.strokeStyle = DEFAULT_COLOUR;
+  ctxDraw.lineWidth = DEFAULT_LINE_WIDTH;
+  ctxDraw.lineJoin = 'round';
+  ctxDraw.lineCap = 'round';
+  ctxDraw.shadowColor = DEFAULT_COLOUR;
 }
 
-function updateCanvasContext() {
-  ctx.strokeStyle = colourInput.value;
-  ctx.lineWidth = sizeInput.value;
-  ctx.shadowBlur = chosenTool === TOOL_BRUSH ? 2 : 0;
-  ctx.shadowColor = colourInput.value;
+function updateCanvasDrawContext() {
+  ctxDraw.strokeStyle = colourInput.value;
+  ctxDraw.lineWidth = sizeInput.value;
+  ctxDraw.shadowBlur = chosenTool === TOOL_BRUSH ? 2 : 0;
+  ctxDraw.shadowColor = colourInput.value;
 }
 
 function initEmojis() {
@@ -2220,10 +2186,10 @@ function initControls$2() {
   });
 
   // Add click handlers to emojis so you can select one
-  var emojis = document.querySelectorAll('#modal-emoji img');
-  for (var i = 0; i < emojis.length; i++) {
-    var emoji = emojis[i];
-    emoji.addEventListener('click', onEmojiClick);
+  var availableEmojis = document.querySelectorAll('#modal-emoji img');
+  for (var i = 0; i < availableEmojis.length; i++) {
+    var emoji = availableEmojis[i];
+    emoji.addEventListener('click', onNewEmojiClick);
   }
 
   emojiMenuButton.addEventListener('click', function () {
@@ -2233,14 +2199,14 @@ function initControls$2() {
 
   pencilButton.addEventListener('click', function () {
     chosenTool = TOOL_PENCIL;
-    updateCanvasContext();
+    updateCanvasDrawContext();
     toolsModal.classList.remove('show');
     highlightSelectedTool(pencilButton);
   });
 
   brushButton.addEventListener('click', function () {
     chosenTool = TOOL_BRUSH;
-    updateCanvasContext();
+    updateCanvasDrawContext();
     toolsModal.classList.remove('show');
     highlightSelectedTool(brushButton);
   });
@@ -2259,17 +2225,26 @@ function initControls$2() {
   sizeOutput.innerHTML = DEFAULT_LINE_WIDTH;
 
   trashButton.addEventListener('click', function () {
-    // Could do with a confirmation prompt!
-    drawEvents = [];
-    redraw();
+    // TODO introduce confirmation prompt!
+    clearCanvases();
   });
 }
 
-function init$2() {
-  initCanvas$1();
-  initEmojis();
-  initControls$2();
-}
+var Draw = {
+
+  init: function init() {
+    initCanvases();
+    initEmojis();
+    initControls$2();
+  },
+
+  snapshot: function snapshot() {
+    // Remove highlights ready to snapshot the canvas
+    touchedEmojiIndex = -1;
+    redrawEmojis();
+  }
+
+};
 
 var hello_all = createCommonjsModule(function (module) {
 /*! hellojs v1.14.0 | (c) 2012-2016 Andrew Dodson | MIT https://adodson.com/hello.js/LICENSE */
@@ -8175,6 +8150,7 @@ var PAGE_NAME$2 = PAGES.SNAPSHOT;
 var backBtn = document.getElementById('btn-back-snapshot');
 var tweetButton = document.getElementById('btn-share-twitter');
 var drawingCanvas = document.getElementById('canvas-draw');
+var emojiCanvas$1 = document.getElementById('canvas-emoji');
 var saveCanvas = document.getElementById('canvas-save');
 var saveImage = document.getElementById('image-save');
 var saveCtx = saveCanvas.getContext('2d');
@@ -8230,6 +8206,7 @@ var SnapshotPage = {
     // Copy the other canvases onto a single canvas for saving
     saveCtx.drawImage(cameraCanvas$1, 0, 0, saveCanvas.width, saveCanvas.height);
     saveCtx.drawImage(drawingCanvas, 0, 0, saveCanvas.width, saveCanvas.height);
+    saveCtx.drawImage(emojiCanvas$1, 0, 0, saveCanvas.width, saveCanvas.height);
 
     // Add the URL at the bottom
     saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 10);
@@ -8250,6 +8227,7 @@ var snapshotBtn = document.getElementById('btn-snapshot');
 function initControls$1() {
 
   snapshotBtn.addEventListener('click', function () {
+    Draw.snapshot();
     SnapshotPage.show();
   });
 }
@@ -8257,7 +8235,7 @@ function initControls$1() {
 var AnnotatePage = {
 
   init: function init() {
-    init$2();
+    Draw.init();
     initControls$1();
   },
 
@@ -8303,6 +8281,7 @@ var startCameraBtn = document.getElementById('btn-start-camera');
 var annotateCameraContainer = document.getElementById('annotate-camera-container');
 var cameraCanvas = document.getElementById('canvas-camera');
 var drawCanvas = document.getElementById('canvas-draw');
+var emojiCanvas = document.getElementById('canvas-emoji');
 var aboutLink = document.getElementById('link-about');
 
 function onPhotoInputChange(e) {
@@ -8339,6 +8318,8 @@ function onPhotoInputChange(e) {
       // Make drawing canvas the same size
       drawCanvas.width = newWidth;
       drawCanvas.height = newHeight;
+      emojiCanvas.width = newWidth;
+      emojiCanvas.height = newHeight;
 
       AnnotatePage.show({ live: false });
     }

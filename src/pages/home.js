@@ -14,6 +14,7 @@ let startCameraBtn = document.getElementById('btn-start-camera');
 let annotateCameraContainer = document.getElementById('annotate-camera-container');
 let cameraCanvas = document.getElementById('canvas-camera');
 let drawCanvas = document.getElementById('canvas-draw');
+let emojiCanvas = document.getElementById('canvas-emoji'); 
 let aboutLink = document.getElementById('link-about');
 
 function onPhotoInputChange(e) {
@@ -50,6 +51,8 @@ function onPhotoInputChange(e) {
       // Make drawing canvas the same size
       drawCanvas.width = newWidth;
       drawCanvas.height = newHeight;
+      emojiCanvas.width = newWidth;
+      emojiCanvas.height = newHeight;
 
       AnnotatePage.show({live: false});
     }
