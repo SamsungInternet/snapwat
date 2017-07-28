@@ -244,6 +244,12 @@ video {
 
 #canvas-draw {
   z-index: 1;
+  position: absolute;
+}
+
+#canvas-emoji {
+  z-index: 2;
+  position: absolute;
 }
 
 #image-save {
