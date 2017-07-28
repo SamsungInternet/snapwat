@@ -47,7 +47,8 @@ let stampedEmojis = [];
  */
 function indexOfSelectedEmoji(coords) {
 
-  for (let i=0; i < stampedEmojis.length; i++) {
+  // Go through in reverse order to select top-most if overlapping
+  for (let i = stampedEmojis.length - 1; i >= 0; i--) {
 
     let emoji = stampedEmojis[i];
 

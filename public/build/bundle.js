@@ -1910,7 +1910,8 @@ var stampedEmojis = [];
  */
 function indexOfSelectedEmoji(coords) {
 
-  for (var i = 0; i < stampedEmojis.length; i++) {
+  // Go through in reverse order to select top-most if overlapping
+  for (var i = stampedEmojis.length - 1; i >= 0; i--) {
 
     var emoji = stampedEmojis[i];
 
