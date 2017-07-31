@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- TODO: Bad practice to disable zoom - need to find a way to fix drawing without this! -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="theme-color" content="#987fff">
     <title>snapwat</title>
     <link rel="manifest" href="manifest.json">
@@ -16,12 +15,8 @@
     <header>
       <div class="toolbar" id="toolbar-annotate">
         <div class="left">
-          <div id="input-colour-container" class="selected">
-            <input id="input-colour" type="color"/>
-            <div id="input-colour-substitute"></div>
-            <label for="input-colour">Pencil</label>
-          </div>
-          <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/>Emojis</button>
+          <button id="btn-tools"><img src="images/iconic/pencil.svg" alt="Tools"/>Tools</button>
+          <button id="btn-options"><img src="images/iconic/wrench.svg" alt="Options"/>Options</button>
           <button id="btn-trash"><img src="images/iconic/trash.svg" alt="Clear"/>Clear</button>
         </div>
         <div class="right">
@@ -52,13 +47,12 @@
       <h2><em>Draw on your photos and add emojis!</em></h2>
       <div id="select-photo">
         <div class="file-input">
-          <input type="file" id="input-photo" accept="image/*" capture="camera"/>
+          <input type="file" id="input-photo" accept="image/*"/>
           <label for="input-photo">Choose or take a photo</label>
         </div>
       </div>
       <div id="start-camera">
         <button id="btn-start-camera">Or switch on your camera</button>
-        <p><em><strong>Recommended:</strong> draw while you pose!</em></p>
       </div>
       <div class="footer">
         <p class="info">All photos will remain strictly private, unless you choose to share them later. <a href="#" id="link-about">More information</a>.</p>
@@ -72,6 +66,7 @@
       </div>
       <div class="centre">
         <canvas id="canvas-draw"></canvas>
+        <canvas id="canvas-emoji"></canvas>
       </div>
       <video autoplay/>
     </div>
@@ -85,7 +80,7 @@
 
     <div id="page-share" class="page">
       <img id="share-preview" src=""/>
-      <textarea id="share-text" maxlength="116">I made a #snapwat! Make yours at https://snapw.at.</textarea>
+      <textarea id="share-text" maxlength="140"> #snapwat</textarea>
       <button id="share-submit">Submit</button>
     </div>
 
@@ -103,6 +98,9 @@
     <div class="prompt" id="prompt-snapshot">
       <p>Tap-and-hold or right click the image to save it.</p>
     </div>
+    <div class="prompt" id="prompt-tweeting">
+      <p>Posting tweet...</p>
+    </div>
     <div class="prompt" id="prompt-tweet-ok">
       <p>Successfully tweeted.</p>
     </div>
@@ -113,8 +111,26 @@
       <p>Oh no! Your browser does not appear to have camera support (getUserMedia) =(</p>
     </div>
 
+    <div id="modal-tools" class="modal">
+      <button id="btn-pencil" class="selected"><img src="images/iconic/pencil.svg" alt="Pencil"/>Pencil</button>
+      <button id="btn-brush"><img src="images/iconic/brush.svg" alt="Brush"/>Brush</button>
+      <button id="btn-emoji"><img id="btn-emoji-img" src="images/emojione/1f600.svg" alt="Emoji"/>Emojis</button>
+    </div>
+
+    <div id="modal-options" class="modal">
+      <div id="input-colour-container" class="input-container" class="selected">
+        <input id="input-colour" type="color"/>
+        <div id="input-colour-substitute"></div>
+        <label for="input-colour">Colour</label>
+      </div>
+      <div id="input-size-container" class="input-container">
+        <input id="input-size" type="range" min="1" max="20"/>
+        <label for="input-size">Size: <span id="size-output"></span></label>
+      </div>
+    </div>
+
     <div id="modal-emoji" class="modal">
-      <!-- Emoji images populated by JavaScript -->
+      <!-- Emoji images are dynamically populated by JavaScript -->
     </div>
 
     <!-- Until NPM is updated: https://github.com/auduno/headtrackr/issues/50 -->

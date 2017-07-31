@@ -11,10 +11,17 @@ export function playCameraSound() {
     return false;
   }
 
-  let source = context.createBufferSource();
-  source.buffer = bufferList[0];
-  source.connect(context.destination);
-  source.start(0);
+  try {
+
+    let source = context.createBufferSource();
+    source.buffer = bufferList[0];
+    source.connect(context.destination);
+    source.start(0);
+
+  } catch(ex) {
+    console.warn('Unable to play camera sound', ex);
+    return false;
+  }
 
   return true;
 
@@ -22,7 +29,12 @@ export function playCameraSound() {
 
 export default function init() {
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
-  context = new AudioContext();
-  bufferLoader = new BufferLoader(context, ['/sounds/camera.wav'], (list) => {bufferList = list;});
-  bufferLoader.load();
+  try {
+    context = new AudioContext();
+    bufferLoader = new BufferLoader(context, ['/sounds/camera.wav'], (list) => {
+      bufferList = list;});
+    bufferLoader.load();
+  } catch(ex) {
+    console.warn('Unable to initialise audio bufferLoader', ex);
+  }
 }

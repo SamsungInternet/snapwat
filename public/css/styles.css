@@ -8,8 +8,8 @@ body {
   font-size: 100%;
   margin: 0;
   padding: 0;
-  background-color: #ccc;
-  color: #fff;
+  background-color: #c7baff;
+  color: #333;
   height: 100%;
   overflow: hidden;
   text-align: center;
@@ -18,20 +18,28 @@ body {
 header {
   background: #987fff;
   height: 72px;
-  color: #fff;
+  color: #333;
 }
 
 header label,
 header button {
   font-size: 0.9em;
+  color: #fff;
+}
+
+header button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 8px 8px 4px 8px;
+  border: 2px solid transparent;
 }
 
 header button img {
   display: block;
-}
-
-header button {
-  color: #fff;
+  width: 38px;
+  height: 28px;
+  margin: 0 auto 5px auto;
 }
 
 header .left,
@@ -72,7 +80,7 @@ header .centre-to-right h3 {
 }
 
 header a {
-  color: #fff;
+  color: #444;
   text-decoration: none;
 }
 
@@ -91,12 +99,12 @@ header h3 {
 h1 {
   display: inline-block;
   font-size: 3em;
-  color: #fff;
+  color: #8b74ea;
   margin: 0 0 0.25em 0;
   text-align: left;
   font-weight: normal;
   padding-left: 1.3em;
-  background: url(../images/snapwat-icon-white.svg) left 0.25em no-repeat;
+  background: url(../images/snapwat-icon-purple.svg) left 0.25em no-repeat;
   background-size: 1em 1em;
 }
 
@@ -133,13 +141,8 @@ h2 {
   top: 72px;
   left: 0;
   overflow: hidden;
-  background: #987fff;
-}
-
-header button {
-  border: 0;
-  background: none;
-  cursor: pointer;
+  background: #c7baff;
+  background: linear-gradient(#e6e0ff, #c7baff);
 }
 
 header input,
@@ -148,20 +151,18 @@ header button {
   line-height: 1em;
 }
 
-#input-colour-container.selected,
-header button.selected {
-  border: 2px dashed #10f9e6;
-}
-
 #input-colour-container {
   border: 2px solid transparent;
   padding: 8px 8px 4px 8px;
   margin-left: 15px;
+  margin-right: 15px;
+  width: 40px;
 }
 
 #input-colour {
   display: none;
-  width: 32px;
+  width: 40px;
+  height: 24px;
   cursor: pointer;
 }
 
@@ -176,13 +177,13 @@ header button.selected {
   margin-top: 1px;
 }
 
-header button {
-  padding: 8px 8px 4px 8px;
-  border: 2px solid transparent;
+#input-size-container {
+  width: 60px;
 }
 
 header .left button {
-  margin-left: 20px;
+  margin-left: 10px;
+  margin-right: 5px;
 }
 
 header .left button.btn-back {
@@ -193,24 +194,18 @@ header .right button {
   margin-right: 10px;
 }
 
-header button img {
-  width: 38px;
-  height: 28px;
-  margin: 0 auto 5px auto;
-}
-
 .page a,
 .page a:hover {
-  color: #fff;
+  color: #555;
 }
 
 .page button {
   cursor: pointer;
   border-radius: 5px;
   border: 0;
-  background: #fff;
-  color: #333;
-  padding: 10px;
+  background: #987fff;
+  color: #fff;
+  padding: 10px 15px;
 }
 
 strong {
@@ -244,10 +239,17 @@ video {
 #canvas-camera {
   z-index: -1;
   pointer-events: none;
+  object-fit: contain;
 }
 
 #canvas-draw {
   z-index: 1;
+  position: absolute;
+}
+
+#canvas-emoji {
+  z-index: 2;
+  position: absolute;
 }
 
 #image-save {
@@ -255,31 +257,85 @@ video {
 }
 
 .modal {
-  display: none;
+  /* For performance improvement over display: none -> block */
+  opacity: 0;
+  pointer-events: none;
   z-index: 10;
   position: absolute;
   width: 95%;
+  top: 72px;
+  left: 2.5%;
+  padding: 15px;
+  box-sizing: border-box;
+  background: #987fff;
+  color: #fff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  overflow-y: auto;
+}
+
+.modal.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#modal-tools,
+#modal-options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+
+#modal-tools button {
+  border: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.1em;
+  margin-right: 10px;
+}
+
+#modal-tools button.selected {
+  border: 2px dashed #10f9e6;
+}
+
+#modal-tools button img {
+  display: block;
+  height: 30px;
+  margin: 0 auto 5px auto;
+}
+
+#modal-options input {
+  margin-right: 10px;
+}
+
+#input-size {
+  margin-top: 11px;
+  height: 20px;
+}
+
+#modal-emoji {
+  /* For scrolling performance */
+  will-change: transform;
+  -webkit-overflow-scrolling: touch;
   height: 85%;
   height: -webkit-calc(100% - 90px);
   height: -moz-calc(100% - 90px);
   height: -o-calc(100% - 90px);
   height: -ms-calc(100% - 90px);
   height: calc(100% - 90px);
-  top: 72px;
-  left: 2.5%;
-  padding: 15px;
-  box-sizing: border-box;
-  background: #7f4fff;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-  overflow-y: auto;
 }
 
 #modal-emoji img {
-  padding: 8px 0 8px 10px;
-  width: 40px;
-  height: 40px;
+  padding: 4px;
   cursor: pointer;
+  border: 0;
 }
 
 #page-home {
@@ -363,12 +419,12 @@ video {
 
 #input-photo + label {
   font-size: 1.3em;
-  background: #fff;
-  color: #333;
+  background: #987fff;
+  color: #fff;
   border-radius: 5px;
   display: inline-block;
   cursor: pointer;
-  padding: 10px;
+  padding: 10px 15px;
 }
 
 #input-photo:focus + label {

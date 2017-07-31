@@ -1,4 +1,3 @@
-import webrtcAdapter from 'webrtc-adapter';
 import {HEADER_HEIGHT} from '../../shared/constants';
 import {showPrompt} from '../../shared/helpers';
 
@@ -7,18 +6,21 @@ let canvas = document.getElementById('canvas-camera');
 let context = context = canvas.getContext('2d');
 
 function copyVideoToCanvas() {
-  const width = canvas.width;
-  const height = canvas.height;
+
+  /**
+   * Should hopefully be same as our canvas size, if our constraints were obeyed.
+   * But fixes video being potentially stretched (e.g. Samsung Internet in standalone mode).
+   */
+  const width = video.videoWidth;
+  const height = video.videoHeight;
+
+  canvas.width = width;
+  canvas.height = height;
 
   context.fillRect(0, 0, width, height);
   context.drawImage(video, 0, 0, width, height);
 
   requestAnimationFrame(copyVideoToCanvas);
-}
-
-function setCanvasSize() {
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight - HEADER_HEIGHT;
 }
 
 function showUnsupported() {
@@ -32,8 +34,6 @@ function initCamera() {
     return;
   }
 
-  setCanvasSize();
-  window.addEventListener('resize', setCanvasSize, false);
   video.style.display = 'block';
 
   const maxWidth = canvas.clientWidth;
@@ -55,7 +55,13 @@ function initCamera() {
         console.log('Stream inactive');
       };
 
-      video.srcObject = stream;
+      // Older browsers may not have srcObject
+      if ('srcObject' in video) {
+        video.srcObject = stream;
+      } else {
+        // Avoid using this in new browsers, as it is going away.
+        video.src = window.URL.createObjectURL(stream);
+      }
 
       requestAnimationFrame(copyVideoToCanvas);
 

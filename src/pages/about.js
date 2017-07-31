@@ -14,11 +14,11 @@ function initControls() {
 
 export default {
 
-  init: function () {
+  init: function() {
     initControls();
   },
 
-  show: function () {
+  show: function() {
     showPage(PAGE_NAME);
   }
 

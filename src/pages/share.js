@@ -46,6 +46,7 @@ function initControls() {
       });
 
     AnnotatePage.show();
+    showPrompt('tweeting');
 
   });
 
@@ -57,12 +58,12 @@ function initControls() {
 
 export default {
 
-  init: function () {
+  init: function() {
     initOAuth();
     initControls();
   },
 
-  show: function (data) {
+  show: function(data) {
 
     imageDataURI = saveCanvas.toDataURL('image/png');
     shareImagePreview.src = imageDataURI;

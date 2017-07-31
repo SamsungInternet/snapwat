@@ -1,14 +1,10 @@
 'use strict';
 
-let fs = require('fs');
-let path = require('path');
-let glob = require('glob-all');
-let babel = require('rollup-plugin-babel');
-let rollup = require('rollup');
-let commonjs = require('rollup-plugin-commonjs');
-let nodeResolve = require('rollup-plugin-node-resolve');
-
-let nodeEnv = process.env.NODE_ENV;
+const babel = require('rollup-plugin-babel');
+const rollup = require('rollup');
+const commonjs = require('rollup-plugin-commonjs');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const glob = require('glob-all');
 
 function generateFileList(options) {
   return {
@@ -19,7 +15,7 @@ function generateFileList(options) {
     },
     load(id) {
       if (id === options.id) {
-        // Pass in relative filepaths to glob, then convert to appropriate URLs for service worker
+        // Pass in relative filepaths to glob, then convert to appropriate URLs
         const files = glob.sync(options.patterns)
           .map(file => file.replace('public/', '/'));
         return `export default ${JSON.stringify(files)};`;
@@ -28,7 +24,6 @@ function generateFileList(options) {
   }
 }
 
-// Main app code
 rollup.rollup({
   entry: 'src/index.js',
   plugins: [

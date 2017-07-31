@@ -2,43 +2,60 @@ import emojiImages from '\0emoji-images';
 import {HEADER_HEIGHT} from '../../shared/constants';
 
 // Time to wait before treating single touch events as a separate intention
-const RESIZING_TIME_THRESHOLD = 500;
+const DEFAULT_COLOUR = '#000000';
+const DEFAULT_EMOJI_SIZE = 120;
+const DEFAULT_EMOJI_FONT = 'arial';
+const DEFAULT_LINE_WIDTH = 2;
 
-let canvas = document.getElementById('canvas-draw');
-let ctx = ctx = canvas.getContext('2d');
+const TOOL_PENCIL = 0;
+const TOOL_BRUSH = 1;
+const TOOL_EMOJI = 2;
+
+let canvasDraw = document.getElementById('canvas-draw');
+let canvasEmoji = document.getElementById('canvas-emoji');
+let ctxDraw = canvasDraw.getContext('2d');
+let ctxEmoji = canvasEmoji.getContext('2d');
+
+let chosenTool = TOOL_PENCIL;
+let toolsMenuButton = document.getElementById('btn-tools');
+let toolsModal = document.getElementById('modal-tools');
+let pencilButton = document.getElementById('btn-pencil');
+let brushButton = document.getElementById('btn-brush');
+let emojiMenuButton = document.getElementById('btn-emoji');
+let emojiModal = document.getElementById('modal-emoji');
+let optionsMenuButton = document.getElementById('btn-options');
+let optionsModal = document.getElementById('modal-options');
 let colourInputContainer = document.getElementById('input-colour-container');
 let colourInput = document.getElementById('input-colour');
+let sizeInput = document.getElementById('input-size');
+let sizeOutput = document.getElementById('size-output');
 let trashButton = document.getElementById('btn-trash');
-let emojiButton = document.getElementById('btn-emoji');
-let emojiButtonImage = document.getElementById('btn-emoji-img');
-let emojiModal = document.getElementById('modal-emoji');
+
 let touchedEmojiIndex = -1;
 let chosenEmoji = null;
 let resizeTouchDelta = null;
-let resizingTimeout = null;
+let moveTouchDelta = null;
 let isDrawing = false;
 let isRedrawing = false;
 let isResizing = false;
 
-// Store drawing events (lines and emojis) for redrawing
-let drawEvents = [];
-
+// Store emoji details so we can redraw them when moved/resized
+let stampedEmojis = [];
 
 /**
- * Returns index of touched emoji in the drawEvents, or -1 if none touched.
+ * Returns index of touched emoji in the stampedEmojis, or -1 if none touched.
  */
 function indexOfSelectedEmoji(coords) {
 
-  for (let i=0; i < drawEvents.length; i++) {
+  // Go through in reverse order to select top-most if overlapping
+  for (let i = stampedEmojis.length - 1; i >= 0; i--) {
 
-    let evt = drawEvents[i];
+    let emoji = stampedEmojis[i];
 
-    if (!evt.image) {
-      continue;
-    }
-
-    if (coords.x >= evt.x && coords.x <= evt.x + evt.width &&
-        coords.y >= evt.y && coords.y <= evt.y + evt.height) {
+    if (coords.x >= emoji.x - (emoji.width / 2) &&
+        coords.x <= emoji.x + (emoji.width / 2) &&
+        coords.y >= emoji.y - (emoji.height / 2) &&
+        coords.y <= emoji.y + (emoji.height / 2)) {
       return i;
     }
 
@@ -48,25 +65,26 @@ function indexOfSelectedEmoji(coords) {
 
 }
 
-function stampEmoji(coords) {
+function drawEmoji(emoji, coords, width, height, isSelected) {
 
-  // Increase the default SVG size
-  const width = chosenEmoji.width * 2;
-  const height = chosenEmoji.height * 2;
-
-  // Centre the image around where we have tapped/clicked
+  // Centre the image around tap/click coords
   const x = coords.x - width / 2;
   const y = coords.y - height / 2;
 
-  ctx.drawImage(chosenEmoji, x, y, width, height);
+  ctxEmoji.drawImage(emoji, x, y, width, height);
 
-  drawEvents.push({
-    image: chosenEmoji,
-    x: x,
-    y: y,
-    width: width,
-    height: height
-  });
+  if (isSelected) {
+    // Highlight with a border
+    const prevStrokeStyle = ctxEmoji.strokeStyle;
+    const prevLineWidth = ctxEmoji.lineWidth;
+    ctxEmoji.strokeStyle = '#10f9e6';
+    ctxEmoji.lineWidth = 2;
+    ctxEmoji.setLineDash([5, 2]);
+    ctxEmoji.strokeRect(x-2, y-2, width+4, height+4);
+    ctxEmoji.strokeStyle = prevStrokeStyle;
+    ctxEmoji.lineWidth = prevLineWidth;
+    ctxEmoji.setLineDash([]);
+  }
 
 }
 
@@ -75,26 +93,30 @@ function onDrawingMouseDown(coords) {
   const x = coords.x;
   const y = coords.y;
 
-  ctx.beginPath();
-  ctx.moveTo(x, y);
+  ctxDraw.beginPath();
+  ctxDraw.moveTo(x, y);
 
   isDrawing = true;
 
-  drawEvents.push({
-    begin: true,
-    x: x,
-    y: y
-  });
+}
 
+function closeModals() {
+  optionsModal.classList.remove('show');
+  toolsModal.classList.remove('show');
+  emojiModal.classList.remove('show');
 }
 
 function onTouchStartOrMouseDown(e) {
 
+  e.preventDefault();
+
+  closeModals();
+
   let touch = e.changedTouches && e.changedTouches.length ?
     e.changedTouches[0] : null;
 
-  let coords = touch ? {x: touch.pageX - canvas.offsetLeft, y: touch.pageY - canvas.offsetTop - HEADER_HEIGHT} :
-    {x: e.clientX - canvas.offsetLeft, y: e.clientY - canvas.offsetTop - HEADER_HEIGHT};
+  let coords = touch ? {x: touch.pageX - canvasEmoji.offsetLeft, y: touch.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT} :
+    {x: e.clientX - canvasEmoji.offsetLeft, y: e.clientY - canvasEmoji.offsetTop - HEADER_HEIGHT};
 
   touchedEmojiIndex = indexOfSelectedEmoji(coords);
 
@@ -103,8 +125,23 @@ function onTouchStartOrMouseDown(e) {
     return;
   }
 
-  if (chosenEmoji) {
-    stampEmoji(coords);
+  if (chosenTool === TOOL_EMOJI) {
+
+    // Add new emoji
+    // Increase default SVG size
+    const width = chosenEmoji.width * 2.5;
+    const height = chosenEmoji.height * 2.5;
+
+    stampedEmojis.push({
+      image: chosenEmoji,
+      x: coords.x,
+      y: coords.y,
+      width: width,
+      height: height
+    });
+
+    redrawEmojisOnNextFrame();
+
   } else {
     onDrawingMouseDown(coords);
   }
@@ -119,40 +156,28 @@ function onTouchMoveOrMouseMove(e) {
   let touch1 = touches.length ? touches[0] : null;
   let touch2 = touches.length > 1 ? touches[1] : null;
 
-  let coords1 = touch1 ? {x: touch1.pageX - canvas.offsetLeft, y: touch1.pageY - canvas.offsetTop - HEADER_HEIGHT} :
-    {x: e.clientX - canvas.offsetLeft, y: e.clientY - canvas.offsetTop - HEADER_HEIGHT};
+  let coords1 = touch1 ? {x: touch1.pageX - canvasEmoji.offsetLeft, y: touch1.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT} :
+    {x: e.clientX - canvasEmoji.offsetLeft, y: e.clientY - canvasEmoji.offsetTop - HEADER_HEIGHT};
 
   if (touchedEmojiIndex >= 0) {
 
-    let evt = drawEvents[touchedEmojiIndex];
+    let emoji = stampedEmojis[touchedEmojiIndex];
 
     if (touch2) {
 
       // Resize emoji
+      isResizing = true;
 
-      let coords2 = {x: touch2.pageX - canvas.offsetLeft, y: touch2.pageY - canvas.offsetTop - HEADER_HEIGHT};
+      let coords2 = {x: touch2.pageX - canvasEmoji.offsetLeft, y: touch2.pageY - canvasEmoji.offsetTop - HEADER_HEIGHT};
       let newResizeTouchDelta = {x: Math.abs(coords2.x - coords1.x),
         y: Math.abs(coords2.y - coords1.y)};
 
       if (resizeTouchDelta) {
 
-        evt.width += newResizeTouchDelta.x - resizeTouchDelta.x;
-        evt.height += newResizeTouchDelta.y - resizeTouchDelta.y;
+        emoji.width += newResizeTouchDelta.x - resizeTouchDelta.x;
+        emoji.height += newResizeTouchDelta.y - resizeTouchDelta.y;
 
-        evt.x = (coords1.x + coords2.x) / 2 - evt.width / 2;
-        evt.y = (coords1.y + coords2.y) / 2 - evt.height / 2;
-
-        isResizing = true;
-
-        if (resizingTimeout) {
-          clearTimeout(resizingTimeout);
-        }
-
-        resizingTimeout = setTimeout(() => {
-          isResizing = false;
-        }, RESIZING_TIME_THRESHOLD);
-
-        redrawOnNextFrame();
+        redrawEmojisOnNextFrame();
 
       }
 
@@ -160,133 +185,134 @@ function onTouchMoveOrMouseMove(e) {
 
     } else if (!isResizing) {
 
-      // Update emoji position
+      if (moveTouchDelta) {
 
-      evt.x = coords1.x - evt.width / 2;
-      evt.y = coords1.y - evt.height / 2;
+        // Single touch - moving the emoji - update its position
+        emoji.x = coords1.x - moveTouchDelta.x;
+        emoji.y = coords1.y - moveTouchDelta.y;
 
-      redrawOnNextFrame();
+        redrawEmojisOnNextFrame();
+
+      } else {
+
+        moveTouchDelta = {x: coords1.x - emoji.x, y: coords1.y - emoji.y};
+
+      }
+
     }
 
   } else if (isDrawing) {
 
-    ctx.lineTo(coords1.x, coords1.y);
-    ctx.stroke();
+    ctxDraw.lineTo(coords1.x, coords1.y);
+    ctxDraw.stroke();
 
-    drawEvents.push({
-      stokeStyle: ctx.strokeStyle,
-      x: coords1.x,
-      y: coords1.y
-    });
   }
 }
 
-function onTouchEndOrMouseUp() {
+function onTouchEndOrMouseUp(e) {
   isDrawing = false;
+  isResizing = false;
   touchedEmojiIndex = -1;
   resizeTouchDelta = null;
+  moveTouchDelta = null;
 }
 
-function onEmojiClick(event) {
+function highlightSelectedTool(selectedButton) {
+  var toolButtons = toolsModal.getElementsByTagName('button');
+  for (var i=0; i < toolButtons.length; i++) {
+    var button = toolButtons[i];
+    if (button === selectedButton) {
+      button.classList.add('selected');
+    } else {
+      button.classList.remove('selected');
+    }
+  }
+}
 
+function onNewEmojiClick(event) {
+
+  chosenTool = TOOL_EMOJI;
   chosenEmoji = event.currentTarget;
 
-  emojiModal.style.display = 'none';
-  emojiButtonImage.src = chosenEmoji.src;
+  emojiModal.classList.remove('show');
 
-  emojiButton.classList.add('selected');
-  colourInputContainer.classList.remove('selected');
+  highlightSelectedTool(emojiMenuButton);
 
 }
 
-function redrawOnNextFrame() {
+function redrawEmojisOnNextFrame() {
   if (!isRedrawing) {
     isRedrawing = true;
-    requestAnimationFrame(redraw);
+    requestAnimationFrame(redrawEmojis);
   }
 }
 
-function redraw() {
+function redrawEmojis() {
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  console.log('start redraw', performance.now());
 
-  for (let i=0; i < drawEvents.length; i++) {
+  ctxEmoji.clearRect(0, 0, canvasEmoji.width, canvasEmoji.height);
 
-    let evt = drawEvents[i];
-
-    if (evt.image) {
-      // Emoji
-      ctx.drawImage(evt.image, evt.x, evt.y, evt.width, evt.height);
-
-    } else if (evt.begin) {
-      // Start a line
-      ctx.beginPath();
-      ctx.moveTo(evt.x, evt.y);
-
-    } else {
-      // Stroke
-      ctx.strokeStyle = evt.strokeStyle;
-      ctx.lineTo(evt.x, evt.y);
-      ctx.stroke();
-    }
-
+  for (let i=0; i < stampedEmojis.length; i++) {
+    let emoji = stampedEmojis[i];
+    drawEmoji(emoji.image, {x: emoji.x, y: emoji.y}, emoji.width, emoji.height, i === touchedEmojiIndex);
   }
+
+  console.log('finish redraw', performance.now());
 
   isRedrawing = false;
 
 }
 
+function clearDrawing() {
+  ctxDraw.clearRect(0, 0, canvasDraw.width, canvasDraw.height);
+}
+
+function clearEmojis() {
+  stampedEmojis = [];
+  redrawEmojis();
+}
+
+function clearCanvases() {
+  clearDrawing();
+  clearEmojis();
+}
+
 function onColourClickOrChange() {
-  ctx.strokeStyle = colourInput.value;
-  chosenEmoji = null;
+  updateCanvasDrawContext();
   colourInputContainer.classList.add('selected');
-  emojiButton.classList.remove('selected');
+  emojiMenuButton.classList.remove('selected');
 }
 
-function initCanvas() {
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight - HEADER_HEIGHT;
-
-  canvas.addEventListener('touchstart', onTouchStartOrMouseDown, false);
-  canvas.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
-  canvas.addEventListener('touchend', onTouchEndOrMouseUp, false);
-
-  canvas.addEventListener('mousedown', onTouchStartOrMouseDown, false);
-  canvas.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
-  canvas.addEventListener('mouseup', onTouchEndOrMouseUp, false);
-
-  ctx.strokeStyle = '#000000';
-  ctx.lineWidth = 3;
+function onSizeChange(event) {
+  updateCanvasDrawContext();
+  sizeOutput.innerHTML = event.target.value;
 }
 
-function initControls() {
+function initCanvases() {
 
-  colourInput.addEventListener('input', onColourClickOrChange);
-  colourInput.addEventListener('click', onColourClickOrChange);
+  // Emoji canvas is on top so will receive the interaction events
+  canvasEmoji.addEventListener('touchstart', onTouchStartOrMouseDown, false);
+  canvasEmoji.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
+  canvasEmoji.addEventListener('touchend', onTouchEndOrMouseUp, false);
 
-  // Add click handlers to emojis so you can select one
-  let emojis = document.querySelectorAll('#modal-emoji img');
-  for (let i=0; i < emojis.length; i++) {
-    let emoji = emojis[i];
-    emoji.addEventListener('click', onEmojiClick);
-  }
+  canvasEmoji.addEventListener('mousedown', onTouchStartOrMouseDown, false);
+  canvasEmoji.addEventListener('mousemove', onTouchMoveOrMouseMove, false);
+  canvasEmoji.addEventListener('mouseup', onTouchEndOrMouseUp, false);
 
-  emojiButton.addEventListener('click', () => {
-    // Toggle emoji selector modal dialog
-    if (emojiModal.style.display !== 'block') {
-      emojiModal.style.display = 'block';
-    } else {
-      emojiModal.style.display = 'none';
-    }
+  ctxDraw.strokeStyle = DEFAULT_COLOUR;
+  ctxDraw.lineWidth = DEFAULT_LINE_WIDTH;
+  ctxDraw.lineJoin = 'round';
+  ctxDraw.lineCap = 'round';
+  ctxDraw.shadowColor = DEFAULT_COLOUR;
 
-  });
+}
 
-  trashButton.addEventListener('click', () => {
-    // Could do with a confirmation prompt!
-    drawEvents = [];
-    redraw();
-  })
-
+function updateCanvasDrawContext() {
+  ctxDraw.strokeStyle = colourInput.value;
+  ctxDraw.lineWidth = sizeInput.value;
+  ctxDraw.shadowBlur = chosenTool === TOOL_BRUSH ? 2 : 0;
+  ctxDraw.shadowColor = colourInput.value;
 }
 
 function initEmojis() {
@@ -302,8 +328,80 @@ function initEmojis() {
 
 }
 
-export default function init() {
-  initCanvas();
-  initEmojis();
-  initControls();
+function initControls() {
+
+  toolsMenuButton.addEventListener('click', () => {
+    toolsModal.classList.toggle('show');
+    emojiModal.classList.remove('show');
+    optionsModal.classList.remove('show');
+  });
+
+  // Add click handlers to emojis so you can select one
+  let availableEmojis = document.querySelectorAll('#modal-emoji img');
+  for (let i=0; i < availableEmojis.length; i++) {
+    let emoji = availableEmojis[i];
+    emoji.addEventListener('click', onNewEmojiClick);
+  }
+
+  emojiMenuButton.addEventListener('click', () => {
+    emojiModal.classList.toggle('show');
+    toolsModal.classList.toggle('show');
+  });
+
+  pencilButton.addEventListener('click', () => {
+    chosenTool = TOOL_PENCIL;
+    updateCanvasDrawContext();
+    toolsModal.classList.remove('show');
+    highlightSelectedTool(pencilButton);
+  });
+
+  brushButton.addEventListener('click', () => {
+    chosenTool = TOOL_BRUSH;
+    updateCanvasDrawContext();
+    toolsModal.classList.remove('show');
+    highlightSelectedTool(brushButton);
+  });
+
+  optionsMenuButton.addEventListener('click', () => {
+    optionsModal.classList.toggle('show');
+    toolsModal.classList.remove('show');
+    emojiModal.classList.remove('show');
+  });
+
+  colourInput.addEventListener('input', onColourClickOrChange);
+  colourInput.addEventListener('click', onColourClickOrChange);
+
+  sizeInput.addEventListener('change', onSizeChange);
+  sizeInput.value = DEFAULT_LINE_WIDTH;
+  sizeOutput.innerHTML = DEFAULT_LINE_WIDTH;
+
+  trashButton.addEventListener('click', () => {
+    // TODO introduce confirmation prompt!
+    clearCanvases();
+  })
+
 }
+
+export default {
+
+  init: function() {
+    initCanvases();
+    initEmojis();
+    initControls();
+  },
+
+  show: function() {
+
+    /* Hacky fix for browsers no longer observing the centred position with position: absolute */
+    canvasDraw.setAttribute('style', `left: calc(50% - ${canvasDraw.width / 2}px)`);
+    canvasEmoji.setAttribute('style', `left: calc(50% - ${canvasEmoji.width / 2}px)`);
+
+  },
+
+  snapshot: function() {
+    // Remove highlights ready to snapshot the canvas
+    touchedEmojiIndex = -1;
+    redrawEmojis();
+  }
+
+};

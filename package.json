@@ -6,7 +6,8 @@
     "start": "node devServer",
     "watch": "watch 'npm run build' ./src",
     "build": "node build && echo 'Build complete'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "git subtree push --prefix public origin gh-pages"
   },
   "repository": {
     "type": "git",
@@ -31,8 +32,7 @@
     "watch": "^0.19.1"
   },
   "dependencies": {
-    "blueimp-load-image": "^2.7.0",
-    "hellojs": "^1.13.4",
-    "webrtc-adapter": "^2.0.2"
+    "blueimp-load-image": "^2.13.1",
+    "hellojs": "^1.13.4"
   }
 }

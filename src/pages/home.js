@@ -1,8 +1,10 @@
+import LoadImage from 'blueimp-load-image';
 import {PAGES, HEADER_HEIGHT} from '../shared/constants';
-import {showPage, } from '../shared/helpers';
+import {showPage} from '../shared/helpers';
 import AnnotatePage from './annotate';
 import AboutPage from './about';
-import LoadImage from 'blueimp-load-image';
+
+console.log('LoadImage', LoadImage);
 
 const PAGE_NAME = PAGES.HOME;
 
@@ -12,22 +14,20 @@ let startCameraBtn = document.getElementById('btn-start-camera');
 let annotateCameraContainer = document.getElementById('annotate-camera-container');
 let cameraCanvas = document.getElementById('canvas-camera');
 let drawCanvas = document.getElementById('canvas-draw');
+let emojiCanvas = document.getElementById('canvas-emoji'); 
 let aboutLink = document.getElementById('link-about');
 
 function onPhotoInputChange(e) {
 
   console.log('Min width and height', cameraCanvas.width, cameraCanvas.height);
 
-  // Ugh. Hacky fix for image coming out too small. Seems like LoadImage doesn't take into account orientation while
-  // determining max dimensions? Hopefully can submit a PR. In  meantime, just size down to max dimension & allow crop.
   const options = {
-    maxWidth: Math.max(cameraCanvas.width, cameraCanvas.height),
-    maxHeight: Math.max(cameraCanvas.width, cameraCanvas.height),
+    maxWidth: cameraCanvas.width,
+    maxHeight: cameraCanvas.height,
     contain: true,
-    crop: true,
     orientation: true,
     canvas: true,
-    pixelRatio: window.devicePixelRatio
+    pixelRatio: devicePixelRatio
   };
 
   function onImageLoad(result) {
@@ -45,9 +45,14 @@ function onPhotoInputChange(e) {
 
       cameraCanvas = result;
 
+      const newWidth = cameraCanvas.style.width ? parseInt(cameraCanvas.style.width) : cameraCanvas.width;
+      const newHeight = cameraCanvas.style.height ? parseInt(cameraCanvas.style.height) : cameraCanvas.height;
+
       // Make drawing canvas the same size
-      drawCanvas.width = parseInt(cameraCanvas.style.width);
-      drawCanvas.height = parseInt(cameraCanvas.style.height);
+      drawCanvas.width = newWidth;
+      drawCanvas.height = newHeight;
+      emojiCanvas.width = newWidth;
+      emojiCanvas.height = newHeight;
 
       AnnotatePage.show({live: false});
     }
@@ -85,12 +90,12 @@ function initControls() {
 
 export default {
 
-  init: function () {
+  init: function() {
     initCanvas();
     initControls();
   },
 
-  show: function () {
+  show: function() {
     showPage(PAGE_NAME);
   }
 

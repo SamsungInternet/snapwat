@@ -12,6 +12,7 @@ const PAGE_NAME = PAGES.SNAPSHOT;
 let backBtn = document.getElementById('btn-back-snapshot');
 let tweetButton = document.getElementById('btn-share-twitter');
 let drawingCanvas = document.getElementById('canvas-draw');
+let emojiCanvas = document.getElementById('canvas-emoji');
 let saveCanvas = document.getElementById('canvas-save');
 let saveImage = document.getElementById('image-save');
 let saveCtx = saveCanvas.getContext('2d');
@@ -59,11 +60,11 @@ function initControls() {
 
 export default {
 
-  init: function () {
+  init: function() {
     initControls();
   },
 
-  show: function () {
+  show: function() {
 
     playCameraSound();
 
@@ -72,6 +73,7 @@ export default {
     // Copy the other canvases onto a single canvas for saving
     saveCtx.drawImage(cameraCanvas, 0, 0, saveCanvas.width, saveCanvas.height);
     saveCtx.drawImage(drawingCanvas, 0, 0, saveCanvas.width, saveCanvas.height);
+    saveCtx.drawImage(emojiCanvas, 0, 0, saveCanvas.width, saveCanvas.height);
 
     // Add the URL at the bottom
     saveCtx.fillText('snapw.at', saveCanvas.width - 72, saveCanvas.height - 10);

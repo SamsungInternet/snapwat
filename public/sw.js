@@ -1,4 +1,4 @@
-var CACHE_NAME = 'cache-v1.2';
+var CACHE_NAME = 'cache-v1.3';
 
 // The advice is to not cache too much on install.
 // This is the minimal amount needed to display the initial page.
@@ -38,8 +38,8 @@ self.addEventListener('fetch', function(event) {
   var responsePromise = fetch(event.request)
     .then(function(response) {
 
-      if (!response || !response.ok || response.type !== 'basic') {
-        // Don't cache response if it's not within our domain or not 2xx status
+      // Don't cache response unless it's 2xx status
+      if (!response || !response.ok) {
         return response;
       }
 
@@ -55,6 +55,8 @@ self.addEventListener('fetch', function(event) {
     })
     .catch(function(err) {
 
+      // NOTE: On a patchy network, it could take a long time for the fetch
+      // to fail and for us to get here. TO DO: introduce a timeout.
       console.log('Fetch failed, maybe we are offline. Try cache...', err);
 
       return caches.match(event.request)
