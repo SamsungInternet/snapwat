@@ -291,16 +291,6 @@ function onSizeChange(event) {
 
 function initCanvases() {
 
-  /*
-  const width = window.innerWidth;
-  const height = window.innerHeight - HEADER_HEIGHT;
-  
-  canvasDraw.width = width; 
-  canvasDraw.height = height;
-  canvasEmoji.width = width;
-  canvasEmoji.height = height;
-  */
-
   // Emoji canvas is on top so will receive the interaction events
   canvasEmoji.addEventListener('touchstart', onTouchStartOrMouseDown, false);
   canvasEmoji.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
@@ -315,6 +305,7 @@ function initCanvases() {
   ctxDraw.lineJoin = 'round';
   ctxDraw.lineCap = 'round';
   ctxDraw.shadowColor = DEFAULT_COLOUR;
+
 }
 
 function updateCanvasDrawContext() {
@@ -393,13 +384,21 @@ function initControls() {
 
 export default {
 
-  init: function () {
+  init: function() {
     initCanvases();
     initEmojis();
     initControls();
   },
 
-  snapshot: function () {
+  show: function() {
+
+    /* Hacky fix for browsers no longer observing the centred position with position: absolute */
+    canvasDraw.setAttribute('style', `left: calc(50% - ${canvasDraw.width / 2}px)`);
+    canvasEmoji.setAttribute('style', `left: calc(50% - ${canvasEmoji.width / 2}px)`);
+
+  },
+
+  snapshot: function() {
     // Remove highlights ready to snapshot the canvas
     touchedEmojiIndex = -1;
     redrawEmojis();

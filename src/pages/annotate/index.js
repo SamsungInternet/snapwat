@@ -19,14 +19,15 @@ function initControls() {
 
 export default {
 
-  init: function () {
+  init: function() {
     Draw.init();
     initControls();
   },
 
-  // TODO what about when you click back from snapshot page? Should be app-level config?
-  show: function (config) {
+  show: function(config) {
+
     showPage(PAGE_NAME);
+    Draw.show();
     if (config && config.live) {
       LiveCamera();
     }
