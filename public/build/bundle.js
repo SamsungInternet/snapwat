@@ -2000,9 +2000,12 @@ function onTouchStartOrMouseDown(e) {
 
     // Reset chosen emoji. It only stamps once, to avoid accidental multiple taps.
     chosenEmoji = null;
-
     redrawEmojisOnNextFrame();
   } else {
+
+    chosenEmoji = null;
+    redrawEmojisOnNextFrame();
+
     onDrawingMouseDown(coords);
   }
 }
