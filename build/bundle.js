@@ -2133,16 +2133,6 @@ function onSizeChange(event) {
 
 function initCanvases() {
 
-  /*
-  const width = window.innerWidth;
-  const height = window.innerHeight - HEADER_HEIGHT;
-  
-  canvasDraw.width = width; 
-  canvasDraw.height = height;
-  canvasEmoji.width = width;
-  canvasEmoji.height = height;
-  */
-
   // Emoji canvas is on top so will receive the interaction events
   canvasEmoji.addEventListener('touchstart', onTouchStartOrMouseDown, false);
   canvasEmoji.addEventListener('touchmove', onTouchMoveOrMouseMove, false);
@@ -2237,6 +2227,13 @@ var Draw = {
     initCanvases();
     initEmojis();
     initControls$2();
+  },
+
+  show: function show() {
+
+    /* Hacky fix for browsers no longer observing the centred position with position: absolute */
+    canvasDraw.setAttribute('style', 'left: calc(50% - ' + canvasDraw.width / 2 + 'px)');
+    canvasEmoji.setAttribute('style', 'left: calc(50% - ' + canvasEmoji.width / 2 + 'px)');
   },
 
   snapshot: function snapshot() {
@@ -8240,9 +8237,10 @@ var AnnotatePage = {
     initControls$1();
   },
 
-  // TODO what about when you click back from snapshot page? Should be app-level config?
   show: function show(config) {
+
     showPage(PAGE_NAME$1);
+    Draw.show();
     if (config && config.live) {
       init$1();
     }
