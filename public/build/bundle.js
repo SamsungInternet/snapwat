@@ -43,11 +43,6 @@ function InputColourShim () {
  */
 function WebRTCShim () {
 
-  // Older browsers might not implement mediaDevices at all, so we set an empty object first
-  if (navigator.mediaDevices === undefined) {
-    navigator.mediaDevices = {};
-  }
-
   // Some browsers partially implement mediaDevices. We can't just assign an object
   // with getUserMedia as it would overwrite existing properties.
   if (navigator.mediaDevices.getUserMedia === undefined) {
@@ -58,6 +53,10 @@ function WebRTCShim () {
     // If there is no legacy getUserMedia either, do not attempt to shim, we'll check if
     // navigator.mediaDevices.getUserMedia exists in order to display the button or not.
     if (getUserMedia) {
+
+      if (navigator.mediaDevices === undefined) {
+        navigator.mediaDevices = {};
+      }
 
       navigator.mediaDevices.getUserMedia = function (constraints) {
         // Wrap the call to the old navigator.getUserMedia with a Promise
