@@ -79,6 +79,18 @@ header .centre-to-right h3 {
   text-align: left;
 }
 
+header .left button {
+  margin-right: 2px;
+}
+
+header .left button.btn-back {
+  
+}
+
+header .right button {
+  margin-right: 10px;
+}
+
 header a {
   color: #444;
   text-decoration: none;
@@ -179,19 +191,6 @@ header button {
 
 #input-size-container {
   width: 60px;
-}
-
-header .left button {
-  margin-left: 10px;
-  margin-right: 5px;
-}
-
-header .left button.btn-back {
-  margin: 0 15px 0 5px;
-}
-
-header .right button {
-  margin-right: 10px;
 }
 
 .page a,
@@ -297,7 +296,7 @@ video {
   background: none;
   cursor: pointer;
   color: #fff;
-  font-size: 1.1em;
+  font-size: 0.9em;
   margin-right: 10px;
 }
 
