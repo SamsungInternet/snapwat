@@ -2261,11 +2261,11 @@ var Draw = {
       canvasDraw.height = window.innerHeight - HEADER_HEIGHT;
       canvasEmoji.width = canvasDraw.width;
       canvasEmoji.height = canvasDraw.height;
-    } else {
-      // Hacky fix for browsers no longer observing the centred position with position: absolute
-      canvasDraw.setAttribute('style', 'left: calc(50% - ' + canvasDraw.width / 2 + 'px)');
-      canvasEmoji.setAttribute('style', 'left: calc(50% - ' + canvasEmoji.width / 2 + 'px)');
     }
+
+    // Hacky fix for some browsers no longer observing the centred position with position: absolute
+    canvasDraw.setAttribute('style', 'left: calc(50% - ' + canvasDraw.width / 2 + 'px); top: calc(50% - ' + canvasDraw.height / 2 + 'px)');
+    canvasEmoji.setAttribute('style', 'left: calc(50% - ' + canvasEmoji.width / 2 + 'px); top: calc(50% - ' + canvasEmoji.height / 2 + 'px)');
   },
 
   snapshot: function snapshot() {
