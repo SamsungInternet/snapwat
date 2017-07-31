@@ -2116,7 +2116,7 @@ function redrawEmojisOnNextFrame() {
 
 function redrawEmojis() {
 
-  console.log('start redraw', performance.now());
+  //console.log('start redraw', performance.now());
 
   ctxEmoji.clearRect(0, 0, canvasEmoji.width, canvasEmoji.height);
 
@@ -2125,7 +2125,7 @@ function redrawEmojis() {
     drawEmoji(emoji.image, { x: emoji.x, y: emoji.y }, emoji.width, emoji.height, i === touchedEmojiIndex);
   }
 
-  console.log('finish redraw', performance.now());
+  //console.log('finish redraw', performance.now());
 
   isRedrawing = false;
 }
