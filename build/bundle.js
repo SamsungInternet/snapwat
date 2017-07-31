@@ -38,7 +38,8 @@ function InputColourShim () {
 
 /**
  * Previously I was using webrtc-adapter, but this was using up nearly half the JS bundle size!
- * This is a more lightweight shim from https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+ * This is a more lightweight shim based on the version here: 
+ * https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
  */
 function WebRTCShim () {
 
@@ -49,24 +50,22 @@ function WebRTCShim () {
 
   // Some browsers partially implement mediaDevices. We can't just assign an object
   // with getUserMedia as it would overwrite existing properties.
-  // Here, we will just add the getUserMedia property if it's missing.
   if (navigator.mediaDevices.getUserMedia === undefined) {
-    navigator.mediaDevices.getUserMedia = function (constraints) {
 
-      // First get ahold of the legacy getUserMedia, if present
-      var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    // First get hold of the legacy getUserMedia, if present
+    var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-      // Some browsers just don't implement it - return a rejected promise with an error
-      // to keep a consistent interface
-      if (!getUserMedia) {
-        return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
-      }
+    // If there is no legacy getUserMedia either, do not attempt to shim, we'll check if
+    // navigator.mediaDevices.getUserMedia exists in order to display the button or not.
+    if (getUserMedia) {
 
-      // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
-      return new Promise(function (resolve, reject) {
-        getUserMedia.call(navigator, constraints, resolve, reject);
-      });
-    };
+      navigator.mediaDevices.getUserMedia = function (constraints) {
+        // Wrap the call to the old navigator.getUserMedia with a Promise
+        return new Promise(function (resolve, reject) {
+          getUserMedia.call(navigator, constraints, resolve, reject);
+        });
+      };
+    }
   }
 }
 
@@ -1729,6 +1728,16 @@ var PAGES = {
   ABOUT: 'about'
 };
 
+var liveCamera = false;
+
+function isLiveCamera() {
+  return liveCamera;
+}
+
+function setLiveCamera(isLiveCamera) {
+  liveCamera = isLiveCamera;
+}
+
 var DEFAULT_POPUP_SHOW_TIME = 5000;
 
 var toolbars = document.getElementsByClassName('toolbar');
@@ -1795,27 +1804,33 @@ function showPage(pageRef) {
 var video = document.querySelector('video');
 var canvas = document.getElementById('canvas-camera');
 var context$1 = context$1 = canvas.getContext('2d');
+var isCanvasResized = false;
 
 function copyVideoToCanvas() {
 
-  /**
-   * Should hopefully be same as our canvas size, if our constraints were obeyed.
-   * But fixes video being potentially stretched (e.g. Samsung Internet in standalone mode).
-   */
-  var width = video.videoWidth;
-  var height = video.videoHeight;
+  // It takes a while for the video dimensions to be established, so keep checking until they have
+  if (!isCanvasResized && video.videoWidth) {
+    resizeCanvasToVideo();
+  }
 
-  canvas.width = width;
-  canvas.height = height;
-
-  context$1.fillRect(0, 0, width, height);
-  context$1.drawImage(video, 0, 0, width, height);
+  context$1.fillRect(0, 0, video.videoWidth, video.videoHeight);
+  context$1.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
 
   requestAnimationFrame(copyVideoToCanvas);
 }
 
 function showUnsupported() {
   showPrompt('webrtc-unsupported');
+}
+
+/**
+ * The video should hopefully be the same as our canvas size, if our constraints were obeyed.
+ * But this fixes video being potentially stretched (e.g. Samsung Internet in standalone mode).
+ */
+function resizeCanvasToVideo() {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  isCanvasResized = true;
 }
 
 function initCamera() {
@@ -1866,7 +1881,6 @@ function init$1() {
 
 var emojiImages = ["/images/emoji/f1.svg","/images/emoji/f10.svg","/images/emoji/f11.svg","/images/emoji/f12.svg","/images/emoji/f13.svg","/images/emoji/f14.svg","/images/emoji/f15.svg","/images/emoji/f16.svg","/images/emoji/f17.svg","/images/emoji/f18.svg","/images/emoji/f19.svg","/images/emoji/f2.svg","/images/emoji/f20.svg","/images/emoji/f21.svg","/images/emoji/f22.svg","/images/emoji/f23.svg","/images/emoji/f24.svg","/images/emoji/f25.svg","/images/emoji/f26.svg","/images/emoji/f27.svg","/images/emoji/f28.svg","/images/emoji/f29.svg","/images/emoji/f3.svg","/images/emoji/f30.svg","/images/emoji/f31.svg","/images/emoji/f32.svg","/images/emoji/f33.svg","/images/emoji/f34.svg","/images/emoji/f35.svg","/images/emoji/f36.svg","/images/emoji/f37.svg","/images/emoji/f38.svg","/images/emoji/f39.svg","/images/emoji/f4.svg","/images/emoji/f40.svg","/images/emoji/f5.svg","/images/emoji/f6.svg","/images/emoji/f7.svg","/images/emoji/f8.svg","/images/emoji/f9.svg","/images/emoji/g1.svg","/images/emoji/g10.svg","/images/emoji/g11.svg","/images/emoji/g12.svg","/images/emoji/g13.svg","/images/emoji/g14.svg","/images/emoji/g2.svg","/images/emoji/g3.svg","/images/emoji/g4.svg","/images/emoji/g5.svg","/images/emoji/g6.svg","/images/emoji/g7.svg","/images/emoji/g8.svg","/images/emoji/g9.svg","/images/emoji/h1.svg","/images/emoji/h10.svg","/images/emoji/h11.svg","/images/emoji/h12.svg","/images/emoji/h13.svg","/images/emoji/h14.svg","/images/emoji/h15.svg","/images/emoji/h16.svg","/images/emoji/h17.svg","/images/emoji/h18.svg","/images/emoji/h19.svg","/images/emoji/h2.svg","/images/emoji/h20.svg","/images/emoji/h21.svg","/images/emoji/h22.svg","/images/emoji/h23.svg","/images/emoji/h24.svg","/images/emoji/h3.svg","/images/emoji/h4.svg","/images/emoji/h5.svg","/images/emoji/h6.svg","/images/emoji/h7.svg","/images/emoji/h8.svg","/images/emoji/h9.svg","/images/emoji/i0.svg","/images/emoji/i1.svg","/images/emoji/i10.svg","/images/emoji/i11.svg","/images/emoji/i12.svg","/images/emoji/i13.svg","/images/emoji/i14.svg","/images/emoji/i2.svg","/images/emoji/i3.svg","/images/emoji/i4.svg","/images/emoji/i5.svg","/images/emoji/i6.svg","/images/emoji/i7.svg","/images/emoji/i8.svg","/images/emoji/k1.svg","/images/emoji/k10.svg","/images/emoji/k11.svg","/images/emoji/k12.svg","/images/emoji/k13_diego.svg","/images/emoji/k14.svg","/images/emoji/k15.svg","/images/emoji/k16.svg","/images/emoji/k17.svg","/images/emoji/k18.svg","/images/emoji/k19.svg","/images/emoji/k2.svg","/images/emoji/k20.svg","/images/emoji/k3.svg","/images/emoji/k3b.svg","/images/emoji/k4.svg","/images/emoji/k5.svg","/images/emoji/k6.svg","/images/emoji/k7.svg","/images/emoji/k8.svg","/images/emoji/k9.svg","/images/emoji/l1.svg","/images/emoji/l2.svg","/images/emoji/l3.svg","/images/emoji/l4.svg","/images/emoji/n1.svg","/images/emoji/n10.svg","/images/emoji/n11.svg","/images/emoji/n12.svg","/images/emoji/n2.svg","/images/emoji/n3.svg","/images/emoji/n4.svg","/images/emoji/n5.svg","/images/emoji/n6.svg","/images/emoji/n7.svg","/images/emoji/n8.svg","/images/emoji/n9.svg","/images/emoji/o1.svg","/images/emoji/o2.svg","/images/emoji/o3.svg","/images/emoji/o4.svg","/images/emoji/o5.svg","/images/emoji/o6.svg","/images/emoji/o7.svg","/images/emoji/o8.svg","/images/emoji/p1.svg","/images/emoji/p2.svg","/images/emoji/q1.svg","/images/emoji/q2.svg","/images/emoji/q3.svg","/images/emoji/q4.svg","/images/emoji/q5.svg","/images/emoji/q6.svg","/images/emoji/q7.svg","/images/emoji/s1.svg","/images/emoji/s2.svg","/images/emoji/s3.svg","/images/emoji/s4.svg","/images/emoji/s5.svg","/images/emoji/s6.svg","/images/emoji/u1.svg","/images/emoji/u2.svg","/images/emoji/u3.svg","/images/emoji/u4.svg","/images/emoji/u5.svg","/images/emoji/u6.svg","/images/emoji/u7.svg","/images/emoji/v1.svg","/images/emoji/v2.svg","/images/emoji/w1.svg","/images/emoji/w2.svg","/images/emoji/w3.svg","/images/emoji/w4.svg","/images/emoji/w5.svg","/images/emoji/w6.svg","/images/emoji/w7.svg"];
 
-// Time to wait before treating single touch events as a separate intention
 var DEFAULT_COLOUR = '#000000';
 var DEFAULT_LINE_WIDTH = 2;
 
@@ -2241,9 +2255,17 @@ var Draw = {
 
   show: function show() {
 
-    /* Hacky fix for browsers no longer observing the centred position with position: absolute */
-    canvasDraw.setAttribute('style', 'left: calc(50% - ' + canvasDraw.width / 2 + 'px)');
-    canvasEmoji.setAttribute('style', 'left: calc(50% - ' + canvasEmoji.width / 2 + 'px)');
+    if (isLiveCamera()) {
+      // For live camera view, default to taking up the full space available
+      canvasDraw.width = window.innerWidth;
+      canvasDraw.height = window.innerHeight - HEADER_HEIGHT;
+      canvasEmoji.width = canvasDraw.width;
+      canvasEmoji.height = canvasDraw.height;
+    } else {
+      // Hacky fix for browsers no longer observing the centred position with position: absolute
+      canvasDraw.setAttribute('style', 'left: calc(50% - ' + canvasDraw.width / 2 + 'px)');
+      canvasEmoji.setAttribute('style', 'left: calc(50% - ' + canvasEmoji.width / 2 + 'px)');
+    }
   },
 
   snapshot: function snapshot() {
@@ -8247,13 +8269,15 @@ var AnnotatePage = {
     initControls$1();
   },
 
-  show: function show(config) {
+  show: function show() {
 
     showPage(PAGE_NAME$1);
-    Draw.show();
-    if (config && config.live) {
+
+    if (isLiveCamera()) {
       init$1();
     }
+
+    Draw.show();
   }
 
 };
@@ -8279,8 +8303,6 @@ var AboutPage = {
   }
 
 };
-
-console.log('LoadImage', LoadImage);
 
 var PAGE_NAME = PAGES.HOME;
 
@@ -8330,7 +8352,9 @@ function onPhotoInputChange(e) {
       emojiCanvas.width = newWidth;
       emojiCanvas.height = newHeight;
 
-      AnnotatePage.show({ live: false });
+      setLiveCamera(false);
+
+      AnnotatePage.show();
     }
   }
 
@@ -8354,7 +8378,8 @@ function initControls() {
   }
 
   startCameraBtn.addEventListener('click', function () {
-    AnnotatePage.show({ live: true });
+    setLiveCamera(true);
+    AnnotatePage.show();
   });
 
   aboutLink.addEventListener('click', function () {
