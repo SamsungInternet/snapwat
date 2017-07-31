@@ -84,7 +84,7 @@ header .left button {
 }
 
 header .left button.btn-back {
-  
+
 }
 
 header .right button {
@@ -324,13 +324,19 @@ video {
   /* For scrolling performance */
   will-change: transform;
   -webkit-overflow-scrolling: touch;
+  /* I would prefer not to set the height, but without this it's not scrollable in Samsung Internet */
+  height: 85%;
+  height: -webkit-calc(100% - 90px);
+  height: -moz-calc(100% - 90px);
+  height: -o-calc(100% - 90px);
+  height: -ms-calc(100% - 90px);
+  height: calc(100% - 90px);
 }
 
 #modal-emoji img {
   padding: 4px;
   cursor: pointer;
   border: 0;
-  width: 48px;
 }
 
 #page-home {
@@ -430,10 +436,6 @@ video {
 #start-camera {
   display: none;
   margin-top: 1.5em;
-}
-
-#start-camera p {
-  margin-top: 0.4em;
 }
 
 #btn-start-camera {
