@@ -7,7 +7,7 @@ export default function() {
 
   // Some browsers partially implement mediaDevices. We can't just assign an object
   // with getUserMedia as it would overwrite existing properties.
-  if (navigator.mediaDevices.getUserMedia === undefined) {
+  if (navigator.mediaDevices === undefined || navigator.mediaDevices.getUserMedia === undefined) {
 
     // First get hold of the legacy getUserMedia, if present
     var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
