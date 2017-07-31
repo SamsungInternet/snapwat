@@ -65,11 +65,32 @@ function initCamera() {
 
       requestAnimationFrame(copyVideoToCanvas);
 
+      initFaceTracking();
+
     })
     .catch((err) => {
       console.error('getUserMedia error', err);
       showUnsupported();
     });
+
+}
+
+function initFaceTracking() {
+
+  var tracker = new tracking.ObjectTracker(['face']);
+  tracker.setStepSize(1.7);
+
+  tracking.track(canvas, tracker);
+
+  tracker.on('track', function(event) {
+    event.data.forEach(function(rect) {
+      console.log('Tracked', rect.x, rect.y, rect.width, rect.height);
+      context.strokeStyle = '#10f9e6';
+      context.lineWidth = 2;
+      context.setLineDash([5, 2]);
+      context.rect(x, y, w, h);
+    });
+  });
 
 }
 

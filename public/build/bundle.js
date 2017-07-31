@@ -6,16 +6,21 @@
 
 function SWRegister () {
 
+  // XXX Disabled temporarily during development
+  /*
   if ('serviceWorker' in navigator) {
-
-    navigator.serviceWorker.register('/sw.js').then(function () {
-      console.log('Service worker successfully registered');
-    }).catch(function (err) {
-      console.error('Service worker failed to register', err);
-    });
-  } else {
+     navigator.serviceWorker.register('/sw.js')
+      .then(() => {
+        console.log('Service worker successfully registered');
+      })
+      .catch((err) => {
+        console.error('Service worker failed to register', err);
+      });
+   } else {
     console.log('Service workers not supported');
   }
+  */
+
 }
 
 /**
@@ -1854,9 +1859,29 @@ function initCamera() {
     }
 
     requestAnimationFrame(copyVideoToCanvas);
+
+    initFaceTracking();
   }).catch(function (err) {
     console.error('getUserMedia error', err);
     showUnsupported();
+  });
+}
+
+function initFaceTracking() {
+
+  var tracker = new tracking.ObjectTracker(['face']);
+  tracker.setStepSize(1.7);
+
+  tracking.track(canvas, tracker);
+
+  tracker.on('track', function (event) {
+    event.data.forEach(function (rect) {
+      console.log('Tracked', rect.x, rect.y, rect.width, rect.height);
+      context$1.strokeStyle = '#10f9e6';
+      context$1.lineWidth = 2;
+      context$1.setLineDash([5, 2]);
+      context$1.rect(x, y, w, h);
+    });
   });
 }
 

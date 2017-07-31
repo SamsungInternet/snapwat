@@ -1,5 +1,7 @@
 export default function() {
 
+  // XXX Disabled temporarily during development
+  /*
   if ('serviceWorker' in navigator) {
 
     navigator.serviceWorker.register('/sw.js')
@@ -13,5 +15,6 @@ export default function() {
   } else {
     console.log('Service workers not supported');
   }
+  */
 
 }
