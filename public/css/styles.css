@@ -335,6 +335,7 @@ video {
   padding: 4px;
   cursor: pointer;
   border: 0;
+  width: 64px;
 }
 
 #page-home {

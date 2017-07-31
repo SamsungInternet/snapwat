@@ -37,7 +37,7 @@ rollup.rollup({
     generateFileList({
       id: '\0emoji-images',
       patterns: [
-        'public/images/emojione/*.svg'
+        'public/images/emoji/*.svg'
       ]
     })
   ]
