@@ -2,6 +2,7 @@ import LiveCamera from './liveCamera';
 import Draw from './draw';
 import SnapshotPage from '../snapshot';
 import {PAGES} from '../../shared/constants';
+import {isLiveCamera} from '../../shared/config';
 import {showPage} from '../../shared/helpers';
 
 const PAGE_NAME = PAGES.ANNOTATE;
@@ -24,13 +25,16 @@ export default {
     initControls();
   },
 
-  show: function(config) {
+  show: function() {
 
     showPage(PAGE_NAME);
-    Draw.show();
-    if (config && config.live) {
+
+    if (isLiveCamera()) {
       LiveCamera();
     }
+
+    Draw.show();
+
   }
 
 };

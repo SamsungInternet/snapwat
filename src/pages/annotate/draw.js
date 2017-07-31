@@ -1,7 +1,7 @@
 import emojiImages from '\0emoji-images';
 import {HEADER_HEIGHT} from '../../shared/constants';
+import {isLiveCamera} from '../../shared/config';
 
-// Time to wait before treating single touch events as a separate intention
 const DEFAULT_COLOUR = '#000000';
 const DEFAULT_EMOJI_SIZE = 120;
 const DEFAULT_EMOJI_FONT = 'arial';
@@ -155,7 +155,7 @@ function onTouchStartOrMouseDown(e) {
     redrawEmojisOnNextFrame();
 
     onDrawingMouseDown(coords);
-    
+
   }
 
 }
@@ -404,9 +404,17 @@ export default {
 
   show: function() {
 
-    /* Hacky fix for browsers no longer observing the centred position with position: absolute */
-    canvasDraw.setAttribute('style', `left: calc(50% - ${canvasDraw.width / 2}px)`);
-    canvasEmoji.setAttribute('style', `left: calc(50% - ${canvasEmoji.width / 2}px)`);
+    if (isLiveCamera()) {
+      // For live camera view, default to taking up the full space available
+      canvasDraw.width = window.innerWidth;
+      canvasDraw.height = window.innerHeight - HEADER_HEIGHT;
+      canvasEmoji.width = canvasDraw.width;
+      canvasEmoji.height = canvasDraw.height;
+    } else {
+      // Hacky fix for browsers no longer observing the centred position with position: absolute
+      canvasDraw.setAttribute('style', `left: calc(50% - ${canvasDraw.width / 2}px)`);
+      canvasEmoji.setAttribute('style', `left: calc(50% - ${canvasEmoji.width / 2}px)`);
+    }
 
   },
 

@@ -1,10 +1,9 @@
 import LoadImage from 'blueimp-load-image';
 import {PAGES, HEADER_HEIGHT} from '../shared/constants';
+import {setLiveCamera} from '../shared/config';
 import {showPage} from '../shared/helpers';
 import AnnotatePage from './annotate';
 import AboutPage from './about';
-
-console.log('LoadImage', LoadImage);
 
 const PAGE_NAME = PAGES.HOME;
 
@@ -54,7 +53,9 @@ function onPhotoInputChange(e) {
       emojiCanvas.width = newWidth;
       emojiCanvas.height = newHeight;
 
-      AnnotatePage.show({live: false});
+      setLiveCamera(false);
+
+      AnnotatePage.show();
     }
   }
 
@@ -79,7 +80,8 @@ function initControls() {
   }
 
   startCameraBtn.addEventListener('click', function () {
-    AnnotatePage.show({live: true});
+    setLiveCamera(true);
+    AnnotatePage.show();
   });
 
   aboutLink.addEventListener('click', function () {

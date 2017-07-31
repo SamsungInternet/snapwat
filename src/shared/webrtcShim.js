@@ -1,6 +1,7 @@
 /**
  * Previously I was using webrtc-adapter, but this was using up nearly half the JS bundle size!
- * This is a more lightweight shim from https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+ * This is a more lightweight shim based on the version here: 
+ * https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
  */
 export default function() {
 
@@ -11,23 +12,22 @@ export default function() {
 
   // Some browsers partially implement mediaDevices. We can't just assign an object
   // with getUserMedia as it would overwrite existing properties.
-  // Here, we will just add the getUserMedia property if it's missing.
   if (navigator.mediaDevices.getUserMedia === undefined) {
-    navigator.mediaDevices.getUserMedia = function (constraints) {
 
-      // First get ahold of the legacy getUserMedia, if present
-      var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    // First get hold of the legacy getUserMedia, if present
+    var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-      // Some browsers just don't implement it - return a rejected promise with an error
-      // to keep a consistent interface
-      if (!getUserMedia) {
-        return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+    // If there is no legacy getUserMedia either, do not attempt to shim, we'll check if
+    // navigator.mediaDevices.getUserMedia exists in order to display the button or not.
+    if (getUserMedia) {
+
+      navigator.mediaDevices.getUserMedia = function (constraints) {
+        // Wrap the call to the old navigator.getUserMedia with a Promise
+        return new Promise(function (resolve, reject) {
+          getUserMedia.call(navigator, constraints, resolve, reject);
+        });
       }
 
-      // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
-      return new Promise(function (resolve, reject) {
-        getUserMedia.call(navigator, constraints, resolve, reject);
-      });
     }
   }
 }

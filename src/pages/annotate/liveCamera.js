@@ -4,27 +4,33 @@ import {showPrompt} from '../../shared/helpers';
 let video = document.querySelector('video');
 let canvas = document.getElementById('canvas-camera');
 let context = context = canvas.getContext('2d');
+let isCanvasResized = false;
 
 function copyVideoToCanvas() {
 
-  /**
-   * Should hopefully be same as our canvas size, if our constraints were obeyed.
-   * But fixes video being potentially stretched (e.g. Samsung Internet in standalone mode).
-   */
-  const width = video.videoWidth;
-  const height = video.videoHeight;
+  // It takes a while for the video dimensions to be established, so keep checking until they have
+  if (!isCanvasResized && video.videoWidth) {
+    resizeCanvasToVideo();
+  }
 
-  canvas.width = width;
-  canvas.height = height;
-
-  context.fillRect(0, 0, width, height);
-  context.drawImage(video, 0, 0, width, height);
+  context.fillRect(0, 0, video.videoWidth, video.videoHeight);
+  context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
 
   requestAnimationFrame(copyVideoToCanvas);
 }
 
 function showUnsupported() {
   showPrompt('webrtc-unsupported');
+}
+
+/**
+ * The video should hopefully be the same as our canvas size, if our constraints were obeyed.
+ * But this fixes video being potentially stretched (e.g. Samsung Internet in standalone mode).
+ */
+function resizeCanvasToVideo() {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  isCanvasResized = true;
 }
 
 function initCamera() {
