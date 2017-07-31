@@ -48,7 +48,7 @@ function WebRTCShim () {
   if (navigator.mediaDevices === undefined || navigator.mediaDevices.getUserMedia === undefined) {
 
     // First get hold of the legacy getUserMedia, if present
-    var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    var getUserMedia = navigator.getUserMedia;
 
     // If there is no legacy getUserMedia either, do not attempt to shim, we'll check if
     // navigator.mediaDevices.getUserMedia exists in order to display the button or not.
