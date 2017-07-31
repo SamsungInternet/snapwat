@@ -122,23 +122,31 @@ function onTouchStartOrMouseDown(e) {
 
   if (touchedEmojiIndex > -1) {
     // Selected an existing emoji - fall through
+    redrawEmojisOnNextFrame();
     return;
   }
 
   if (chosenTool === TOOL_EMOJI) {
 
-    // Add new emoji
-    // Increase default SVG size
-    const width = chosenEmoji.width * 2.5;
-    const height = chosenEmoji.height * 2.5;
+    if (chosenEmoji) {
 
-    stampedEmojis.push({
-      image: chosenEmoji,
-      x: coords.x,
-      y: coords.y,
-      width: width,
-      height: height
-    });
+      // Add new emoji
+      // Increase default SVG size
+      const width = chosenEmoji.width * 2.5;
+      const height = chosenEmoji.height * 2.5;
+
+      stampedEmojis.push({
+        image: chosenEmoji,
+        x: coords.x,
+        y: coords.y,
+        width: width,
+        height: height
+      });
+
+    }
+
+    // Reset chosen emoji. It only stamps once, to avoid accidental multiple taps.
+    chosenEmoji = null;
 
     redrawEmojisOnNextFrame();
 

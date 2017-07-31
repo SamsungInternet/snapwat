@@ -23,7 +23,7 @@ header {
 
 header label,
 header button {
-  font-size: 0.9em;
+  font-size: 0.8em;
   color: #fff;
 }
 
@@ -37,8 +37,8 @@ header button {
 
 header button img {
   display: block;
-  width: 38px;
-  height: 28px;
+  width: 28px;
+  height: 24px;
   margin: 0 auto 5px auto;
 }
 
@@ -323,19 +323,13 @@ video {
   /* For scrolling performance */
   will-change: transform;
   -webkit-overflow-scrolling: touch;
-  height: 85%;
-  height: -webkit-calc(100% - 90px);
-  height: -moz-calc(100% - 90px);
-  height: -o-calc(100% - 90px);
-  height: -ms-calc(100% - 90px);
-  height: calc(100% - 90px);
 }
 
 #modal-emoji img {
   padding: 4px;
   cursor: pointer;
   border: 0;
-  width: 64px;
+  width: 48px;
 }
 
 #page-home {
