@@ -1,4 +1,4 @@
-var CACHE_NAME = 'cache-v1.3';
+var CACHE_NAME = 'cache-v1.4';
 
 // The advice is to not cache too much on install.
 // This is the minimal amount needed to display the initial page.
@@ -7,7 +7,7 @@ var PRECACHE_URLS = [
   '/index.html',
   '/css/styles.css',
   '/build/bundle.js',
-  '/images/emojione/1f600.svg',
+  '/images/emoji/f1.svg',
   '/images/iconic/trash.svg',
   '/images/iconic/arrow-right.svg',
   'https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,400italic,700italic,300italic,600,600italic,800,800italic'
